@@ -1,0 +1,160 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    margin: 0px;
+    background: #eeeef1;
+}
+
+nav {
+    background: #fff;
+}
+
+/* Navbar */
+
+.line-hz-navbar {
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.overlay-navbar {
+    width: 100%;
+    height: 70px;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 1020px;
+}
+
+.navbar-section {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.flex-col {
+    display: flex;
+    align-items: center;
+}
+
+.nav-item > :not(:last-child) {
+    margin-right: 15px;
+}
+
+/* End of Navbar Section */
+
+.pos-rel {
+    position: relative;
+}
+
+.icon:hover {
+    cursor: pointer;
+    background: #d9d9ff;
+    border-radius: 50%;
+}
+
+/* Form */
+input {
+    background: #fff;
+    border: none;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+}
+
+.btn-search-nav {
+    position: absolute;
+    right: 15px;
+    top: 6px;
+    border: 0;
+    background: transparent;
+}
+
+.btn-search-nav img {
+    width: 20px;
+    filter: opacity(0.6);
+}
+
+.btn-search-nav img:hover {
+    width: 20px;
+    filter: opacity(1);
+}
+
+.search-input {
+    width: 300px;
+    min-height: 40px;
+    border-radius: 20px;
+    background-color: #f3f3f7;
+    box-sizing: border-box;
+    text-indent: 20px;
+}
+
+
+.notif-layout {
+    border-radius: 9px;
+    display: block;
+    height: 20px;
+    left: 8px;
+    min-width: 20px;
+    padding: 4px;
+    position: absolute;
+    text-align: center;
+    top: -12px;
+    white-space: nowrap;
+    width: auto;
+    background-color: #e91260;
+    color: #fff;
+}
+
+.notif-num {
+    position: relative;
+    top: -7px;
+    font-size: 12px;
+}
+/* End of form */
+
+.task-content {
+    position: relative;
+    width: 1024px;
+    margin: 0 auto;
+    height: 100px;
+    background-color: #e91260;
+}
+
+.task-content-overlay {
+    display: flex;
+    overflow: hidden;
+    height: calc(100vh - 120px);
+    width: 100%;
+}
+
+.task-list {
+    width: 350px;
+    background-color: green;
+}
+
+.list-scroll-effect {
+    transition: padding-top .6s cubic-bezier(.68,-.55,.265,1.55);
+}
+
+.test {
+    position: relative;
+    margin: 8px 8px 8px 0px;
+    min-height: 133px;
+    display: flex;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    padding: 16px;
+    border-radius: 12px;
+    background-color: rgb(255, 255, 255);
+}

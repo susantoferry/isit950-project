@@ -211,7 +211,7 @@
                                     <span>Assigned</span>
                                 </div>
                                 <div class="task-stat">
-                                    <span>Completed</span>
+                                    <span>Closed</span>
                                 </div>
                             </div>
                             <div>
@@ -230,10 +230,7 @@
                                                     John Doe
                                                 </div>
                                                 <div>
-                                                    <span style="font-weight: 600;
-                                                    font-size: 1.1rem;
-                                                    color: #db7228;">4.5 / 5 </span>
-                                                    <i class="star-rev fas fa-star"></i>
+                                                    4.5 stars
                                                 </div>
                                             </div>
                                             
@@ -311,25 +308,27 @@
                     <div class="task-detail-divider"></div>
                     <div>
                         <div class="task-detail-heading">
-                            <span class="mt20" style="letter-spacing: 1px;">Questions (1)</span>
+                            <span class="mt20">Questions(2)</span>
                         </div>
-                        <div class="flex-rev">
-                            <div class="rev-usr-img-container">
-                                <div class="rev-usr-img-wrap">
-                                    <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
-                                        alt="Logo Moonlight Grosir Store"
-                                        style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
-                                        style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
+                        <div class="card transparent ntwk-header">
+                            <div class="row post-row-header">
+                                <div class="col-sm-2 post-header-img-panel">
+                                    <img class="card-img post-header-img b-rad-50 mr-10 bd-profile-img" alt="profile picture" width="30px" src="/static/network/images/user-icon.png">
                                 </div>
-                            </div>
-                            <div class="comment-form">
-                                <form id="post-form" method="post" action="#">
-                                    {% csrf_token %}
-                                        
-                                        <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
-                                            onkeyup="checkPostValue();" placeholder="Type something to ask the task"></textarea>
-                                    <button type="submit" id="postBtn" class="comm-btn" disabled> Send </button>
-                                </form>
+                                <div class="col-md-10">
+                                    <div class="card-body post-input">
+                                        <form id="post-form" method="post" action="#">
+                                            {% csrf_token %}
+                                            <div class="form-group post-fm">
+                                                <label for="text-content" class="post-lbl"></label>
+                                                <textarea oninput='this.style.height="";this.style.height = this.scrollHeight + "px"'
+                                                    class="form-control text-content" id="text-content" rows="1" name="text-content"
+                                                    onkeyup="checkPostValue();" placeholder="What's on your mind?"></textarea>
+                                            </div>
+                                            <button type="submit" id="postBtn" class="btn btn-primary btn-pos" disabled> Post </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="rev-section">
@@ -347,10 +346,10 @@
                                         <div class="ml20">
                                             <div class="task-comm-flex">
                                                 <a href="profile.html">
-                                                    <h5 class="rev-name-header">Samuel</h5>
+                                                    <h5 class="crev-usr rev-name-header">Samuel</h5>
                                                 </a>
                                                 <div class="rev-date-col">
-                                                    <em class="rev-date ml10">5 minutes ago</em>
+                                                    <em class="rev-date ml10">July 14 at 3:15 PM</em>
                                                 </div>
                                             </div>
                                             <div class="task-comm-txt">
@@ -361,21 +360,7 @@
                                                 Tollit molestie suscipiantur his et.
                                             </div>
                                             <div>
-                                                <a href="#0" class="reply-anchor">
-                                                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                                    width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
-                                                    preserveAspectRatio="xMidYMid meet" class="reply-arrow">
-                                                   
-                                                   <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
-                                                   fill="#eea47fff" stroke="none">
-                                                   <path d="M35 250 l-39 -40 39 -40 c35 -36 65 -51 65 -33 0 4 -12 20 -27 36
-                                                   l-28 29 97 -4 c86 -3 100 -7 123 -28 27 -26 34 -75 14 -112 -13 -25 -5 -35 15
-                                                   -18 25 20 30 74 11 114 -25 53 -58 66 -166 66 l-93 0 27 28 c15 15 27 31 27
-                                                   35 0 18 -30 3 -65 -33z"/>
-                                                   </g>
-                                                   </svg>
-                                                    <span class="reply-btn">Reply</span>
-                                                </a>
+                                                <a href="#0"><i class="icon_like"></i><span>Reply</span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -383,7 +368,7 @@
                                 </div>
                             </div>
                             <div class="rev-comment-reply-container mt20">
-                                <div class="flex-rev">
+                                <div class="rev-row">
                                     <div class="rev-usr-img-container">
                                         <div class="rev-usr-img-wrap">
                                             <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
@@ -394,57 +379,47 @@
                                     </div>
                                 </div>
                                 <div class="rev-row">
-                                    <div class="rev-col">
-                                        <div class="flex-col ">
+                                    <div class="rev-col txt-gray-color mr20 ml20">
+                                        <div class="clearfix">
                                             <a href="profile.html">
-                                                <h5 class="rev-name-header">Chris</h5>
+                                                <span class="rev-reply-text">Test1</span>
                                             </a>
-                                            <div class="rev-poster">
-                                                <span>Poster</span>
-                                            </div>
-                                            <div class="rev-date-col">
-                                                <em class="rev-date ml10">1 minute ago</em>
+                                            <em class="rev-date ml10">1w ago</em>
+                                            <div class="star-rev">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
                                             </div>
                                         </div>
-                                        <div class="" style="font-size: 13px;
-                                        margin-bottom: 10px;
-                                        color: #d2691e;">
-                                            <span>Reply to Samuel</span>
-                                        </div>
-                                        <div class="task-comm-txt">
-                                            1Eos tollit ancillae ea, lorem consulatu qui ne, eu
+                                        <div class="mt10">
+                                            <a href="#"><b>Test</b></a> 1Eos tollit ancillae ea, lorem consulatu qui ne, eu
                                             eros eirmod scaevola sea.
                                             Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas
                                             has ut.
                                             Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his.
                                             Tollit molestie suscipiantur his et.
                                         </div>
-                                        <div class="reply-row">
-                                            <a href="#0" class="reply-anchor">
-                                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
- preserveAspectRatio="xMidYMid meet" class="reply-arrow">
-
-<g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
-fill="#eea47fff" stroke="none">
-<path d="M35 250 l-39 -40 39 -40 c35 -36 65 -51 65 -33 0 4 -12 20 -27 36
-l-28 29 97 -4 c86 -3 100 -7 123 -28 27 -26 34 -75 14 -112 -13 -25 -5 -35 15
--18 25 20 30 74 11 114 -25 53 -58 66 -166 66 l-93 0 27 28 c15 15 27 31 27
-35 0 18 -30 3 -65 -33z"/>
-</g>
-</svg>
-                                                <span class="reply-btn">Reply</span>
-                                            </a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- <div class="mb20" style="color: #636363;">
+                            <span style="line-height: 30px;margin-bottom: 30px;display: block;">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non enim praesent elementum facilisis leo. Aenean sed adipiscing diam donec adipiscing tristique risus nec. Leo vel fringilla est ullamcorper eget. Vulputate odio ut enim blandit volutpat maecenas volutpat blandit. Eu volutpat odio facilisis mauris sit amet. Dignissim cras tincidunt lobortis feugiat vivamus at. Magna etiam tempor orci eu lobortis elementum. Cursus turpis massa tincidunt dui ut. Ac felis donec et odio pellentesque diam volutpat. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.
+                            </span>
+                        </div> -->
                     </div>
+
+                   
                 </div>
+                
             </div>
+
         </div>
     </div>
+    
 </div>
 
 {% endblock %}

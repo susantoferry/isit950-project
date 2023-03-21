@@ -10,11 +10,6 @@ class Category(models.Model):
     slug = models.SlugField()
 
     def __str__(self):
-        return f"Name: {self.name}"
-    
-class PaymentType(models.Model):
-    payment_type = models.CharField(max_length=20)
+        return f"Category Id: {self.id}, Name: {self.name}"
 
-    def __str__(self):
-        return f"Id:{self.id}, Type: {self.payment_type}"
 

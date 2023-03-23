@@ -6,7 +6,7 @@ from . import views
 
 urlpatterns = [
     path("category", views.category, name="category"),
-    
+    path("task", views.task, name="task"),
 
 ]
 

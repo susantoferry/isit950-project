@@ -1,9 +1,22 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+import requests
+from .constant import *
 
 # Create your views here.
 def index(request):
-    return render(request, "isit950/index.html")
+    taskResp = requests.get(restServer + "task")
+    tasks = taskResp.json()
+    
+    firstTaskDetail = tasks[0]["id"]
+    taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
+    taskDetail = taskDetailResp.json()
+    
+
+    return render(request, "isit950/index.html", {
+        "tasks": tasks,
+        "taskDetail": taskDetail
+    })
 
 # def login_view(request):
 #     if request.method == "POST":

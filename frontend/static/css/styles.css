@@ -245,9 +245,11 @@ input:focus, textarea:focus {
 }
 
 .task-flex-align {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    margin-bottom: 7px;
+    margin-bottom: 7px; */
+    margin-bottom: 5px;
+    line-height: 20px;
 }
 
 .task-flex-align span {
@@ -257,6 +259,39 @@ input:focus, textarea:focus {
 
 .task-flex-align > :not(:last-child) {
     margin-right: 10px;
+}
+
+.task-status {
+    color: white;
+    font-size: 11px;
+    margin-top: 15px;
+}
+
+.open {
+    width: 70px;
+    background: #0080ed;
+    height: 21px;
+    border-radius: 20px;
+    text-align: center;
+    padding-top: 2px;
+}
+
+.assigned {
+    width: 70px;
+    background: #c58252;
+    height: 21px;
+    border-radius: 20px;
+    text-align: center;
+    padding-top: 2px;
+}
+
+.completed {
+    width: 70px;
+    background: #4aa159;
+    height: 21px;
+    border-radius: 20px;
+    text-align: center;
+    padding-top: 2px;
 }
 
 .task-location img {
@@ -275,14 +310,16 @@ span.offer-count {
     color: #405a65;
     font-weight: 500;
     text-decoration: underline;
+    position: relative;
+    top: 7px;
 }
 
 .tasker-profile {
     border-radius: 50%;
     background-color: rgb(243, 243, 247);
-    width: 50px;
-    min-width: 50px;
-    height: 50px;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
     object-fit: cover;
     bottom: 20px;
     right: 15px;
@@ -375,13 +412,20 @@ span.offer-count {
 
 .task-detail-id {
     color: #84878c;
-    font-size: 13px;
+    font-size: 12px;
     display: inline-block;
     text-align: center;
     position: relative;
     left: 10px;
     top: 5px;
     margin-bottom: 10px;
+}
+
+.btn-bookmark {
+    margin-right: 15px; 
+    top: -3px; 
+    position: relative; 
+    cursor: pointer;
 }
 
 .task-stat-overlay {

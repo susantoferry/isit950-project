@@ -15,3 +15,7 @@ function checkPostValue(){
         document.getElementById("postBtn").disabled = false;
     }
 }
+
+$( "#btn-bookmark" ).click(function() {
+    alert( "Handler for .click() called." );
+});

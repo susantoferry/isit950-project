@@ -11,11 +11,16 @@ def index(request):
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
     taskDetail = taskDetailResp.json()
-    
 
+    # watchlistResp = requests.get(restServer + "watchlist/ferry")
+    # watchlist = watchlistResp.json()
+    # for i in watchlist:
+    #     print(i["tasks"]["task_title"])
+    
     return render(request, "isit950/index.html", {
         "tasks": tasks,
-        "taskDetail": taskDetail
+        "taskDetail": taskDetail,
+        # "watchlist": watchlist
     })
 
 # def login_view(request):

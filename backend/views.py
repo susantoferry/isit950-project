@@ -96,13 +96,13 @@ def watchlist(request, user):
         # Get user id by username
         userId = User.objects.get(username=user)
 
-        watchlist = Watchlist.objects.all().filter(pk=userId.id)
+        watchlist = Watchlist.objects.all().filter(user=userId.id)
         serializer = WatchlistSerializer(watchlist, many=True)
         return Response(serializer.data)
     
     if request.method == 'POST':
         serializer = TaskSerializer(data=request.data)
-        print(request.data)
+        
         if serializer.is_valid():
             serializer.save()
         else:

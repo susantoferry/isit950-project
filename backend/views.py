@@ -72,12 +72,12 @@ def task(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def taskDetail(request, taskId):
     try:
-        task = Task.objects.select_related('user').get(pk=taskId)
+        task = Task.objects.get(pk=taskId)
     except Task.DoesNotExist:
         return Response(status=404)
     
     if request.method == 'GET':
-        serializer = TaskSerializer(task)
+        serializer = TaskSerializer(task, many=False)
         return Response(serializer.data)
     
     if request.method == 'PUT':

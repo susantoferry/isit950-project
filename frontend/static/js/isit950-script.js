@@ -19,3 +19,19 @@ function checkPostValue(){
 $( "#btn-bookmark" ).click(function() {
     alert( "Handler for .click() called." );
 });
+
+function bookmark() {
+
+}
+
+function getTaskDetail(id) {
+    
+    fetch(`/api/task/${id}`, {
+        method: 'GET',
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+    })
+
+}

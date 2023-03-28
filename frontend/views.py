@@ -1,26 +1,48 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 from .constant import *
 
 # Create your views here.
+
 def index(request):
+    return redirect("tasks")
+
+def tasks(request):
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
     taskDetail = taskDetailResp.json()
-
-    # watchlistResp = requests.get(restServer + "watchlist/ferry")
-    # watchlist = watchlistResp.json()
-    # for i in watchlist:
-    #     print(i["tasks"]["task_title"])
     
     return render(request, "isit950/index.html", {
         "tasks": tasks,
         "taskDetail": taskDetail,
-        # "watchlist": watchlist
+    })
+
+def taskDetail(request, taskId):
+
+    taskResp = requests.get(restServer + "task")
+    tasks = taskResp.json()
+    
+    taskDetailResp = requests.get(restServer + 'task/' + str(taskId))
+    taskDetail = taskDetailResp.json()
+
+    return render(request, "isit950/index.html", {
+        "tasks": tasks,
+        "taskDetail": taskDetail
+    })
+
+def watchlist(request):
+    watchlistResp = requests.get(restServer + "watchlist/ferry")
+    watchlist = watchlistResp.json()
+    for i in watchlist:
+        print(i["tasks"]["task_title"])
+
+    return render(request, "isit950/watchlist.html", {
+        "watchlist": watchlist
     })
 
 # def login_view(request):

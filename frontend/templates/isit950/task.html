@@ -1,7 +1,8 @@
 <div class="task-list">
     <div class="list-scroll-effect">
+        {{request.path}}
         {% for task in tasks %}
-        <a href="#" class="task-card flex-row">
+        <a href="#" onclick="getTaskDetail('{{task.id}}'); return false;" class="task-card flex-row">
             <div class="task-l-content">
                 <div class="task-header mb10">
                     <span>{{ task.task_title }}</span>

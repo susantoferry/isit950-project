@@ -1,0 +1,33 @@
+{% include 'isit950/layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <h5>test</h5>
+    
+    <h3>My Watchlist</h3>
+    <div>
+        {% for my_wl in watchlist %}
+            <span>{{my_wl.tasks.task_title}}</span>
+
+            <div>
+                <span>User</span>
+                <span>{{ my_wl.tasks.user_id.username }}</span>
+            </div>
+
+            <div>
+                <div>posted by</div>
+                <div>{{ my_wl.tasks.user_id.username }}</div>
+            </div>
+
+            <div>
+                <div>Posted on</div>
+                <div>
+                    {{ my_wl.tasks.modify_date }}
+                </div>
+            </div>
+            
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

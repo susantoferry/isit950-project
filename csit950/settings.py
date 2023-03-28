@@ -98,7 +98,7 @@ DATABASES = {
         'NAME': 'isit950',
         'USER': 'admin',
         'PASSWORD': 'password',
-        'HOST': 'awsdbisit950.cmoar4du3hp3.ap-southeast-2.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
+        'HOST': 'awsdbisit950.cmoar4du3hp3.ap-southeast-2.rds.amazonaws.com',
         'PORT': '3306',
         'OPTIONS': {
             'sql_mode': 'traditional',

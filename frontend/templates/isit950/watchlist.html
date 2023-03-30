@@ -26,6 +26,20 @@
                     {{ my_wl.tasks.modify_date }}
                 </div>
             </div>
+        {% empty %}
+            <div class="app-cvip-message-container">
+                <section class="page page-notice--information">
+                    <div class="page__content">
+                        <div class="item-card-details__wrapper item-card-details__product">
+                            <div class="item-card-details__header">
+                                <div class="item-card-details__header-text">
+                                    <span>No watchlist is found.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
             
         {% endfor %}
     </div>

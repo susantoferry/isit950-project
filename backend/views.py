@@ -72,7 +72,7 @@ def task(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def taskDetail(request, taskId):
     try:
-        task = Task.objects.get(pk=taskId)
+        task = Task.objects.get(id=taskId)
     except Task.DoesNotExist:
         return Response(status=404)
     
@@ -89,12 +89,13 @@ def taskDetail(request, taskId):
         else:
             print(serializer.errors)
             return Response(status=404)
-        
+
 @api_view(['GET', 'POST'])
 def watchlist(request, user):
     if request.method == 'GET':
         # Get user id by username
         userId = User.objects.get(username=user)
+        # userId = User.objects.raw('SELECT * FROM backend_user WHERE id = %q', user)
 
         watchlist = Watchlist.objects.all().filter(user=userId.id)
         serializer = WatchlistSerializer(watchlist, many=True)

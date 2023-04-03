@@ -7,10 +7,11 @@ from . import views
 urlpatterns = [
     path("category", views.category, name="category"),
     path("category/<int:id>", views.categoryDetail, name="category_detail"),
+    path("question/<int:taskId>", views.question, name="question"),
     path("task", views.task, name="task"),
     path("task/<int:taskId>", views.taskDetail, name="task_detail"),
-    # path("my_watchlist", views.myWatchlist, name="my_watchlist"),
-    path("watchlist/<str:user>", views.watchlist, name="watchlist"),
+    path("show_my_watchlist/<str:user>", views.myWatchlist, name="show_my_watchlist"),
+    path("watchlist", views.watchlist, name="watchlist"),
 ]
 
 if settings.DEBUG:

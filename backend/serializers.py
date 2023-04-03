@@ -11,15 +11,21 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = '__all__'
+
 class TaskSerializer(serializers.ModelSerializer):
-    user_id = UserSerializer(source='user')
+    user_client_id = serializers.CharField(read_only=True, source='user.username')
+    my_bookmark = serializers.CharField(read_only=True)  
 
     class Meta:
         model = Task
         fields = '__all__'
 
 class WatchlistSerializer(serializers.ModelSerializer):
-    tasks = TaskSerializer(source='task')
+    tasks = TaskSerializer(read_only=True, source="task")
 
     class Meta:
         model = Watchlist

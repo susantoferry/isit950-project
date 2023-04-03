@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -54,6 +54,7 @@ def categoryDetail(request, id):
         return Response(serializer.data)
 
 @api_view(['GET', 'POST'])
+@csrf_protect 
 def task(request):
     if request.method == 'GET':
         tasks = Task.objects.all().order_by("status","-modify_date")
@@ -61,7 +62,24 @@ def task(request):
         return Response(serializer.data)
     
     if request.method == 'POST':
+        print("a")
         serializer = TaskSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors,status=400)
+        
+        return Response(serializer.data)
+    
+@api_view(['GET', 'POST'])
+def question(request, taskId):
+    if request.method == 'GET':
+        questions = Question.objects.filter(task_id=taskId).order_by("-modify_date")
+        serializer = QuestionSerializer(questions, many=True)
+        return Response(serializer.data)
+    
+    if request.method == 'POST':
+        serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
         else:
@@ -90,26 +108,40 @@ def taskDetail(request, taskId):
             print(serializer.errors)
             return Response(status=404)
 
-@api_view(['GET', 'POST'])
-def watchlist(request, user):
+@api_view(['GET'])
+def myWatchlist(request, user):
     if request.method == 'GET':
         # Get user id by username
         userId = User.objects.get(username=user)
-        # userId = User.objects.raw('SELECT * FROM backend_user WHERE id = %q', user)
 
         watchlist = Watchlist.objects.all().filter(user=userId.id)
         serializer = WatchlistSerializer(watchlist, many=True)
         return Response(serializer.data)
-    
+
+
+@api_view(['POST'])
+def watchlist(request):
     if request.method == 'POST':
-        serializer = TaskSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            serializer.save()
+        user = request.data['user']
+        task = request.data['task']
+        try:
+            watchlist = Watchlist.objects.get(task=task, user=user)
+        except Watchlist.DoesNotExist:
+            watchlist = ""
+
+        if watchlist == "":
+            serializer = WatchlistSerializer(data=request.data)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response(serializer.errors,status=400)
         else:
-            return Response(serializer.errors,status=400)
-        
-        return Response(serializer.data)
+            watchlist.delete()
+            return Response({
+                "success"
+            }, status=200)
     
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def taskDetail(request, taskId):

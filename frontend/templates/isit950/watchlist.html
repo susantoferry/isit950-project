@@ -12,12 +12,12 @@
 
             <div>
                 <span>User</span>
-                <span>{{ my_wl.tasks.user_id.username }}</span>
+                <span>{{ my_wl.tasks.user_client_id.username }}</span>
             </div>
 
             <div>
                 <div>posted by</div>
-                <div>{{ my_wl.tasks.user_id.username }}</div>
+                <div>{{ my_wl.tasks.user_client_id.username }}</div>
             </div>
 
             <div>
@@ -26,6 +26,7 @@
                     {{ my_wl.tasks.modify_date }}
                 </div>
             </div>
+            <hr>
         {% empty %}
             <div class="app-cvip-message-container">
                 <section class="page page-notice--information">

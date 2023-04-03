@@ -1,5 +1,17 @@
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'bottom-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+})
+
 document.getElementById("comment-text").addEventListener("focus", function () {
-    $(".comment-form").addClass("comment-onfocus"); 
+    $(".comment-form").addClass("comment-onfocus");
 });
 
 document.getElementById("comment-text").addEventListener("focusout", function () {
@@ -7,7 +19,7 @@ document.getElementById("comment-text").addEventListener("focusout", function ()
 });
 
 
-function checkPostValue(){
+function checkPostValue() {
     postValue = document.getElementById('comment-text').value;
     if (postValue == "") {
         document.getElementById("postBtn").disabled = true;
@@ -16,42 +28,80 @@ function checkPostValue(){
     }
 }
 
+$('#postBtn').click(function () {
+    var urlArr = document.URL.split('/');
+
+    var taskId = urlArr[urlArr.indexOf('tasks') + 1];
+
+    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+    fetch(`/api/question/${taskId}`, {
+        method: 'GE',
+        credentials: 'same-origin',
+        headers: {
+            "X-CSRFToken": token,
+            "Content-Type": 'application/json'
+        },
+        body: JSON.stringify({
+            user: 1,
+            task: taskId,
+            question: document.querySelector('#comment-text').value
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Your comment has been posted',
+        }).then((result) => {
+            location.reload();
+        })
+    })
+})
+
+$('.task-left-card').click(function () {
+    var taskId = $(this).attr('data-id');
+
+    location.href = "/tasks/" + taskId;
+})
+
 // $( "#btn-bookmark" ).click(function() {
 //     alert( "Handler for .click() called." );
 // });
 
 function bookmark(getButton, taskId) {
-    alert(taskId);
-    
-    // const token = document.getElementByName("csrfmiddlewaretoken")[0].value;
 
-    fetch(`/api/bookmark/${taskId}`, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            "X-CSRFToken": token,
-            "Content-Type": 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (getButton.classList.contains("fa-heart")) {
-            document.getElementById("bookmarkImg").src = "../static/images/reply.png";
-    
-        } else {
-            document.getElementById("bookmarkImg").src = "../static/images/saved.png";
-        }
-    })
+    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+    alert(id)
+    // fetch(`/api/bookmark/${taskId}`, {
+    //     method: 'POST',
+    //     credentials: 'same-origin',
+    //     headers: {
+    //         "X-CSRFToken": token,
+    //         "Content-Type": 'application/json'
+    //     }
+    // })
+    // .then(response => response.json())
+    // .then(result => {
+    //     if (getButton.classList.contains("fa-heart")) {
+    //         document.getElementById("bookmarkImg").src = "../static/images/reply.png";
+
+    //     } else {
+    //         document.getElementById("bookmarkImg").src = "../static/images/saved.png";
+    //     }
+    // })
 }
 
-function getTaskDetail(id) {
-    
-    fetch(`/api/task/${id}`, {
-        method: 'GET',
-    })
-    .then(response => response.json())
-    .then(data => {
-        
-    })
+// function getTaskDetail() {
 
-}
+//     fetch(`/api/task/${id}`, {
+//         method: 'GET',
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+
+//         })
+
+// }

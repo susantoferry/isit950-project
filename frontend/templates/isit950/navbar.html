@@ -2,14 +2,14 @@
     <div class="main-navbar">
         <div class="overlay-navbar line-hz-navbar">
             <div class="navbar-container">
-                <a href="#">
+                <a href="./">
                     <img src="/static/images/logo.png" alt="LOGO" width="150px">
                 </a>
                 <div class="navbar-section">
                     <div class="flex-col nav-left nav-item">
                         <div>Browse jobs</div>
                         <div>
-                            <button type="button" class="btn btn-primary">Hire Employee</button>
+                            <a href="{% url 'create_task' %}" class="btn btn-primary">Create Task</a>
                         </div>
                         <div class="pos-rel">
                             <input type="text" class="search-input" placeholder="Search for job">
@@ -44,7 +44,7 @@
                                     <li><button class="dropdown-item" type="button">My profile</button></li>
                                     <li><button class="dropdown-item" type="button">My Services</button></li>
                                     <li><button class="dropdown-item" type="button">My Tasks</button></li>
-                                    <li><a href="{% url 'watchlist' %}" class="dropdown-item" type="button">My Watchlist</a></li>
+                                    <li><a href="{% url 'my_watchlist' %}" class="dropdown-item" type="button">My Watchlist</a></li>
                                     <li><button class="dropdown-item" type="button">My Report</button></li>
                                     <li><button class="dropdown-item" type="button">Logout</button></li>
                                 </ul>

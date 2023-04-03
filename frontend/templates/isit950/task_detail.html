@@ -1,3 +1,4 @@
+{% csrf_token %}
 <div class="task-detail-container">
     <div class="task-detail-overlay">
         <div class="task-constraint">
@@ -5,12 +6,6 @@
                 <h1 class="task-detail-header">
                     {{ taskDetail.task_title }}
                 </h1>
-                <div id="btn-bookmark" class="btn-bookmark">
-                    <a href="#" onclick="bookmark(this, '{{taskDetail.id}}')">
-                        <img id="bookmarkImg" src="../../static/images/saved.png" alt="">
-                    </a>
-                    
-                </div>
             </div>
             <!-- <div class="flex-between task-sec-row"> -->
             <div class="inlblock">
@@ -39,7 +34,7 @@
                                 <div style="width: 225px;">
                                     <div style="display: flex; justify-content: space-between;">
                                         <div style="font-size: 1.3rem; font-weight: 600;">
-                                            {{ taskDetail.user_id.username | title }}
+                                            {{ taskDetail.user_client_id | title }}
                                         </div>
                                         <div>
                                             <span style="font-weight: 600;
@@ -121,7 +116,7 @@
             <div class="task-detail-divider"></div>
             <div>
                 <div class="task-detail-heading">
-                    <span class="mt20" style="letter-spacing: 1px;">Questions (1)</span>
+                    <span class="mt20" style="letter-spacing: 1px;">Questions ({{ parentQuestion.count }})</span>
                 </div>
                 <div class="flex-rev">
                     <div class="rev-usr-img-container">
@@ -133,15 +128,14 @@
                         </div>
                     </div>
                     <div class="comment-form">
-                        <form id="post-form" method="post" action="#">
-                            {% csrf_token %}
-                                
-                                <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
-                                    onkeyup="checkPostValue();" placeholder="Type something to ask the task"></textarea>
-                            <button type="submit" id="postBtn" class="comm-btn" disabled> Send </button>
-                        </form>
+                        <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
+                                onkeyup="checkPostValue();" placeholder="Type something to ask the task"></textarea>
+                        <button type="submit" id="postBtn" class="comm-btn" disabled> Send </button>
                     </div>
                 </div>
+
+                {% for pQuestion in parentQuestion %}
+                
                 <div class="rev-section">
                     <div class="rev-overlay">
                         <div class="rev-col">
@@ -157,18 +151,14 @@
                                 <div class="ml20">
                                     <div class="task-comm-flex">
                                         <a href="profile.html">
-                                            <h5 class="rev-name-header">Samuel</h5>
+                                            <h5 class="rev-name-header">{{ pQuestion.user.username }}</h5>
                                         </a>
                                         <div class="rev-date-col">
                                             <em class="rev-date ml10">5 minutes ago</em>
                                         </div>
                                     </div>
                                     <div class="task-comm-txt">
-                                        Eos tollit ancillae ea, lorem consulatu qui ne, eu eros eirmod scaevola sea.
-                                        Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas has
-                                        ut.
-                                        Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his.
-                                        Tollit molestie suscipiantur his et.
+                                        {{ pQuestion.question }}
                                     </div>
                                     <div>
                                         <a href="#0" class="reply-anchor">
@@ -192,64 +182,65 @@
                             
                         </div>
                     </div>
-                    <div class="rev-comment-reply-container mt20">
-                        <div class="flex-rev">
-                            <div class="rev-usr-img-container">
-                                <div class="rev-usr-img-wrap">
-                                    <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
-                                        alt="Logo Moonlight Grosir Store"
-                                        style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
-                                        style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="rev-row">
-                            <div class="rev-col">
-                                <div class="flex-col ">
-                                    <a href="profile.html">
-                                        <h5 class="rev-name-header">Chris</h5>
-                                    </a>
-                                    <div class="rev-poster">
-                                        <span>Poster</span>
-                                    </div>
-                                    <div class="rev-date-col">
-                                        <em class="rev-date ml10">1 minute ago</em>
-                                    </div>
-                                </div>
-                                <div class="" style="font-size: 13px;
-                                margin-bottom: 10px;
-                                color: #d2691e;">
-                                    <span>Reply to Samuel</span>
-                                </div>
-                                <div class="task-comm-txt">
-                                    1Eos tollit ancillae ea, lorem consulatu qui ne, eu
-                                    eros eirmod scaevola sea.
-                                    Et nec tantas accusamus salutatus, sit commodo veritus te, erat legere fabulas
-                                    has ut.
-                                    Rebum laudem cum ea, ius essent fuisset ut. Viderer petentium cu his.
-                                    Tollit molestie suscipiantur his et.
-                                </div>
-                                <div class="reply-row">
-                                    <a href="#0" class="reply-anchor">
-                                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                            width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
-                                            preserveAspectRatio="xMidYMid meet" class="reply-arrow">
+                    {% for cQuestion in childQuestion %}
 
-                                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
-                                            fill="#eea47fff" stroke="none">
-                                            <path d="M35 250 l-39 -40 39 -40 c35 -36 65 -51 65 -33 0 4 -12 20 -27 36
-                                            l-28 29 97 -4 c86 -3 100 -7 123 -28 27 -26 34 -75 14 -112 -13 -25 -5 -35 15
-                                            -18 25 20 30 74 11 114 -25 53 -58 66 -166 66 l-93 0 27 28 c15 15 27 31 27
-                                            35 0 18 -30 3 -65 -33z"/>
-                                            </g>
-                                        </svg>
-                                        <span class="reply-btn">Reply</span>
-                                    </a>
+                        {% if cQuestion.parent_id == pQuestion.id %}
+                            <div class="rev-comment-reply-container mt20">
+                                <div class="flex-rev">
+                                    <div class="rev-usr-img-container">
+                                        <div class="rev-usr-img-wrap">
+                                            <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
+                                                alt="Logo Moonlight Grosir Store"
+                                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
+                                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rev-row">
+                                    <div class="rev-col">
+                                        <div class="flex-col ">
+                                            <a href="profile.html">
+                                                <h5 class="rev-name-header">{{ cQuestion.user.username}}</h5>
+                                            </a>
+                                            {% if taskDetail.user == cQuestion.user.id %}
+                                                <div class="rev-poster">
+                                                    <span>Poster</span>
+                                                </div>
+                                            {% endif %}
+                                            <div class="rev-date-col">
+                                                <em class="rev-date ml10">1 minute ago</em>
+                                            </div>
+                                        </div>
+                                        <div class="" style="font-size: 13px; margin-bottom: 10px; color: #d2691e;">
+                                            <span>Reply to Samuel</span>
+                                        </div>
+                                        <div class="task-comm-txt">
+                                            {{ cQuestion.question}}
+                                        </div>
+                                        <div class="reply-row">
+                                            <a href="#0" class="reply-anchor">
+                                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                                    width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
+                                                    preserveAspectRatio="xMidYMid meet" class="reply-arrow">
+
+                                                    <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                                                    fill="#eea47fff" stroke="none">
+                                                    <path d="M35 250 l-39 -40 39 -40 c35 -36 65 -51 65 -33 0 4 -12 20 -27 36
+                                                    l-28 29 97 -4 c86 -3 100 -7 123 -28 27 -26 34 -75 14 -112 -13 -25 -5 -35 15
+                                                    -18 25 20 30 74 11 114 -25 53 -58 66 -166 66 l-93 0 27 28 c15 15 27 31 27
+                                                    35 0 18 -30 3 -65 -33z"/>
+                                                    </g>
+                                                </svg>
+                                                <span class="reply-btn">Reply</span>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>

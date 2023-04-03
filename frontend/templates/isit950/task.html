@@ -1,8 +1,13 @@
 <div class="task-list">
     <div class="list-scroll-effect">
-        {{request.path}}
         {% for task in tasks %}
-        <a href="#" onclick="getTaskDetail('{{task.id}}'); return false;" class="task-card flex-row">
+        <!-- {% if request.path == '/tasks/{{task.id}}' %} 
+        active 
+        {% else %}
+        no
+        {% endif %} -->
+        <!-- {{ request.resolver_match.kwargs.taskId }} -->
+        <a href="#" data-id="{{ task.id }}" class="task-card flex-row task-left-card {% if 'task.id' in request.resolver_match.kwargs.taskId %} active {% endif %}">
             <div class="task-l-content">
                 <div class="task-header mb10">
                     <span>{{ task.task_title }}</span>
@@ -30,6 +35,19 @@
                 </div>
             </div>
             <div class="task-r-content">
+                <div class="task-bookmark">
+                    
+                    {% if "ferry" in task.my_bookmark %}
+                        <span class="bookmark" data-id="{{task.id}}">
+                            <i class="fa fa-heart bookmarked"></i>
+                        </span>
+                    {% else %}
+                        <span class="bookmark" data-id="{{task.id}}">
+                            <i class="fa-regular fa-heart unbookmark"></i>
+                        </span>
+                    {% endif %}
+                    
+                </div>
                 <div class="task-price">
                     <span>${{ task.price }}</span>
                 </div>

@@ -680,3 +680,24 @@ span.offer-count {
     margin-top: -4px;
     font-weight: 600;
 }
+
+.bookmarked {
+    color: #dc1e1e;
+}
+
+.unbookmark {
+    color: #8899a6;
+}
+
+
+
+.swal2-toast {
+    background: #94df94;
+} 
+.swal2-title {
+    color: #606060;
+} 
+.swal2-popup.swal2-toast .swal2-success {
+    border-color: #ffffff;
+    background: #fff;
+}

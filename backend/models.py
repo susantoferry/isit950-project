@@ -21,15 +21,32 @@ class Task(models.Model):
     location_link = models.CharField(max_length=100)
     completed_on = models.DateField()
     status = models.IntegerField(default=0)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="task_user")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_client", null=True)
+    user_provider = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_provider", null=True)
+    is_paid = models.BooleanField(default=False)
+    create_date = models.DateTimeField(null=True)
+    modify_date = models.DateTimeField(null=True)
+
+    @property
+    def my_bookmark(self):
+        return [u.user for u in self.task_bookmark.all()]
+
+    def __str__(self):
+        return f"User: {self.user_client}, Category: {self.category}, Task: {self.task_title}"
+
+class Question(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="question_task_id")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="question_user_id")
+    question = models.TextField()
+    parent_id = models.IntegerField(null=True)
     create_date = models.DateTimeField(null=True)
     modify_date = models.DateTimeField(null=True)
 
     def __str__(self):
-        return f"User: {self.user}, Category: {self.category}, Task: {self.task_title}"
+        return f"Id: {self.id}, Task: {self.task.id}, User: {self.user.id}, Parent Id: {self.parent_id}"
 
 class Watchlist(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_id")
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_bookmark")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):

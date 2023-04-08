@@ -12,6 +12,8 @@ urlpatterns = [
     path("task/<int:taskId>", views.taskDetail, name="task_detail"),
     path("show_my_watchlist/<str:user>", views.myWatchlist, name="show_my_watchlist"),
     path("watchlist", views.watchlist, name="watchlist"),
+    path("skill", views.skill, name="skill"),
+    path("skill/<str:skillId>", views.skillDetail, name="skill_detail"),
 ]
 
 if settings.DEBUG:

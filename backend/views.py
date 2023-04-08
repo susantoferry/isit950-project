@@ -142,7 +142,50 @@ def watchlist(request):
             return Response({
                 "success"
             }, status=200)
+
+@api_view(['GET', 'POST'])
+def skill(request):
+    if request.method == 'GET':
+        skill = Skill.objects.raw("SELECT * FROM backend_skill")
+        #skill = Skill.objects.all()
+        serializer = SkillSerializer(skill, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        
+        serializer = SkillSerializer(data=request.data)
+        #print(request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors)
+        
+        return Response(serializer.data)
     
+@api_view(['GET', 'PUT', 'DELETE'])
+def skillDetail(request, skillId):
+    skill = Skill.objects.raw("SELECT * FROM backend_skill WHERE id = %s", [id])
+    #skill = Skill.objects.get(id=id)
+    if request.method == 'GET':
+        serializer = SkillSerializer(skill, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'PUT':
+        data = JSONParser().parse(request)
+
+        serializer = SkillSerializer(skill, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors)
+        
+        return Response(serializer.data)
+    
+    elif request.method == 'DELETE':
+        skill.delete()
+        return Response(status=status.HTTP_2O4_NO_CONTENT)
+
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def taskDetail(request, taskId):
 #     try:

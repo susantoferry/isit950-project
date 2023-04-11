@@ -12,7 +12,14 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" >
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.3/dist/sweetalert2.min.css">
     </head>
-
+    <!-- https://www.airtasker.com/tasks/
+    ?task_states=posted%2Cassigned%2Ccompleted%2Coverdue%2Cclosed
+    &lat=-33.928578&lon=151.18717
+    &location_name=Mascot%20NSW%2C%20Australia
+    &radius=50000
+    &carl_ids=&task_types=both&max_price=9999&min_price=5
+    &search_term=web%20development&
+    badges=&sort_by=posted_desc -->
     <body>
         <!-- Navbar -->
         {% include "isit950/navbar.html" %}
@@ -85,40 +92,9 @@
                     })
                 })
             });
-
-            function bookmark1() {
-                
-                // const taskId = $("#btn-bookmark a").attr('data-taskid')
-                // var taskId = $(this).attr('data-taskid');
-                // console.log(taskId)
-                // const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    
-                // fetch(`/api/watchlist`, {
-                //     method: 'POST',
-                //     credentials: 'same-origin',
-                //     headers: {
-                //         "X-CSRFToken": token,
-                //         "Content-Type": 'application/json'
-                //     },
-                //     body: JSON.stringify({
-                //         user: 1,
-                //         task: taskId
-                //     })
-                // })
-                // .then(response => response.json())
-                // .then(result => {
-                //     if ($("#bookmarkIcon").hasClass("unbookmark")) {
-                //         $("#bookmarkIcon").removeClass("fa-regular unbookmark")
-                //         $("#bookmarkIcon").addClass("fa bookmark")
-                //         toastr.success('The task has been saved successfully to your watchlist.');
-                //     } else {
-                //         $("#bookmarkIcon").removeClass("bookmark")
-                //         $("#bookmarkIcon").addClass("fa-regular unbookmark")
-                //         toastr.info('The task has been saved successfully to your watchlist.');
-                //     }
-                // })
-            }
         </script>
+
+        
     </body>
 </html>
 

@@ -3,10 +3,11 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
+from django.db.models import Count
+
 import requests
 from .constant import *
 from backend.models import *
-from selenium import webdriver
 
 from backend.models import *
 
@@ -58,7 +59,10 @@ def tasks(request):
 
     
 
-def taskDetail(request, taskId):
+def taskDetail(request, slug):
+    
+    taskId = slug.rsplit('-', 1)[-1]
+    print(request.user.id)
 
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
@@ -68,6 +72,10 @@ def taskDetail(request, taskId):
 
     parentQuestion = Question.objects.filter(task_id=taskId, parent_id=None).order_by("-create_date")
     childQuestion = Question.objects.filter(task_id=taskId).exclude(parent_id=None)
+
+    # return JsonResponse({
+    #     "taskDetail": taskDetail
+    # })
 
     return render(request, "isit950/index.html", {
         "tasks": tasks,
@@ -123,6 +131,40 @@ def watchlist(request):
     return render(request, "isit950/watchlist.html", {
         "watchlist": watchlist
     })
+
+def myTask(request):
+    userId = str(request.user.id)
+    myTaskListResp = requests.get(restServer + "get_my_task/" + userId)
+    myTaskList = myTaskListResp.json()
+
+    for i in myTaskList:
+        print(type(i['modify_date']))
+    
+    return render(request, "isit950/my_task.html", {
+        "myTaskList": myTaskList
+    })
+
+def myTaskDetail(request, taskId):
+    myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
+    myTaskDetail = myTaskDetailResp.json()
+
+    offerResp = requests.get(restServer + "offer/" + str(taskId))
+    offers = offerResp.json()
+
+    questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
+
+    print(myTaskDetail)
+
+    return render(request, "isit950/my_task_detail.html", {
+        "myTaskDetail": myTaskDetail,
+        "offers": offers,
+        "questions": questionCount
+    })
+
+# def selectTasker(request, taskId, userId):
+#     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
+
+#     return redirect('my_task', taskId)
 
 # def login_view(request):
 #     if request.method == "POST":

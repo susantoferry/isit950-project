@@ -6,9 +6,13 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("tasks/", views.tasks, name="tasks"),
-    path("tasks/<taskId>", views.taskDetail, name="tasks"),
     path("create_task", views.createTask, name="create_task"),
+    path("tasks/", views.tasks, name="tasks"),
+    path("tasks/<slug:slug>", views.taskDetail, name="tasks"),
+    path("my_task", views.myTask, name="my_task"),
+    path("my_task/<int:taskId>", views.myTaskDetail, name="my_task"),
+    # path("select_sp/<taskId>/<userId>", views.selectTasker, name="select_sp"),
+    
     path("my_watchlist", views.watchlist, name="my_watchlist"),
     # path("login", views.loginView, name="login"),
     # path("logout", views.logoutView, name="logout"),

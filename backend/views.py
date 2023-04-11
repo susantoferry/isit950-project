@@ -52,24 +52,6 @@ def categoryDetail(request, id):
             return Response(serializer.errors)
         
         return Response(serializer.data)
-
-@api_view(['GET', 'POST'])
-@csrf_protect 
-def task(request):
-    if request.method == 'GET':
-        tasks = Task.objects.all().order_by("status","-modify_date")
-        serializer = TaskSerializer(tasks, many=True)
-        return Response(serializer.data)
-    
-    if request.method == 'POST':
-        print("a")
-        serializer = TaskSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-        else:
-            return Response(serializer.errors,status=400)
-        
-        return Response(serializer.data)
     
 @api_view(['GET', 'POST'])
 def question(request, taskId):
@@ -80,6 +62,73 @@ def question(request, taskId):
     
     if request.method == 'POST':
         serializer = QuestionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors,status=400)
+        
+        return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def offer(request):
+    if request.method == 'GET':
+        offers = Offer.objects.all().order_by("status","-modify_date")
+        serializer = OfferSerializer(offers, many=True)
+        return Response(serializer.data)
+    
+    if request.method == 'POST':
+        serializer = OfferSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors,status=400)
+        
+        return Response(serializer.data)
+    
+@api_view(['GET'])
+def offerDetail(request, taskId):
+    offers = Offer.objects.filter(task_id = taskId)
+    serializer = OfferSerializer(offers, many=True)
+    return Response(serializer.data)
+    
+@api_view(['GET', 'PUT', 'DELETE'])
+def offerDetail1(request, taskId):
+    try:
+        task = Task.objects.get(id=taskId)
+    except Task.DoesNotExist:
+        return Response(status=404)
+    
+    if request.method == 'GET':
+        serializer = TaskSerializer(task, many=False)
+        return Response(serializer.data)
+    
+    if request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = TaskSerializer(task, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=200)
+        else:
+            print(serializer.errors)
+            return Response(status=404)
+        
+@api_view(['GET'])
+@csrf_protect
+def getMyTask(request, userId):
+    myTasks = Task.objects.filter(user_id=userId).order_by("status","-create_date")
+    serializer = TaskSerializer(myTasks, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+@csrf_protect 
+def task(request):
+    if request.method == 'GET':
+        tasks = Task.objects.all().order_by("status","-modify_date")
+        serializer = TaskSerializer(tasks, many=True)
+        return Response(serializer.data)
+    
+    if request.method == 'POST':
+        serializer = TaskSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
         else:

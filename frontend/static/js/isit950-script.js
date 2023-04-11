@@ -30,13 +30,12 @@ function checkPostValue() {
 
 $('#postBtn').click(function () {
     var urlArr = document.URL.split('/');
-
-    var taskId = urlArr[urlArr.indexOf('tasks') + 1];
+    var taskId = window.location.href.split("-").pop()
 
     const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     fetch(`/api/question/${taskId}`, {
-        method: 'GE',
+        method: 'POST',
         credentials: 'same-origin',
         headers: {
             "X-CSRFToken": token,
@@ -60,11 +59,33 @@ $('#postBtn').click(function () {
     })
 })
 
-$('.task-left-card').click(function () {
-    var taskId = $(this).attr('data-id');
+// $('.task-left-card').click(function () {
+//     var taskId = $(this).attr('data-id');
 
-    location.href = "/tasks/" + taskId;
-})
+//     // location.href = "/tasks/" + taskId;
+//     $("#mydiv").load("#mydiv");
+//     console.log("a")
+// })
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     document.querySelectorAll('.task-left-card').forEach(a => {
+//         a.onclick = function(e) {
+//             e.preventDefault()
+//             // console.log(this.dataset.taskId);
+
+//             fetch(`/tasks/${this.dataset.taskId}`)
+//             .then(response => response.text())
+//             .then(res => {
+//                 const obj = JSON.parse(res)
+//                 console.log(obj.taskDetail.id)
+//                 // history.pushState(null, '', `/tasks/${this.dataset.taskId}`)
+                
+//             });
+            
+            
+//         }
+//     })
+// });
 
 // $( "#btn-bookmark" ).click(function() {
 //     alert( "Handler for .click() called." );

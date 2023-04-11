@@ -11,6 +11,17 @@ class Category(models.Model):
 
     def __str__(self):
         return f"Category Id: {self.id}, Name: {self.name}"
+    
+class Offer(models.Model):
+    task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="offer_task_id")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="offer_sp_id")
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    description = models.TextField()
+    create_date = models.DateTimeField(null=True)
+    modify_date = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return f"Id: {self.id}, Task ID: {self.task}, User Provider: {self.user}, price: {self.price}"
 
 class Task(models.Model):
     task_title = models.CharField(max_length=150)
@@ -30,9 +41,16 @@ class Task(models.Model):
     @property
     def my_bookmark(self):
         return [u.user for u in self.task_bookmark.all()]
+    
+    @property
+    def task_title_to_url(self):
+        task_title = self.task_title + " " + str(self.id)
+        return task_title.replace(' ', '-')
 
     def __str__(self):
-        return f"User: {self.user_client}, Category: {self.category}, Task: {self.task_title}"
+        return f"User: {self.user}, Category: {self.category}, Task: {self.task_title}"
+    
+
 
 class Question(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="question_task_id")

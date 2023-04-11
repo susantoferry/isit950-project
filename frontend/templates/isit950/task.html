@@ -6,8 +6,10 @@
         {% else %}
         no
         {% endif %} -->
-        <!-- {{ request.resolver_match.kwargs.taskId }} -->
-        <a href="#" data-id="{{ task.id }}" class="task-card flex-row task-left-card {% if 'task.id' in request.resolver_match.kwargs.taskId %} active {% endif %}">
+        {{ request.resolver_match.kwargs.taskId }}
+
+        <!-- {{ request.path }} -->
+        <a href="{% url 'tasks' task.task_title_to_url %}" data-task-id="{{ task.task_title_to_url}}" class="task-card flex-row task-left-card {% if task.id|stringformat:'i' in request.resolver_match.kwargs.taskId %} active {% endif %}">
             <div class="task-l-content">
                 <div class="task-header mb10">
                     <span>{{ task.task_title }}</span>
@@ -63,3 +65,13 @@
         
     </div>
 </div>
+
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.task-left-card').forEach(a => {
+            a.onclick = function() {
+                alert(this.dataset.id);
+            }
+        })
+    });
+</script> -->

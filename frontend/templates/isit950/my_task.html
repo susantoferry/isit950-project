@@ -1,0 +1,41 @@
+{% include 'isit950/layout.html' %}
+{% load parse_date %}
+
+{% block body %}
+
+<div class="container">
+    <h3>My Task</h3>
+    <div>
+        {% for myTask in myTaskList %}
+        <a href="{% url 'my_task' myTask.id %}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{myTask.task_title}}</h5>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+                        content. This content is a little bit longer.</p>
+                    <p>{{ myTask.category_name }}</p>
+                    <p>${{ myTask.price }}</p>
+                    <p class="card-text"><small class="text-muted">Created on {{ myTask.create_date|parse_date|date:'D, M d, Y' }}</small></p>
+                </div>
+            </div>
+        </a>
+        
+        {% empty %}
+        <div class="app-cvip-message-container">
+            <section class="page page-notice--information">
+                <div class="page__content">
+                    <div class="item-card-details__wrapper item-card-details__product">
+                        <div class="item-card-details__header">
+                            <div class="item-card-details__header-text">
+                                <span>No watchlist is found.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

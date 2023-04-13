@@ -80,6 +80,12 @@ class Question(models.Model):
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task.id}, User: {self.user.id}, Parent Id: {self.parent_id}"
 
+class Skill(models.Model):
+    skill_name = models.CharField(max_length=30)
+    
+    def __str__(self):
+        return f"Id: {self.id}, Skill: {self.skill_name}"
+
 class Watchlist(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_bookmark")
     user = models.ForeignKey(User, on_delete=models.CASCADE)

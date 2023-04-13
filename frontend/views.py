@@ -62,7 +62,6 @@ def tasks(request):
 def taskDetail(request, slug):
     
     taskId = slug.rsplit('-', 1)[-1]
-    print(request.user.id)
 
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
@@ -149,8 +148,6 @@ def myTaskDetail(request, taskId):
     offers = offerResp.json()
 
     questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
-
-    print(myTaskDetail)
 
     return render(request, "isit950/my_task_detail.html", {
         "myTaskDetail": myTaskDetail,

@@ -21,9 +21,14 @@ urlpatterns = [
     path("tasks/", views.tasks, name="tasks"),
     path("tasks/<slug:slug>", views.taskDetail, name="tasks"),
     
-    path("test123", views.testRead, name="test123")
+    path("test123", views.testRead, name="test123"),
+
+    path("test", views.testHTML, name="test_page"),
+    path("login", views.loginView, name="login"),
+    path("forgot_password", views.forgotPassword, name="forgot_password"),
+    path("sign_up", views.signUp, name="sign_up")
+
     
-    # path("login", views.loginView, name="login"),
     # path("logout", views.logoutView, name="logout"),
     # path("change_password", views.changePassword, name="change_password"),
     # path("forgot_password", views.forgotPassword, name="forgot_password"),

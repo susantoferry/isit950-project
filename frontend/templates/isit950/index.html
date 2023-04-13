@@ -1,0 +1,16 @@
+{% extends "isit950/layout.html" %}
+
+{% block body %}
+
+<div class="task-content">
+    <div class="task-content-overlay">
+        {% for i in watchlist %}
+            {{i.tasks}}
+        {% endfor %}
+        {% include "isit950/task.html" %}
+
+        {% include "isit950/task_detail.html" %}
+    </div>
+</div>
+
+{% endblock %}

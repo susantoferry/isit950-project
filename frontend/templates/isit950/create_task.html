@@ -1,0 +1,71 @@
+{% extends 'isit950/layout.html' %}
+
+{% block body %}
+<div class="main-card mb-3 card">
+    <div class="card-body">
+        <h5 class="card-title">Create new task </h5>
+        <form method="POST" class="fm-validation" action="{% url 'create_task' %}" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="position-relative row form-group">
+                <label for="category" class="col-md-2 col-form-label">Category</label>
+                <div class="col-md-3">
+                    <select name="category" id="category" class="form-control">
+                        <option value="">-- Select Category Type --</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.id }}"> {{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="position-relative row form-group">
+                <label for="task_title" class="col-md-2 col-form-label">Name of task</label>
+                <div class="col-md-3">
+                    <input name="task_title" id="task_title" placeholder="e.g. Clean my garden" type="text" class="form-control" autofocus required>
+                    <div class="invalid-feedback">
+                        Please provide title.
+                    </div>
+                </div>
+            </div>
+            <div class="position-relative row form-group">
+                <label for="task_description" class="col-md-2 col-form-label">Task Description</label>
+                <div class="col-md-6">
+                    <textarea class="form-control editor" id="task_description" name="task_description" placeholder="Describe your task"></textarea>
+                    <div class="invalid-feedback">
+                        Description cannot be empty.
+                    </div>
+                </div>
+            </div>
+            <div class="position-relative row form-group">
+                <label for="price" class="col-md-2 col-form-label">Price</label>
+                <div class="col-md-4">
+                    <input name="price" id="price" placeholder="Enter task price" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="position-relative row form-group">
+                <label for="location" class="col-md-2 col-form-label">Location</label>
+                <div class="col-md-4">
+                    <input name="location" id="location" placeholder="Enter your location" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="position-relative row form-group">
+                <label for="location_url" class="col-md-2 col-form-label">Location Link</label>
+                <div class="col-md-4">
+                    <input name="location_url" id="location_url" placeholder="Enter your location url" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="position-relative row form-group">
+                <label for="completed_on" class="col-md-2 col-form-label">Completed on</label>
+                <div class="col-md-4">
+                    <input name="completed_on" id="completed_on" placeholder="dd/mm/yyyy" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="position-relative row form-check">
+                <div class="col-md-10 mt-5 offset-md-2">
+                    <button class="btn btn-primary" type="submit"> Save </button>
+                    <a class="btn btn-outline-danger" href="javascript:void(0);" onclick="history.go(-1);">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

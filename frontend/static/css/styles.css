@@ -573,6 +573,7 @@ span.offer-count {
 }
 
 .comment-form {
+    display: flex;
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
@@ -597,7 +598,7 @@ span.offer-count {
 
 .comm-btn {
     float: right;
-    background-color: #1d9bf0;
+    background-color: #6e27a3e0;
     color: #fff;
     cursor: pointer;
     border: none;

@@ -109,21 +109,26 @@
                 <div class="task-detail-heading">
                     <span class="mt20" style="letter-spacing: 1px;">Questions ({{ parentQuestion.count }})</span>
                 </div>
-                <div class="flex-rev">
+                <!-- <div class="flex-rev"> -->
                     <div class="rev-usr-img-container">
+                        
+                    </div>
+                    <div class="comment-form">
+
                         <div class="rev-usr-img-wrap">
                             <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
                                 alt="Logo Moonlight Grosir Store"
                                 style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
                                 style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
                         </div>
-                    </div>
-                    <div class="comment-form">
-                        <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
+                        <div style="width: 100%; margin-left: 25px;">
+                            <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
                                 onkeyup="checkPostValue();" placeholder="Type something to ask the task"></textarea>
                         <button type="submit" id="postBtn" class="comm-btn" disabled> Submit </button>
+                        </div>
+                        
                     </div>
-                </div>
+                <!-- </div> -->
 
                 {% for pQuestion in parentQuestion %}
                 

@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'knox',
+<<<<<<< HEAD
     
+=======
+>>>>>>> origin/Alice
 ]
 
 REST_FRAMEWORK = {
@@ -147,7 +150,11 @@ TIME_ZONE = 'Australia/Sydney'
 
 USE_I18N = True
 
+<<<<<<< HEAD
 USE_TZ = False
+=======
+USE_TZ = True
+>>>>>>> origin/Alice
 
 CORS_ORIGIN_ALLOW_ALL = True
 

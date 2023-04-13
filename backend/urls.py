@@ -13,7 +13,10 @@ urlpatterns = [
     path("show_my_watchlist/<str:user>", views.myWatchlist, name="show_my_watchlist"),
     path("watchlist", views.watchlist, name="watchlist"),
     path("skill", views.skill, name="skill"),
-    path("skill/<str:skillId>", views.skillDetail, name="skill_detail"),
+    path("skill/<int:id>", views.skillDetail, name="skill_detail"),
+    path("membership", views.membership, name="membership"),
+    path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
+    path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
 ]
 
 if settings.DEBUG:

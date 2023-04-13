@@ -35,3 +35,16 @@ class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
         fields = '__all__'
+        
+class MembershipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Membership
+        fields = '__all__'
+
+class UserSkillSerializer(serializers.ModelSerializer):
+    users = serializers.CharField(read_only=True, source='user')
+    skills = SkillSerializer(read_only=True, source="skill")
+    
+    class Meta:
+        model = UserSkill
+        fields = '__all__'

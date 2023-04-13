@@ -12,6 +12,23 @@ class Category(models.Model):
     def __str__(self):
         return f"Category Id: {self.id}, Name: {self.name}"
 
+
+class Skill(models.Model): 
+    skill_name = models.CharField(max_length=30)
+    def __str__(self):
+        return f"Id: {self.id}, Skill: {self.skill_name}"
+
+
+class Membership(models.Model):
+    package_name=models.CharField(max_length=30)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    create_date = models.DateTimeField(null=True)
+    modify_date = models.DateTimeField(null=True)
+    
+    def __str__(self):
+        return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
+
 class Task(models.Model):
     task_title = models.CharField(max_length=150)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category")
@@ -45,15 +62,18 @@ class Question(models.Model):
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task.id}, User: {self.user.id}, Parent Id: {self.parent_id}"
 
-class Skill(models.Model):
-    skill_name = models.CharField(max_length=30)
-    
-    def __str__(self):
-        return f"Id: {self.id}, Skill: {self.skill_name}"
-
 class Watchlist(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_bookmark")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task}, User: {self.user}"
+
+        
+class UserSkill(models.Model):
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"Id: {self.id}, Skill: {self.skill}, User: {self.user}"
+

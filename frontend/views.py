@@ -6,7 +6,6 @@ from django.urls import reverse
 import requests
 from .constant import *
 from backend.models import *
-from selenium import webdriver
 
 from backend.models import *
 

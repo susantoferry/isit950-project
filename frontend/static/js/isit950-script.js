@@ -59,6 +59,47 @@ $('#postBtn').click(function () {
     })
 })
 
+
+function accept_offer() {
+    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    // const fname = document.querySelector('#first_name').value;
+
+    Swal.fire({
+        icon: 'success',
+        title: 'Thank you',
+        text: 'We have got your enquiry'
+    }).then((result) => {
+        location.reload();
+    })
+
+    // fetch('/api/accept-offer/', {
+    //     method: "POST",
+    //     credentials: 'same-origin',
+    //     headers: {
+    //         "X-CSRFToken": token,
+    //         "Content-Type": 'application/json'
+    //     },
+    //     body: JSON.stringify({fname, lname, email, phone, msg})
+    // })
+    // .then(response => response.json())
+    // .then(res => {
+    //     if (res.error) {
+    //         alert("Cannot save");
+    //     } else {
+    //         Swal.fire({
+    //             icon: 'success',
+    //             title: 'Thank you',
+    //             text: 'We have got your enquiry'
+    //         }).then((result) => {
+    //             location.reload();
+    //         })
+    //     }
+    // })
+    // .catch(err => {
+    //     alert(err)
+    // })
+}
+
 // $('.task-left-card').click(function () {
 //     var taskId = $(this).attr('data-id');
 

@@ -26,7 +26,7 @@ def tasks(request):
 
     commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     comments = commentResp.json()
-
+    
     parentQuestion = Question.objects.filter(task_id=firstTaskDetail, parent_id=None).order_by("-create_date")
     childQuestion = Question.objects.filter(task_id=firstTaskDetail).exclude(parent_id=None)
 
@@ -136,9 +136,6 @@ def myTask(request):
     userId = str(request.user.id)
     myTaskListResp = requests.get(restServer + "get_my_task/" + userId)
     myTaskList = myTaskListResp.json()
-
-    for i in myTaskList:
-        print(type(i['modify_date']))
     
     return render(request, "isit950/my_task.html", {
         "myTaskList": myTaskList

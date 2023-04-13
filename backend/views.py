@@ -119,6 +119,29 @@ def getMyTask(request, userId):
     serializer = TaskSerializer(myTasks, many=True)
     return Response(serializer.data)
 
+@api_view(['POST'])
+def acceptOffer(request, taskId, userSpId):
+    try:
+        task = Task.objects.get(pk=taskId)
+    except Task.DoesNotExist:
+        task = ""
+    
+    if task != "":
+        if request.method == 'POST':
+            data = JSONParser().parse(request)
+            serializer = TaskSerializer(task, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(status=200)
+            else:
+                print(serializer.errors)
+                return Response(status=404)
+
+    else:
+        return Response("Error")
+        
+        
+
 @api_view(['GET', 'POST'])
 @csrf_protect 
 def task(request):

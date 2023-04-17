@@ -49,7 +49,7 @@
                         <div>
                             <div class="btn-group">
                                 <a class="dropdown-acc">
-                                    <img width="60" class="rounded-circle bd-img" src="/static/images/Hansel.png" alt="">
+                                    <img width="60" class="rounded-circle bd-img" src="/static/images/profiles/Hansel.png" alt="">
                                 </a>
                                 <div class="dropdown-menu-acc acc-container acc-menu-pos">
                                     <div class="dropdown-menu-header">
@@ -59,7 +59,7 @@
                                                 <div class="widget-content p-0">
                                                     <div class="widget-content-wrapper">
                                                         <div class="widget-content-left mr-3">
-                                                            <img width="60" class="rounded-circle" src="/static/images/Hansel.png" alt="">
+                                                            <img width="60" class="rounded-circle" src="/static/images/profiles/Hansel.png" alt="">
                                                         </div>
                                                         <div class="widgetContentRight">
                                                             <div class="widgetUserFlex">
@@ -82,6 +82,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <a href="{% url 'profile' %}" class="dropdown-item">Profile</a>
                                     <a href="{% url 'create_task' %}" class="dropdown-item">Change Password</a>
                                     <a href="{% url 'create_task' %}" class="dropdown-item">Logout</a>
                                 </div>
@@ -105,48 +106,77 @@
         </div>
 
     </div>
+    {% if not 'account' in request.path %}
     <div class="second-navbar">
         <div class="overlay-navbar">
             <div class="navbar-container">
                 <div class="pos-rel">
-                    <input type="text" class="search-input" placeholder="Search for job">
+                    <input type="text" class="search-input{% if type == 'myTask' %} my-task{% endif %}" placeholder="Search for job">
                     <button class="btn-search-nav">
                         <img src="../../static/images/search-icon.png" alt="search-icon">
                     </button>
                 </div>
-                <div class="navbar-section">
-                    <button type="button" class="button btnprimary ml30 btn-nav-sort">
-                        <span>Category</span>
-                        <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
-                    </button>
-                    <button type="button" class="button btnprimary ml30 btn-nav-sort">
-                        <div class="btn-icon-overlay">
-                            <i class="fa-solid fa-sliders"></i>
-                            <span class="ml10">Location</span>
+                <div style="display: block; margin: 0 auto">
+                    <div class="navbar-section">
+                        {% if type != 'myTask' %}
+                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                            <span>Category</span>
                             <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
-                        </div>
-                        
-                    </button>
-                    <button type="button" class="button btnprimary ml30 btn-nav-sort">
-                        <div class="btn-icon-overlay">
-                            <i class="fa-solid fa-sliders"></i>
-                            <span class="ml10">Price</span>
-                            <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
-                        </div>
-                    </button>
-                    <button type="button" class="button btnprimary ml30 btn-nav-sort">
-                        <div class="btn-icon-overlay">
-                            <i class="fa-solid fa-sliders"></i>
-                            <span class="ml10">Sort</span>
-                            <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
-                        </div>
-                    </button>
+                        </button>
+                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                            <div class="btn-icon-overlay">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span class="ml10">Location</span>
+                                <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
+                            </div>
+                            
+                        </button>
+                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                            <div class="btn-icon-overlay">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span class="ml10">Price</span>
+                                <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
+                            </div>
+                        </button>
+                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                            <div class="btn-icon-overlay">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span class="ml10">Sort</span>
+                                <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
+                            </div>
+                        </button>
+                        {% else %}
+                        <button type="button" class="menu-bar-task active">
+                            <span>Posted tasks</span>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Requested tasks</span>
+                            </div>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Pending offers</span>
+                            </div>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Tasks assigned</span>
+                            </div>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Task completed</span>
+                            </div>
+                        </button>
+                        {% endif %}
+                    </div>
                 </div>
-
             </div>
 
         </div>
     </div>
+    {% endif %}
 </nav>
 
 {% endblock %}

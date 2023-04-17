@@ -4,17 +4,19 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
 from django.db.models import Count
+from backend.models import *
+from .constant import *
 
 import requests
-from .constant import *
-from backend.models import *
 
-from backend.models import *
 
 # Create your views here.
 
 def index(request):
     return redirect("tasks")
+
+def profile(request):
+    return render(request, "isit950/account/profile/profile.html")
 
 def tasks(request):
     taskResp = requests.get(restServer + "task")
@@ -22,7 +24,8 @@ def tasks(request):
     
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-    taskDetail = taskDetailResp.json()
+    # taskDetail = taskDetailResp.json()
+    print(taskDetailResp)
 
     commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     comments = commentResp.json()
@@ -39,30 +42,10 @@ def tasks(request):
         "childQuestion": childQuestion
     })
 
-    # select a.*
-# from backend_question a left join backend_question b
-# on a.parent_id = b.id
-# order by coalesce(nullif(a.parent_id, 0), b.id)
-#        , (a.parent_id = 0), a.modify_date DESC;
-
-# select *
-# from backend_question as parent
-#     left join backend_question as child
-#     on child.parent_id = parent.parent_id
-# order by coalesce(parent.id, child.id)
-#        , parent.id is not null
-#     ,parent.modify_date desc;
-
-# 7
-# 4 => 5,6 => 8
-# 1 => 2,3
-
-    
-
 def taskDetail(request, slug):
     
     taskId = slug.rsplit('-', 1)[-1]
-
+    print(taskId)
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
@@ -136,8 +119,14 @@ def myTask(request):
     myTaskListResp = requests.get(restServer + "get_my_task/" + userId)
     myTaskList = myTaskListResp.json()
     
+    firstTaskDetail = myTaskList[0]["id"]
+    taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
+    taskDetail = taskDetailResp.json()
+    
     return render(request, "isit950/my_task.html", {
-        "myTaskList": myTaskList
+        "myTaskList": myTaskList,
+        "taskDetail": taskDetail,
+        "type": "myTask"
     })
 
 def myTaskDetail(request, taskId):

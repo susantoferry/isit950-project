@@ -21,6 +21,8 @@ urlpatterns = [
     path("membership", views.membership, name="membership"),
     path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
     path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
+    # path("get_profile", views.getProfile, name="get_profile"),
+    # path("get_profile/<profileId>", views.getProfileDetail, name="get_profile_detail")
 ]
 
 if settings.DEBUG:

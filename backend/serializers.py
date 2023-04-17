@@ -11,6 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+# class ProfileSerializer(serializers.ModelSerializer):
+    
+#     class Meta:
+#         model = Profile
+#         fields = '__all__'
+
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
@@ -19,6 +25,10 @@ class QuestionSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(read_only=True, source='category.name')
     user_client_id = serializers.CharField(read_only=True, source='user.username')
+    img_profile = serializers.CharField(read_only=True)
+    rating = serializers.FloatField(read_only=True)
+    first_name = serializers.CharField(read_only=True)
+    last_name = serializers.CharField(read_only=True)
     my_bookmark = serializers.CharField(read_only=True)
     task_title_to_url = serializers.CharField(read_only=True)
     my_bookmark = serializers.CharField(read_only=True)  
@@ -32,6 +42,8 @@ class OfferSerializer(serializers.ModelSerializer):
     class Meta:
         model = Offer
         fields = '__all__'
+
+
 
 class WatchlistSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(read_only=True, source="task")

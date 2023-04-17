@@ -23,7 +23,6 @@ class Offer(models.Model):
     def __str__(self):
         return f"Id: {self.id}, Task ID: {self.task}, User Provider: {self.user}, price: {self.price}"
 
-
 class Skill(models.Model): 
     skill_name = models.CharField(max_length=30)
     def __str__(self):
@@ -39,6 +38,21 @@ class Membership(models.Model):
     
     def __str__(self):
         return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
+    
+# class Profile(models.Model):
+#     first_name = models.CharField(max_length=30)
+#     last_name = models.CharField(max_length=30)
+#     gender = models.IntegerField(default=0)
+#     address = models.TextField()
+#     rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+#     img_profile = models.CharField(max_length=100, blank=True, null=True)
+#     membership = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="membership_id", blank=True, null=True)
+#     user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_profile_id")
+#     create_date = models.DateTimeField(blank=True, null=True)
+#     modify_date = models.DateTimeField(blank=True, null=True)
+
+#     def __str__(self):
+#         return f"Id: {self.id}, User: {self.user_profile}, Name: {self.first_name}"
 
 class Task(models.Model):
     task_title = models.CharField(max_length=150)
@@ -49,7 +63,7 @@ class Task(models.Model):
     location_link = models.CharField(max_length=100)
     completed_on = models.DateField()
     status = models.IntegerField(default=0)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_client", null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_client", related_query_name="profile", null=True)
     user_provider = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_provider", null=True)
     is_paid = models.BooleanField(default=False)
     create_date = models.DateTimeField(null=True)
@@ -79,12 +93,6 @@ class Question(models.Model):
 
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task.id}, User: {self.user.id}, Parent Id: {self.parent_id}"
-
-class Skill(models.Model):
-    skill_name = models.CharField(max_length=30)
-    
-    def __str__(self):
-        return f"Id: {self.id}, Skill: {self.skill_name}"
 
 class Watchlist(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_bookmark")

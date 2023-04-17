@@ -8,6 +8,15 @@ from rest_framework.parsers import JSONParser
 from backend.models import *
 from .serializers import *
 
+from PIL import Image 
+
+import os
+import time
+import uuid
+
+from io import BytesIO
+import base64
+
 # Create your views here.
 
 @api_view(['GET', 'POST'])
@@ -16,6 +25,29 @@ def index(request):
     category = Category.objects.raw("SELECT * FROM backend_category")
     serializer = CategorySerializer(category, many=True)
     return Response(serializer.data)
+
+def make_thumbnail(image, size, fldr):
+    """Makes thumbnails of given size from given image"""
+    if image != "":
+        im = Image.open(image)
+        im = im.convert('RGB')
+        timestr = time.strftime("%y%m%d%H%M%S")
+        # if fldr != "home":
+        #     im.thumbnail(size) # resize image
+        # ext = image.name.split('.')[-1]
+        file_name = '{}.{}'.format(uuid.uuid4().hex[:15] + timestr, "png")
+
+        # file path relative to 'media' folder
+        absolute_file_path = os.path.join('frontend/static/images/', fldr, file_name)
+        file_loc = 'images/' + fldr + '/' + file_name
+
+        directory = os.path.dirname(absolute_file_path)
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        im.save(absolute_file_path, quality=75)
+    # return os.path.join('images/profiles', file_name)
+    return file_loc
 
 @api_view(['GET', 'POST'])
 def category(request):
@@ -27,7 +59,6 @@ def category(request):
     if request.method == 'POST':
         
         serializer = CategorySerializer(data=request.data)
-        print(request.data)
         if serializer.is_valid():
             serializer.save()
         else:
@@ -52,6 +83,61 @@ def categoryDetail(request, id):
             return Response(serializer.errors)
         
         return Response(serializer.data)
+    
+@api_view(['GET', 'POST'])
+def getProfile(request):
+    if request.method == 'GET':
+        profile = Profile.objects.all()
+        serializer = ProfileSerializer(profile, many=True)
+        return Response(serializer.data)
+    
+    if request.method == 'POST':
+        # request.data["img_profile"] = make_thumbnail(request.FILES["img_profile"], (250, 250), 'profiles')
+        
+        img = make_thumbnail(request.FILES["img_profile"], "", 'profiles')
+        profile = {
+            "first_name": request.data["first_name"],
+            "last_name": request.data["last_name"],
+            "gender": request.data["gender"],
+            "address": request.data["address"],
+            "rating": request.data["rating"],
+            "img_profile": img,
+            "user_profile": request.data["user_profile"]
+        }
+        # "img_profile": "images/profiles/729b8c4b6e294e4230414225233.png",
+        # "img_profile": "/images/images/profiles/Hannah_eSLnVRy.png",
+        # return Response(request.data)
+        serializer = ProfileSerializer(data=profile)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors)
+        
+        return Response(serializer.data)
+    
+@api_view(['GET', 'PUT'])
+def getProfileDetail(request, profileId):
+    try:
+        profile = Profile.objects.get(pk=profileId)
+    except Profile.DoesNotExist:
+        profile = ""
+
+    if profile != "":
+        if request.method == 'GET':
+            serializer = ProfileSerializer(profile, many=False)
+            return Response(serializer.data)
+        
+        if request.method == 'PUT':
+            data = JSONParser().parse(request)
+            serializer = ProfileSerializer(profile, data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(status=200)
+            else:
+                print(serializer.errors)
+                return Response(status=404)
+    else:
+        return Response("Error.")
     
 @api_view(['GET', 'POST'])
 def question(request, taskId):
@@ -147,6 +233,7 @@ def acceptOffer(request, taskId, userSpId):
 def task(request):
     if request.method == 'GET':
         tasks = Task.objects.all().order_by("status","-modify_date")
+        # tasks = Task.objects.raw('select t.*, p.first_name, p.last_name, p.rating, p.img_profile from backend_task t join backend_profile p on t.user_id = p.user_profile_id ORDER BY t.status, t.modify_date DESC')
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
     
@@ -161,6 +248,7 @@ def task(request):
     
 @api_view(['GET', 'PUT', 'DELETE'])
 def taskDetail(request, taskId):
+    print(taskId)
     try:
         task = Task.objects.get(id=taskId)
     except Task.DoesNotExist:
@@ -179,6 +267,55 @@ def taskDetail(request, taskId):
         else:
             print(serializer.errors)
             return Response(status=404)
+    
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def taskDetail(request, taskId):
+#     print(taskId)
+#     try:
+#         # task = Task.objects.get(id=taskId)
+#         # test = Task.objects.get(id=taskId)
+#         # test1 = Profile.objects.get(user_profile=test.user.id)
+        
+#         # sql = ("SELECT t.*, p.first_name, p.last_name, p.rating, p.img_profile FROM backend_task t"
+#         #       'JOIN backend_profile p ON t.user_id = p.user_profile_id WHERE t.id = %s'
+#         #       'ORDER BY t.status, t.modify_date DESC', [taskId]')
+#         sql = "SELECT t.*, p.first_name, p.last_name, p.rating, p.img_profile FROM backend_task t JOIN backend_profile p ON t.user_id = p.user_profile_id WHERE t.id = 22 ORDER BY t.status, t.modify_date DESC"
+#         print(sql)
+#         task = Task.objects.raw(sql)[0]
+#         # result = {}
+#         # keys = ('first_name','last_name','rating')
+#         # for row in task:
+        
+        
+#         # result['id'] = 22
+#         # result['task_title'] = 'title'
+#         # result['description'] = 'description'
+#         # result['location'] = 'location'
+#         # result['location_link'] = 'location link'
+#         # result['completed_on'] = '2023-04-20'
+#         # result['category'] = 'category'
+#             # "task_title": "title",
+#             # "first_name": "first_name",
+#             # "last_name": "last_name",
+#             # "rating": "rating"
+        
+#         # print(result)
+#     except Task.DoesNotExist:
+#         return Response(status=404)
+    
+#     if request.method == 'GET':
+#         serializer = TaskSerializer(task, many=False)
+#         return Response(serializer.data)
+    
+#     if request.method == 'PUT':
+#         data = JSONParser().parse(request)
+#         serializer = TaskSerializer(task, data=data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(status=200)
+#         else:
+#             print(serializer.errors)
+#             return Response(status=404)
 
 @api_view(['GET'])
 def myWatchlist(request, user):

@@ -10,6 +10,15 @@ const Toast = Swal.mixin({
     }
 })
 
+let arrow = document.querySelectorAll(".arrow");
+console.log(arrow)
+for (var i = 0; i < arrow.length; i++) {
+    arrow[i].addEventListener("click", (e) => {
+        let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+        arrowParent.classList.toggle("showMenu");
+    });
+}
+
 document.getElementById("comment-text").addEventListener("focus", function () {
     $(".comment-form").addClass("comment-onfocus");
 });
@@ -47,16 +56,16 @@ $('#postBtn').click(function () {
             question: document.querySelector('#comment-text').value
         })
     })
-    .then(response => response.json())
-    .then(result => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Your comment has been posted',
-        }).then((result) => {
-            location.reload();
+        .then(response => response.json())
+        .then(result => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Your comment has been posted',
+            }).then((result) => {
+                location.reload();
+            })
         })
-    })
 })
 
 
@@ -120,10 +129,10 @@ function accept_offer() {
 //                 const obj = JSON.parse(res)
 //                 console.log(obj.taskDetail.id)
 //                 // history.pushState(null, '', `/tasks/${this.dataset.taskId}`)
-                
+
 //             });
-            
-            
+
+
 //         }
 //     })
 // });
@@ -167,3 +176,4 @@ function bookmark(getButton, taskId) {
 //         })
 
 // }
+

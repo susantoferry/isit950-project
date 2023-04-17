@@ -17,6 +17,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/utilise.css' %}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.13.3/dist/sweetalert2.min.css">
+        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     </head>
     <!-- https://www.airtasker.com/tasks/
     ?task_states=posted%2Cassigned%2Ccompleted%2Coverdue%2Cclosed
@@ -69,34 +70,36 @@
 
         <script>
             $(document).ready(function() {
-                $('.bookmark').click(function(){
-                    var taskId = $(this).attr('data-id');
-                    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                $('.bookmark').click(function(e){
+                    e.stopPropagation();
+                    console.log(e)
+                    // var taskId = $(this).attr('data-id');
+                    // const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
  
-                    fetch(`/api/watchlist`, {
-                        method: 'POST',
-                        credentials: 'same-origin',
-                        headers: {
-                            "X-CSRFToken": token,
-                            "Content-Type": 'application/json'
-                        },
-                        body: JSON.stringify({
-                            user: 1,
-                            task: taskId
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(result => {
-                        if($(this).find('i').hasClass('unbookmark')) {
-                            $(this).find('i').removeClass("fa-regular unbookmark")
-                            $(this).find('i').addClass("fa bookmarked")
-                            toastr.success('Bookmarked the task');
-                        } else {
-                            $(this).find('i').removeClass("bookmarked")
-                            $(this).find('i').addClass("fa-regular unbookmark")
-                            toastr.info('The task has been removed from your bookmark.');
-                        }
-                    })
+                    // fetch(`/api/watchlist`, {
+                    //     method: 'POST',
+                    //     credentials: 'same-origin',
+                    //     headers: {
+                    //         "X-CSRFToken": token,
+                    //         "Content-Type": 'application/json'
+                    //     },
+                    //     body: JSON.stringify({
+                    //         user: 1,
+                    //         task: taskId
+                    //     })
+                    // })
+                    // .then(response => response.json())
+                    // .then(result => {
+                    //     if($(this).find('i').hasClass('unbookmark')) {
+                    //         $(this).find('i').removeClass("fa-regular unbookmark")
+                    //         $(this).find('i').addClass("fa bookmarked")
+                    //         toastr.success('Bookmarked the task');
+                    //     } else {
+                    //         $(this).find('i').removeClass("bookmarked")
+                    //         $(this).find('i').addClass("fa-regular unbookmark")
+                    //         toastr.info('The task has been removed from your bookmark.');
+                    //     }
+                    // })
                 })
             });
         </script>

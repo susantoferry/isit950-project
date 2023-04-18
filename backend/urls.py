@@ -7,10 +7,22 @@ from . import views
 urlpatterns = [
     path("category", views.category, name="category"),
     path("category/<int:id>", views.categoryDetail, name="category_detail"),
+    path("offer", views.offer, name="offer"),
+    path("offer/<int:taskId>", views.offerDetail, name="offer_detail"),
+    path("question/<int:taskId>", views.question, name="question"),
+    path("my-task/accept-offer/<taskId>/<userSpId>", views.acceptOffer, name="accept_offer"),
     path("task", views.task, name="task"),
     path("task/<int:taskId>", views.taskDetail, name="task_detail"),
-    # path("my_watchlist", views.myWatchlist, name="my_watchlist"),
-    path("watchlist/<str:user>", views.watchlist, name="watchlist"),
+    path("get_my_task/<int:userId>", views.getMyTask, name="get_my_task"),
+    path("show_my_watchlist/<str:user>", views.myWatchlist, name="show_my_watchlist"),
+    path("watchlist", views.watchlist, name="watchlist"),
+    path("skill", views.skill, name="skill"),
+    path("skill/<int:id>", views.skillDetail, name="skill_detail"),
+    path("membership", views.membership, name="membership"),
+    path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
+    path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
+    # path("get_profile", views.getProfile, name="get_profile"),
+    # path("get_profile/<profileId>", views.getProfileDetail, name="get_profile_detail")
 ]
 
 if settings.DEBUG:

@@ -38,3 +38,12 @@ class WatchlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Watchlist
         fields = '__all__'
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    user = serializers.CharField(read_only=True, source='user.id')
+    task = TaskSerializer(read_only=True, source="task.id")
+    
+    class Meta:
+        model = Notification
+        fields = '__all__'

@@ -214,6 +214,46 @@ def watchlist(request):
             return Response({
                 "success"
             }, status=200)
+
+
+
+@api_view(['GET', 'POST'])
+def notification(request, userId):
+    if request.method == 'GET':
+        notification = Notification.objects.filter(user=userId).order_by("-create_date")
+        serializer = NotificationSerializer(notification, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        serializer = NotificationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors,status=400)
+        
+        return Response(serializer.data)
+
+    
+@api_view(['PUT'])
+@csrf_exempt
+def  notificationID(request, userId, notificationID):
+    try:
+        task = Notification.objects.get(user=userId,pk=notificationID)
+    except Notification.DoesNotExist:
+        task = ""
+
+    if request.method == 'PUT':
+        data = JSONParser().parse(request)
+        print(data)
+        serializer = NotificationSerializer(task, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=200)
+        else:
+            print(serializer.errors)
+            return Response(status=404)
+    
+
     
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def taskDetail(request, taskId):

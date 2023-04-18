@@ -16,6 +16,8 @@ urlpatterns = [
     path("get_my_task/<int:userId>", views.getMyTask, name="get_my_task"),
     path("show_my_watchlist/<str:user>", views.myWatchlist, name="show_my_watchlist"),
     path("watchlist", views.watchlist, name="watchlist"),
+    path("getnotification/<int:userId>", views.notification, name="getnotification"),
+    path("getnotificationID/<int:userId>/<notificationID>", views.notificationID, name="getnotificationID"),
 ]
 
 if settings.DEBUG:

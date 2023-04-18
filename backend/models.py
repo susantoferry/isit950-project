@@ -69,3 +69,14 @@ class Watchlist(models.Model):
 
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task}, User: {self.user}"
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notif_user_id")
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="notif_task_id")
+    is_read = models.BooleanField(default=False)
+    notif_type = models.IntegerField(default=0)
+    create_date = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return f"Id: {self.id}, User: {self.user}, Task: {self.task.id}"

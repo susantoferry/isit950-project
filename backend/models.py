@@ -54,6 +54,10 @@ class Membership(models.Model):
 #     def __str__(self):
 #         return f"Id: {self.id}, User: {self.user_profile}, Name: {self.first_name}"
 
+
+# notif id, user id, task id, is_read, notif_type
+# 1, 2, 2,0,1
+
 class Task(models.Model):
     task_title = models.CharField(max_length=150)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category")
@@ -79,7 +83,7 @@ class Task(models.Model):
         return task_title.replace(' ', '-')
 
     def __str__(self):
-        return f"User: {self.user}, Category: {self.category}, Task: {self.task_title}"
+        return f"User: {self.user}, Category: {self.category}, Task: {self.task_title}, Paid: {self.is_paid}, User: {self.user}"
     
 
 
@@ -92,7 +96,7 @@ class Question(models.Model):
     modify_date = models.DateTimeField(null=True)
 
     def __str__(self):
-        return f"Id: {self.id}, Task: {self.task.id}, User: {self.user.id}, Parent Id: {self.parent_id}"
+        return f"Id: {self.id}, Task: {self.task}, User: {self.user.id}, Parent Id: {self.parent_id}"
 
 class Watchlist(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_bookmark")

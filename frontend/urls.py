@@ -11,6 +11,7 @@ urlpatterns = [
     path("my_task/<int:taskId>", views.myTaskDetail, name="my_task"),
     path("my_watchlist", views.watchlist, name="my_watchlist"),
     path("account/profile", views.profile, name="profile"),
+    path("account/wishlist", views.wishlist, name="my_wishlist"),
     path("select_sp/<taskId>", views.myTaskDetail, name="select_sp"),
     path("tasks/", views.tasks, name="tasks"),
     path("tasks/<slug:slug>", views.taskDetail, name="tasks"),

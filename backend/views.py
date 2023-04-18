@@ -171,6 +171,7 @@ def offer(request):
         
         return Response(serializer.data)
     
+
 @api_view(['GET'])
 def offerDetail(request, taskId):
     offers = Offer.objects.filter(task_id = taskId)

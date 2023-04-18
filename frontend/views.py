@@ -16,7 +16,7 @@ def index(request):
     return redirect("tasks")
 
 def profile(request):
-    return render(request, "isit950/account/profile/profile.html")
+    return render(request, "isit950/account/profile.html")
 
 def tasks(request):
     taskResp = requests.get(restServer + "task")
@@ -112,6 +112,14 @@ def watchlist(request):
 
     return render(request, "isit950/watchlist.html", {
         "watchlist": watchlist
+    })
+
+def wishlist(request):
+    wishistResp = requests.get(restServer + "show_my_watchlist/ferry")
+    wishlist = wishistResp.json()
+
+    return render(request, "isit950/account/wishlist.html", {
+        "wishlist": wishlist
     })
 
 def myTask(request):

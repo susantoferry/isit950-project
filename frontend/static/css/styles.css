@@ -972,6 +972,11 @@ span.offer-count {
     text-decoration: none;
 }
 
+.nav-links li a:hover {
+    background: #f3c6f3;
+    color: #16181b;
+}
+
 .nav-links li a .link_name {
     font-weight: 400;
     transition: all 0.4s ease;
@@ -1024,4 +1029,8 @@ span.offer-count {
     speak: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.wishlist-overlay:hover {
+    background: #efe3fa;
 }

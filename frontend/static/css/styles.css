@@ -138,12 +138,21 @@ ul {
 
 /* Form */
 input {
-    background: #fff;
+    /* background: #fff; */
+    background: transparent;
     border: none;
 }
 
 input:focus, textarea:focus {
     outline: none;
+}
+
+.dg-border {
+    border: 1px solid #bfcce1;
+}
+
+.pp-border {
+    border: 1px solid #793079;
 }
 
 .btn-search-nav {
@@ -176,7 +185,6 @@ input:focus, textarea:focus {
 .search-input.my-task {
     width: 220px !important;
 }
-
 
 .notif-layout {
     border-radius: 9px;
@@ -273,6 +281,10 @@ input:focus, textarea:focus {
 .task-flex {
     display: flex;
     flex-direction: column;
+}
+
+.flex {
+    display: flex;
 }
 
 .task-flex-align {
@@ -592,17 +604,14 @@ span.offer-count {
     object-fit: cover;
 }
 
-.comment-form {
-    display: flex;
+.comment-form, .offer-form {
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
     transition: border 0.3s linear 0s;
-    border: 1px solid #bfcce1;
-    padding: 15px;
 }
 
-.comment-text {
+.comment-text, .offer-text {
     width: 100%;
     resize: none;
     border: none;
@@ -633,6 +642,12 @@ span.offer-count {
 .comm-btn:disabled {
     cursor: text;
     opacity: 0.5;
+}
+
+.offer-txt {
+    padding: 16px 16px 16px 56px;
+    width: 140px;
+    line-height: 40px;
 }
 
 .rev-name-header {
@@ -1034,3 +1049,76 @@ span.offer-count {
 .wishlist-overlay:hover {
     background: #efe3fa;
 }
+
+.notif-block {
+    display: block;
+}
+
+.notif-block:hover {
+    border-radius: 8px;
+    background: #fac7fa;
+}
+
+.modal-content {
+    border: none;
+    position: relative;
+    padding: 0 !important;
+    -webkit-box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 24%);
+    -moz-box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
+    box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 24%);
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    outline: 0;
+}
+
+.modal-content .modal-header {
+    position: relative;
+    padding: 0;
+    border: none;
+}
+
+.modal-content button.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    z-index: 1;
+}
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.close {
+    float: right;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+.close:hover {
+    color: #000;
+    text-decoration: none;
+}
+

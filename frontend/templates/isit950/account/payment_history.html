@@ -1,0 +1,81 @@
+{% extends 'isit950/account_layout.html' %}
+{% load parse_date %}
+{% block body %}
+<div style="width: 100%; overflow: hidden; position: relative; top: -100px;">
+    <div style="border: 1px solid #e3e3e3; border-radius: 10px;">
+        <div
+            style="padding: 10px 20px; border-bottom: 1px solid #e3e3e3; font-size: 1.2rem; font-weight: 700">
+            <span style="margin-right: 10px;">Payment History</span>
+        </div>
+        <div style="display: flex; padding: 20px 30px; height: auto; justify-content: space-between; flex-direction: column;">
+            <div style="display: flex;gap: 40px;flex-wrap: wrap;position: relative;">
+                <div>
+                    <a href="#" class="button btnprimary-outline btnnavtop">Earned</a>
+                </div>
+                <div>
+                    <a href="#" class="button btnprimary btnnavtop">Outgoing</a>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <span style="font-size: 1.24rem; color: #9f419f; font-weight: 300;">Search by transaction date</span>
+
+                <div style="margin-top: 10px;">
+                    <div style="display: flex;gap: 40px;flex-wrap: wrap;position: relative;">
+                        <div>
+                            <a href="#" class="button btnprimary-outline btnnavtop">Earned</a>
+                        </div>
+                        <div>
+                            <a href="#" class="button btnprimary btnnavtop">Outgoing</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <div style="background: #ca82ff5e; padding: 10px 20px; border-radius: 10px; margin: 10px 0;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="max-width: 330px;width: 330px;">
+                            <span>Take away my Oven please!</span>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <div style="display:inherit; align-items: center;">
+                                <div>
+                                    <span>assigned to</span>
+                                    <span style="font-weight:700">ABC</span>
+                                </div>
+                                <div style="margin-left: 15px;">
+                                    <img width="45" src="/static/images/profiles/Hansel.png" alt="">
+                                </div>
+                            </div>
+                            <div>
+                                <a href="#" style="color: #800080"> View Receipt</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: #ca82ff5e; padding: 10px 20px; border-radius: 10px; margin: 10px 0;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div>
+                            <span>Need someone to clean my garden</span>
+                        </div>
+                        <div style="display: inherit; align-items: center;">
+                            <div>
+                                <span>assigned to</span>
+                                <span style="font-weight:700">Mark</span>
+                            </div>
+                            <div style="margin-left: 15px;">
+                                <img width="45" src="/static/images/profiles/Hansel.png" alt="">
+                            </div>
+                        </div>
+                        <div>
+                            <a href="#" style="color: #800080"> View Receipt</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+{% endblock %}

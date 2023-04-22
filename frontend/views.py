@@ -104,6 +104,9 @@ def createTask(request):
         messages.success(request, "New task has been added successfully")
         return HttpResponseRedirect(reverse("tasks"))
     
+def membershipPlan(request):
+    return render(request, "isit950/account/membership_plan.html")
+
 def notification(request):
     return render(request, "isit950/account/notification.html")
 

@@ -1,0 +1,45 @@
+{% extends 'isit950/account_layout.html' %}
+{% load parse_date %}
+{% block body %}
+<div style="width: 100%; overflow: hidden; position: relative; top: -100px;">
+    <div style="border: 1px solid #e3e3e3; border-radius: 10px;">
+        <div
+            style="padding: 10px 20px; border-bottom: 1px solid #e3e3e3; font-size: 1.2rem; font-weight: 700">
+            <span style="margin-right: 10px;">Payment Methods</span>
+        </div>
+        <div style="display: flex; padding: 20px 30px; height: auto; justify-content: space-between;">
+            <div>
+                <span>You will be required to pay for a task to complete the task posting process.
+                    Payment will be held after the task done by professionals.
+                </span>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div style="display: flex; padding: 25px;">
+            <div>
+                <svg width="59" height="46" viewBox="0 0 59 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="58.6074" height="46" rx="4" fill="black"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.7224 32.8843C27.7271 34.8552 25.1389 36.0449 22.3107 36.0449C16 36.0449 10.8843 30.1213 10.8843 22.8142C10.8843 15.5071 16 9.5835 22.3107 9.5835C25.1389 9.5835 27.7271 10.7733 29.7224 12.7441C31.7177 10.7733 34.3059 9.5835 37.1341 9.5835C43.4447 9.5835 48.5605 15.5071 48.5605 22.8142C48.5605 30.1213 43.4447 36.0449 37.1341 36.0449C34.3059 36.0449 31.7177 34.8552 29.7224 32.8843Z" fill="#ED0006"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.7224 32.8843C32.1792 30.4575 33.7371 26.8465 33.7371 22.8142C33.7371 18.7819 32.1792 15.1709 29.7224 12.7441C31.7177 10.7733 34.3059 9.5835 37.1341 9.5835C43.4447 9.5835 48.5605 15.5071 48.5605 22.8142C48.5605 30.1213 43.4447 36.0449 37.1341 36.0449C34.3059 36.0449 31.7177 34.8552 29.7224 32.8843Z" fill="#F9A000"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.7224 12.7441C32.1792 15.1709 33.737 18.7819 33.737 22.8142C33.737 26.8465 32.1792 30.4574 29.7224 32.8842C27.2656 30.4574 25.7078 26.8465 25.7078 22.8142C25.7078 18.7819 27.2656 15.1709 29.7224 12.7441Z" fill="#FF5E00"/>
+                </svg>    
+            </div>
+            <div style="display: inherit; flex-direction: column; margin-left: 20px;">
+                <span>MasterCard</span>
+                <spa style="font-size: 12px;">Expires 05/24</span>
+            </div>
+            <div style="display: inherit; flex-direction: column; margin-left: 20px;">
+                <span>**** 9716</span>
+                <a href="" style="font-size: 12px;
+                text-align: center;
+                color: purple;
+                cursor: pointer;">Update</a>
+            </div>
+                
+        </div>
+    </div>
+</div>
+        
+
+{% endblock %}

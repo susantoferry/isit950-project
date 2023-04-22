@@ -1,0 +1,51 @@
+{% include 'isit950/layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <h3>Task Detail</h3>
+    <div id="mydiv">
+        
+        <div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ myTaskDetail.task_title }}</h5>
+                    <p class="card-text">{{ myTaskDetail.description | safe | linebreaks  }}</p>
+                    <p class="card-text">{{ myTaskDetail.price }}</p>
+                    <p>${{ myTaskDetail.location }}</p>
+                    <p>{{ myTaskDetail.completed_on }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            {% if myTaskDetail.status == 0 %}
+                <div style="display: flex;">
+                    <h7>Offer ({{ offers | length }})</h7>
+                    <h7>Questions ({{questions}})</h7>
+                </div>
+                <div>
+                    {% for offer in offers %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{offer.user_provider}}</h5>
+                            <span>{{offer.price}}</span>
+                            <span>{{offer.description}}</span>
+                            <span>{{offer.create_date | date:'m-d-Y H:i A'}}</span>
+                            <img class="tasker-profile pos-abs" src="https://eu7cmie.cloudimg.io/v7/https://assets-airtasker-com.s3.amazonaws.com/uploads/user/avatar/3411484/image-ab53f784dc250dc55658f54b97629dad.jpg?width=80&amp;height=80">
+                            <p class="card-text">tes</p>
+                            <a href="{% url 'select_sp' offer.task %}" class="btn btn-primary">Accept</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div>
+                    <span>Tasker is chosen:</span>
+
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

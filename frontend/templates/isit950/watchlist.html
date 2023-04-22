@@ -1,0 +1,48 @@
+{% extends 'isit950/layout.html' %}
+
+{% block body %}
+
+<div class="container">
+    <h5>test</h5>
+    
+    <h3>My Watchlist</h3>
+    <div>
+        {% for my_wl in watchlist %}
+            <span>{{my_wl.tasks.task_title}}</span>
+
+            <div>
+                <span>User</span>
+                <span>{{ my_wl.tasks.user_client_id.username }}</span>
+            </div>
+
+            <div>
+                <div>posted by</div>
+                <div>{{ my_wl.tasks.user_client_id.username }}</div>
+            </div>
+
+            <div>
+                <div>Posted on</div>
+                <div>
+                    {{ my_wl.tasks.modify_date }}
+                </div>
+            </div>
+            <hr>
+        {% empty %}
+            <div class="app-cvip-message-container">
+                <section class="page page-notice--information">
+                    <div class="page__content">
+                        <div class="item-card-details__wrapper item-card-details__product">
+                            <div class="item-card-details__header">
+                                <div class="item-card-details__header-text">
+                                    <span>No watchlist is found.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

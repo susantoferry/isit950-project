@@ -144,6 +144,22 @@ def myTaskDetail(request, taskId):
         "questions": questionCount
     })
 
+def testHTML(request):
+    return render(request, "isit950/test.html")
+
+def loginView(request):
+    return render(request, "isit950/auth/login.html")
+
+def forgotPassword(request):
+    return render(request, "isit950/auth/forget_password.html")
+
+def signUp(request):
+    return render(request, "isit950/auth/sign-up.html")
+
+
+
+    
+
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

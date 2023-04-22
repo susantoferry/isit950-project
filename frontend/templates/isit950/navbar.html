@@ -37,7 +37,7 @@
                         </div>
                         <div class="pos-rel">
                             <div class="icon">
-                                <a href="{% url 'my_watchlist' %}"><i class="fa-regular fa-heart fa-lg"></i></a>
+                                <a href="{% url 'my_wishlist' %}"><i class="fa-regular fa-heart fa-lg"></i></a>
                                 
                             </div>
                         </div>
@@ -151,11 +151,6 @@
                         </button>
                         <button type="button" class="menu-bar-task">
                             <div class="btn-icon-overlay">
-                                <span class="ml10">Requested tasks</span>
-                            </div>
-                        </button>
-                        <button type="button" class="menu-bar-task">
-                            <div class="btn-icon-overlay">
                                 <span class="ml10">Pending offers</span>
                             </div>
                         </button>
@@ -167,6 +162,11 @@
                         <button type="button" class="menu-bar-task">
                             <div class="btn-icon-overlay">
                                 <span class="ml10">Task completed</span>
+                            </div>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Watchlist</span>
                             </div>
                         </button>
                         {% endif %}

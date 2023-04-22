@@ -37,7 +37,7 @@ function checkPostValue() {
     }
 }
 
-$('#postBtn').click(function () {
+$('#postBtn123').click(function () {
     var urlArr = document.URL.split('/');
     var taskId = window.location.href.split("-").pop()
 

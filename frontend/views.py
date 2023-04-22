@@ -8,6 +8,7 @@ from backend.models import *
 from .constant import *
 
 import requests
+import re
 
 
 # Create your views here.
@@ -16,7 +17,7 @@ def index(request):
     return redirect("tasks")
 
 def profile(request):
-    return render(request, "isit950/account/profile/profile.html")
+    return render(request, "isit950/account/profile.html")
 
 def tasks(request):
     taskResp = requests.get(restServer + "task")
@@ -25,7 +26,6 @@ def tasks(request):
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
     # taskDetail = taskDetailResp.json()
-    print(taskDetailResp)
 
     commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     comments = commentResp.json()
@@ -45,7 +45,7 @@ def tasks(request):
 def taskDetail(request, slug):
     
     taskId = slug.rsplit('-', 1)[-1]
-    print(taskId)
+    
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
@@ -104,7 +104,33 @@ def createTask(request):
         messages.success(request, "New task has been added successfully")
         return HttpResponseRedirect(reverse("tasks"))
     
+def notification(request):
+    return render(request, "isit950/account/notification.html")
 
+def paymentMethod(request):
+    return render(request, "isit950/account/payment_method.html")
+
+def paymentHistory(request):
+    return render(request, "isit950/account/payment_history.html")
+    
+def testRead(request):
+    if request.method == 'POST':
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+        
+        name = request.POST['text-content']
+        for i in name.split():
+            i = i.lstrip()
+            if(re.fullmatch(regex, i)) or (re.fullmatch('[6-9][0-9]{9}',i)):
+                print("contain number")
+        
+            else:
+                print("no number")
+
+
+
+        return HttpResponseRedirect(reverse("test123"))
+
+    return render(request, "isit950/index.html")
 
 def watchlist(request):
     watchlistResp = requests.get(restServer + "show_my_watchlist/ferry")
@@ -112,6 +138,14 @@ def watchlist(request):
 
     return render(request, "isit950/watchlist.html", {
         "watchlist": watchlist
+    })
+
+def wishlist(request):
+    wishistResp = requests.get(restServer + "show_my_watchlist/ferry")
+    wishlist = wishistResp.json()
+
+    return render(request, "isit950/account/wishlist.html", {
+        "wishlist": wishlist
     })
 
 def myTask(request):

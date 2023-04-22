@@ -75,7 +75,9 @@
                                 <h1 id="taskPrice">${{ taskDetail.price }}</h1>
                             </div>
                             <div style="padding-bottom: 10px;">
-                                <a href="{% url 'create_task' %}" class="button btnprimary" style="display: block;margin: 0 auto; background: #9162b42b;">Apply</a>
+                               <button class="button btnprimary" 
+                                style="display: block;margin: 0 auto; background: #9162b42b;"
+                                data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>
                             </div>
                         </div>
                     </div>
@@ -93,7 +95,7 @@
                 </div>
             </div>
             <div style="padding-top: 10px;">
-                <div class="comment-form">
+                <div class="flex comment-form dg-border p15">
 
                     <div class="rev-usr-img-wrap">
                         <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
@@ -102,9 +104,12 @@
                             style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
                     </div>
                     <div style="width: 100%; margin-left: 25px;">
-                        <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
-                            onkeyup="checkPostValue();" placeholder="Leave your comment"></textarea>
-                    <button type="submit" id="postBtn" class="comm-btn" disabled> Submit </button>
+                        <form method='post' action="{% url 'test123' %}">
+                            {% csrf_token %}
+                            <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
+                                onkeyup="checkPostValue();" placeholder="Leave your comment"></textarea>
+                            <button type="submit" id="postBtn" class="comm-btn" disabled> Submit </button>
+                        </form>
                     </div>
                     
                 </div>
@@ -237,6 +242,57 @@
                     
                 </div>
                 {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="offerModal" tabindex="-1" role="dialog" aria-labelledby="offerModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 p-md-5">
+                <div class="text-center mb-2" style="font-size: 1.5rem; font-weight: 600;">Make an offer</div>
+                <div class="align-items-center justify-content-center mb-2 flex">
+                    <div class="offer-form p10" style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="position: relative; font-size: 2rem; display: flex;
+                        align-items: center; border: 1px solid #793079; border-radius: 12px;">
+                            <div style="position: absolute; left: 15px; text-align: center;">
+                                <span>$</span>
+                            </div>
+                            <div>
+                                <input type="text" name="offer-price" id="offer-price" value="150" style="width: 150px;
+                                padding: 10px 10px 10px 40px;
+                                text-align: center;">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="flex mb-3" style="flex-direction: column;">
+                    <div class="flex mb-1" style="justify-content: space-between; font-size: 14px; color: #000000c9;">
+                        <div>Admin Fee</div>
+                        <div>-$10</div>
+                    </div>
+                    <div class="flex" style="justify-content: space-between; font-weight: 700; color: #793079;">
+                        <div>Total you'll earn</div>
+                        <div>$140</div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <span>Please explain or describe what make you good for this task</span>
+                </div>
+                <div class="offer-form pp-border p15" style="margin-top: 20px;">
+                    <textarea class="offer-text" name="offer-desc" id="offer-desc" rows="5" placeholder="i.e. I am confident that I can provide you with the high-quality results you are looking for" style="width: 100%;"></textarea>
+                </div>
+                <div style="padding-top: 20px;">
+                    <button type="submit" class="comm-btn"> Submit </button>
+                </div>
             </div>
         </div>
     </div>

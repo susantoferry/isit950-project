@@ -17,6 +17,8 @@ import uuid
 from io import BytesIO
 import base64
 
+from asgiref.sync import sync_to_async
+
 # Create your views here.
 
 @api_view(['GET', 'POST'])
@@ -230,7 +232,6 @@ def acceptOffer(request, taskId, userSpId):
         
 
 @api_view(['GET', 'POST'])
-@csrf_protect 
 def task(request):
     if request.method == 'GET':
         tasks = Task.objects.all().order_by("status","-modify_date")

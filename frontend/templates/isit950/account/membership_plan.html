@@ -2,7 +2,104 @@
 
 {% block body %}
 
-<h1>Membership Plan</h1>
+<div style="width: 100%; overflow: hidden; position: relative; top: -100px; ">
+    
+    <div>
+        <h1>Get membership today</h1>
+    </div>
+    <div class="membershipPlan-overlay" >
+        <div style="width: 100%">
+            <form action="http://library.whosville/bsearch" method="get">
+                <div>
+                    <label for="plan">Select your plan</label></br>
+                
+            
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                    <label class="form-check-label" for="exampleRadios1">
+                    Default radio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                    <label class="form-check-label" for="exampleRadios2">
+                    Second default radio
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3">
+                    <label class="form-check-label" for="exampleRadios3">
+                    Disabled radio
+                    </label>
+                </div>
+        
+                <div>
+                    <label for="information">Payment Information</label></br>
+                    <input type="text" name="information" id="information" class="form-control" placeholder="username@gmail.com"/>
+                </div>
+                
+                <div>
+                    <label for="card"> Card number</label></br>
+                    <input type="text" name="card" id="card" class="form-control" placeholder="1234 1234 1234 1234"/>
+                </div>
 
-<h4>test</h4>
+                <div>
+                    <label for="pay"> Pay with</label></br>
+                    <label>
+                        <input type="radio" name="pay" value="cash">
+                        Cash
+                    </label>
+                    <label>
+                        <input type="radio" name="pay" value="card">
+                        Card
+                    </label>
+                    <label>
+                        <input type="radio" name="pay" value="Transfer">
+                        Transfer
+                    </label>
+                </div>
+                <div style="display: flex; align-items: end; justify-content: space-between;">
+                    <div>
+                        <label for="card"> Card number</label></br>
+                        <input type="text" name="card" id="card" class="form-control" placeholder="1234 1234 1234 1234"/>
+                    </div>
+                    <div>
+                        <img src="/static/images/Visa.png" alt="" width="50">
+                    
+                        <img src="/static/images/Visa.png" alt="" width="50">
+                    </div>
+                    
+                </div>
+                <div>
+                    <label for="expiry"> Expiry</label></br>
+                    <input type="text" name="expiry" id="expiry" class="form-control" placeholder="MM/YY"/>
+                    <label for="cvc"> CVC</label>
+                    <input type="text" name="cvc" id="cvc" class="form-control" placeholder="123"/>
+                </div>
+                
+                <div>
+                    <label for="Country">Country</label></br>
+                    
+                    <select id="country" name="country">
+                        <option value="Australia"  class="form-control" type="text">Australia</option>
+                    </select>
+                    
+                </div>
+
+                <div>
+                    <span>
+                        <button type="button" class="btn btn-outline-secondary">Start</button>
+                    </span>
+                </div>
+            </form>
+
+        </div>
+        
+        <div style="width: 100%">
+            <h2>test</h2>
+        </div>
+    </div>
+</div>
+    
 {% endblock %}

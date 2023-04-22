@@ -1122,3 +1122,7 @@ button.close {
     text-decoration: none;
 }
 
+.membershipPlan-overlay {
+    display: flex; 
+    justify-content: space-between;
+}

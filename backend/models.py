@@ -2,8 +2,26 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
+class Membership(models.Model):
+    package_name=models.CharField(max_length=30)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    create_date = models.DateTimeField(null=True)
+    modify_date = models.DateTimeField(null=True)
+    
+    def __str__(self):
+        return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
+
 class User(AbstractUser):
-    pass
+    img_profile = models.CharField(max_length=100, null=True)
+    img_background = models.CharField(max_length=100, null=True)
+    location = models.CharField(max_length=50, null=True)
+    rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    membership = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="user_membership", null=True)
+
+    def __str__(self):
+        return f"Id: {self.username}"
+
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -15,7 +33,9 @@ class Category(models.Model):
 class Offer(models.Model):
     task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="offer_task_id")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="offer_sp_id")
-    price = models.DecimalField(max_digits=7, decimal_places=2)
+    price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+    admin_fee = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+    total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
     description = models.TextField()
     create_date = models.DateTimeField(null=True)
     modify_date = models.DateTimeField(null=True)
@@ -27,17 +47,6 @@ class Skill(models.Model):
     skill_name = models.CharField(max_length=30)
     def __str__(self):
         return f"Id: {self.id}, Skill: {self.skill_name}"
-
-
-class Membership(models.Model):
-    package_name=models.CharField(max_length=30)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    create_date = models.DateTimeField(null=True)
-    modify_date = models.DateTimeField(null=True)
-    
-    def __str__(self):
-        return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
     
 # class Profile(models.Model):
 #     first_name = models.CharField(max_length=30)

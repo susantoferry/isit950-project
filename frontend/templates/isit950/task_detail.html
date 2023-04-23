@@ -21,7 +21,12 @@
                                 <div>
                                     <div class="flexcc">
                                         <div class="tasker-profile-left">
-                                            <img width="45" class="tasker-profile" src="/static/{{taskDetail.img_profile}}" alt="">
+                                            <!-- <img width="45" class="tasker-profile" src="/static/{{taskDetail.img_profile}}" alt=""> -->
+                                            {% if taskDetail.img_profile %}
+                                            <img width="45" class="tasker-profile" src="/static/{{ taskDetail.img_profile }}" alt="">    
+                                            {% else %}
+                                            <img width="45" class="tasker-profile" src="/static/images/anonymous_user.png" alt="">
+                                            {% endif %}
                                         </div>
                                         <div style="width: 225px;">
                                             <div style="display: flex; justify-content: space-between;">
@@ -56,8 +61,10 @@
                                             {{ taskDetail.completed_on }}
                                         </div>
                                     </div>
-                                    <div style="color: #84878c; font-size: 13px; position: relative; left: 10px; font-size: 10px; margin-top: 10px;">
-                                        Posted 1 hour ago
+                                    <div style="color: #84878c; font-size: 13px; position: relative; left: 10px; font-size: 11px; margin-top: 10px;">
+                                        <script>
+                                            
+                                        </script>
                                     </div>
                                 </div>
                             </div>
@@ -124,10 +131,12 @@
                         <div class="rev-col">
                             <div class="flex-rev">
                                 <div class="rev-usr-img-container">
-                                    <div class="rev-usr-img-wrap">
-                                        <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
-                                            alt="Logo Moonlight Grosir Store"
-                                            style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                    <div class="rev-usr-img-wrap mb-2">
+                                        {% if pQuestion.user.img_profile %}
+                                        <img src="/static/{{ pQuestion.user.img_profile }}" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                        {% else %}
+                                        <img src="/static/images/anonymous_user.png" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                        {% endif %}
                                     </div>
                                     <div style="text-align:center; position: relative; margin-top: -10px;">
                                         <a href="profile.html">
@@ -138,7 +147,7 @@
                                 <div class="ml10" style="display: flex; justify-content: space-between; width: 100%;">
                                     <div class="task-comm-flex ml20">
                                         <div style="display: flex; align-items: center; width: 100%;">
-                                            <span style="font-weight: 600; font-size: 1.5rem; color: #FEA500; margin-right: 15px;">4.5 </span>
+                                            <span style="font-weight: 600; font-size: 1.5rem; color: #FEA500; margin-right: 15px;">{{ pQuestion.user.rating|floatformat:1 }} </span>
                                             <i class="star-rev fas fa-star fa-lg"></i>
                                         </div>
                                         <div class="rev-rate-col">
@@ -181,10 +190,11 @@
                                 <div class="flex-rev">
                                     <div class="rev-usr-img-container">
                                         <div class="rev-usr-img-wrap">
-                                            <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
-                                                alt="Logo Moonlight Grosir Store"
-                                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
-                                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
+                                            {% if cQuestion.user.img_profile %}
+                                            <img src="/static/{{ cQuestion.user.img_profile }}" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                            {% else %}
+                                            <img src="/static/images/anonymous_user.png" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -257,6 +267,7 @@
                 </button>
             </div>
             <div class="modal-body p-4 p-md-5">
+                {% csrf_token %}
                 <div class="text-center mb-2" style="font-size: 1.5rem; font-weight: 600;">Make an offer</div>
                 <div class="align-items-center justify-content-center mb-2 flex">
                     <div class="offer-form p10" style="display: flex; flex-direction: column; align-items: center;">
@@ -266,7 +277,7 @@
                                 <span>$</span>
                             </div>
                             <div>
-                                <input type="text" name="offer-price" id="offer-price" value="150" style="width: 150px;
+                                <input type="text" name="offer-price" id="offer-price" value="150" inputmode="numeric" style="width: 150px;
                                 padding: 10px 10px 10px 40px;
                                 text-align: center;">
                             </div>
@@ -276,12 +287,21 @@
                 </div>
                 <div class="flex mb-3" style="flex-direction: column;">
                     <div class="flex mb-1" style="justify-content: space-between; font-size: 14px; color: #000000c9;">
-                        <div>Admin Fee</div>
-                        <div>-$10</div>
+                        <div>
+                            <div>Admin Fee</div>
+                        </div>
+                        <div>
+                            <span>-$</span>
+                            <span id="admin-fee">10</span>
+                        </div>
                     </div>
                     <div class="flex" style="justify-content: space-between; font-weight: 700; color: #793079;">
                         <div>Total you'll earn</div>
-                        <div>$140</div>
+                        <div>
+                            <span>$</span>
+                            <span id="total-earn">140</span>
+                        </div>
+                        
                     </div>
                 </div>
                 <div style="text-align: center;">

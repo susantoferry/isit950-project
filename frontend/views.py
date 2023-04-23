@@ -25,7 +25,7 @@ def tasks(request):
     
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-    # taskDetail = taskDetailResp.json()
+    taskDetail = taskDetailResp.json()
 
     commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     comments = commentResp.json()

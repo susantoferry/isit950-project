@@ -7,9 +7,13 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
+    # email = serializers.CharField(read_only=True)
+    password = serializers.CharField(read_only=True)
+    username = serializers.CharField(read_only=True)
     class Meta:
         model = User
         fields = '__all__'
+
 
 # class ProfileSerializer(serializers.ModelSerializer):
     
@@ -25,10 +29,10 @@ class QuestionSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(read_only=True, source='category.name')
     user_client_id = serializers.CharField(read_only=True, source='user.username')
-    img_profile = serializers.CharField(read_only=True)
-    rating = serializers.FloatField(read_only=True)
-    first_name = serializers.CharField(read_only=True)
-    last_name = serializers.CharField(read_only=True)
+    img_profile = serializers.CharField(read_only=True, source='user.img_profile')
+    rating = serializers.FloatField(read_only=True, source='user.rating')
+    first_name = serializers.CharField(read_only=True, source='user.first_name')
+    last_name = serializers.CharField(read_only=True, source='user.last_name')
     my_bookmark = serializers.CharField(read_only=True)
     task_title_to_url = serializers.CharField(read_only=True)
     my_bookmark = serializers.CharField(read_only=True)  

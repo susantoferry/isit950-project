@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-
+from rest_framework.generics import UpdateAPIView
 from backend.models import *
 from .serializers import *
 
@@ -86,60 +86,34 @@ def categoryDetail(request, id):
         
         return Response(serializer.data)
     
-@api_view(['GET', 'POST'])
-def getProfile(request):
-    if request.method == 'GET':
-        profile = Profile.objects.all()
-        serializer = ProfileSerializer(profile, many=True)
-        return Response(serializer.data)
-    
-    if request.method == 'POST':
-        # request.data["img_profile"] = make_thumbnail(request.FILES["img_profile"], (250, 250), 'profiles')
+@api_view(['PUT'])
+def updateUserDetail(request, user):
+    if request.method == 'PUT':
+        try:
+            user = User.objects.get(username=user)
+        except User.DoesNotExist:
+            return Response(status=404)
         
-        img = make_thumbnail(request.FILES["img_profile"], "", 'profiles')
-        profile = {
-            "first_name": request.data["first_name"],
-            "last_name": request.data["last_name"],
-            "gender": request.data["gender"],
-            "address": request.data["address"],
-            "rating": request.data["rating"],
-            "img_profile": img,
-            "user_profile": request.data["user_profile"]
-        }
-        # "img_profile": "images/profiles/729b8c4b6e294e4230414225233.png",
-        # "img_profile": "/images/images/profiles/Hannah_eSLnVRy.png",
-        # return Response(request.data)
-        serializer = ProfileSerializer(data=profile)
-        if serializer.is_valid():
-            serializer.save()
-        else:
-            return Response(serializer.errors)
-        
-        return Response(serializer.data)
-    
-@api_view(['GET', 'PUT'])
-def getProfileDetail(request, profileId):
-    try:
-        profile = Profile.objects.get(pk=profileId)
-    except Profile.DoesNotExist:
-        profile = ""
+        # img_profile = request.FILES.get('img_profile', "")
+        # img_background = request.FILES.get('img_background', "")
+        saveUser = {}
+        if user != "":
+            for i in request.data:
+                if i == 'img_profile':
+                    saveUser.update({i: make_thumbnail(request.FILES[i], "", 'profiles')})
+                elif i == 'img_background':
+                    saveUser.update({i: make_thumbnail(request.FILES[i], "", 'profiles_bg')})
+                else:
+                    saveUser.update({i: request.data[i]})
 
-    if profile != "":
-        if request.method == 'GET':
-            serializer = ProfileSerializer(profile, many=False)
-            return Response(serializer.data)
-        
-        if request.method == 'PUT':
-            data = JSONParser().parse(request)
-            serializer = ProfileSerializer(profile, data=data)
+            serializer = UserSerializer(user, data=saveUser)
             if serializer.is_valid():
                 serializer.save()
-                return Response(status=200)
+                return Response("User has been successfully updated")
             else:
-                print(serializer.errors)
-                return Response(status=404)
-    else:
-        return Response("Error.")
+                return Response(serializer.errors)
+        else:
+            return Response("not found")
     
 @api_view(['GET', 'POST'])
 def question(request, taskId):
@@ -250,7 +224,6 @@ def task(request):
     
 @api_view(['GET', 'PUT', 'DELETE'])
 def taskDetail(request, taskId):
-    print(taskId)
     try:
         task = Task.objects.get(id=taskId)
     except Task.DoesNotExist:
@@ -262,6 +235,7 @@ def taskDetail(request, taskId):
     
     if request.method == 'PUT':
         data = JSONParser().parse(request)
+        
         serializer = TaskSerializer(task, data=data)
         if serializer.is_valid():
             serializer.save()

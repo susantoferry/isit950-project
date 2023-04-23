@@ -323,7 +323,7 @@ def watchlist(request):
             else:
                 return Response(serializer.errors,status=400)
         else:
-            watchlist.delete()
+           # watchlist.delete()
             return Response({
                 "success"
             }, status=200)
@@ -362,15 +362,33 @@ def skillDetail(request, id):
 @api_view(['GET', 'POST'])
 def skill(request):
     if request.method == 'GET':
-        skill = Skill.objects.raw("SELECT * FROM backend_skill")
-        #skill = Skill.objects.all()
-        serializer = SkillSerializer(skill, many=True)
+        skills = Skill.objects.all()
+        serializer = SkillSerializer(skills, many=True)
         return Response(serializer.data)
-
+    
     if request.method == 'POST':
-        
         serializer = SkillSerializer(data=request.data)
-        #print(request.data)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors,status=400)
+        
+        return Response(serializer.data)
+   
+@api_view(['GET', 'PUT', 'DELETE'])
+def skillDetail(request, id):
+    try:
+        skill = Skill.objects.get(pk=id)
+    except Skill.DoesNotExist:
+        return Response(status=404)
+    
+    if request.method == 'GET':
+        serializer = SkillSerializer(skill, many=False)
+        return Response(serializer.data)
+    
+    if request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = SkillSerializer(skill, data=data)
         if serializer.is_valid():
             serializer.save()
         else:
@@ -479,29 +497,82 @@ def mySkillList(request,user):
         return Response(serializer.data)
     
 @api_view(['GET', 'PUT', 'DELETE'])
-def skillDetail(request, skillId):
-    skill = Skill.objects.raw("SELECT * FROM backend_skill WHERE id = %s", [id])
-    #skill = Skill.objects.get(id=id)
+def membershipDetail(request, id):
+    try:
+        membership = Membership.objects.get(pk=id)
+    except Membership.DoesNotExist:
+        return Response(status=404)
+    
     if request.method == 'GET':
-        serializer = SkillSerializer(skill, many=True)
+        serializer = MembershipSerializer(membership, many=False)
         return Response(serializer.data)
-
+    
     if request.method == 'PUT':
         data = JSONParser().parse(request)
-
-        serializer = SkillSerializer(skill, data=request.data)
-
+        serializer = MembershipSerializer(membership, data=data)
         if serializer.is_valid():
             serializer.save()
         else:
             return Response(serializer.errors)
-        
-        return Response(serializer.data)
-    
-    elif request.method == 'DELETE':
-        skill.delete()
-        return Response(status=status.HTTP_2O4_NO_CONTENT)
 
+        return Response(serializer.data)
+    elif request.method == 'DELETE':
+        membership.delete()
+        return Response(status=204)
+
+@api_view(['GET','POST','DELETE'])
+@csrf_exempt
+def mySkillList(request,user):
+    try:
+        user = User.objects.get(username=user)
+    except User.DoesNotExist:
+        user = ""
+    if user != "":
+        if request.method == 'GET':
+            # user = User.objects.get(username=user)
+            skilllist = UserSkill.objects.all().filter(user=user.id)
+            serializer = UserSkillSerializer(skilllist, many=True)
+            return Response(serializer.data)
+
+        if request.method == 'DELETE':
+            userskill=UserSkill.objects.get(user=user.id,skill=request.data.get('skill'))
+            userskill.delete()
+            return Response(status=204)
+
+        if request.method == "POST":
+            skill = request.data.get('skill')
+            if (Skill.objects.filter(id=skill).exists()):
+            # checkUserId = User.objects.filter(pk=user.id)
+            # Check if User Id Exists
+            # if checkUserId.count() > 0:
+                # Preventing duplicating data if user id and skill id already exist in table
+                checkData = UserSkill.objects.filter(user=user.id, skill=skill)
+                if checkData.count() == 0:
+                    data = {
+                        "user": user.id,
+                        "skill": skill
+                        }
+                    serializer = UserSkillSerializer(data=data)
+                    if serializer.is_valid():
+                        serializer.save()
+                    else:
+                        return Response(serializer.errors)
+                    return Response(serializer.data)
+                else:
+                    return Response("Error. Duplicate data when adding new skill")
+            else:
+                return Response("skill  not exists")
+    else:
+        return Response("User cannot be found!")
+
+        
+
+
+
+    
+        
+        
+    
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def taskDetail(request, taskId):
 #     try:

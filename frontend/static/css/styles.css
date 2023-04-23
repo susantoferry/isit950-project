@@ -329,7 +329,7 @@ input:focus, textarea:focus {
 }
 
 .bookmark:hover {
-    cursor: crosshair;
+    cursor: pointer;
 }
 
 .assigned {

@@ -68,11 +68,19 @@ $('#postBtn123').click(function () {
         })
 })
 
+
+
 $(document).ready(function() {
+    $('').click(function($event) {
+
+    })
+
     $('#offer-price').keyup(function($e){
         if ($('#offer-price').val() > 0) {
-            $amount = $e.target.value
-            $totalEarn = $amount - ($amount * 10) / 100
+            $amount = $e.target.value;
+            $adminFee = ($amount * 10) / 100;
+            $totalEarn = $amount - $adminFee;
+            $('#admin-fee').text($adminFee)
             $('#total-earn').text($totalEarn)
         }
     });
@@ -97,7 +105,7 @@ $(document).ready(function() {
                 'admin_fee': adminFee, 
                 'total_price': totalEarn,
                 'task': 23,
-                'user': 5
+                'user': Cookies.get('usid')
             })
         })
         .then(response => response.json())
@@ -105,6 +113,7 @@ $(document).ready(function() {
             if (res.error) {
                 alert("Cannot save");
             } else {
+                $('#offerModal').modal('toggle');
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',

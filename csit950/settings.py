@@ -173,6 +173,9 @@ CORS_ALLOW_HEADERS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+# SESSION_COOKIE_AGE = 60 * 60
+
 STATIC_URL = 'static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'frontend/static/')

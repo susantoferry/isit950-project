@@ -45,11 +45,7 @@ def tasks(request):
 def taskDetail(request, slug):
     
     taskId = slug.rsplit('-', 1)[-1]
-<<<<<<< HEAD
     
-=======
-
->>>>>>> 6b7bdf8 (fix history from Alice's branch in settings.py)
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
@@ -182,17 +178,17 @@ def myTaskDetail(request, taskId):
         "questions": questionCount
     })
 
-    def testHTML(request):
-        return render(request, "isit950/test.html")
+def testHTML(request):
+    return render(request, "isit950/test.html")
 
-    def loginView(request):
-        return render(request, "isit950/auth/login.html")
+def loginView(request):
+    return render(request, "isit950/auth/login.html")
 
-    def forgotPassword(request):
-        return render(request, "isit950/auth/forget_password.html")
+def forgotPassword(request):
+    return render(request, "isit950/auth/forget_password.html")
 
-    def signUp(request):
-        return render(request, "isit950/auth/sign-up.html")
+def signUp(request):
+    return render(request, "isit950/auth/sign-up.html")
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

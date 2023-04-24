@@ -60,7 +60,8 @@ p {
     color: #2C3E50;
     background-color: #F4F1F1;;
     font-size: 16px;
-    letter-spacing: 1px
+    letter-spacing: 1px;
+    
 }
 
 #msform input:focus,
@@ -120,7 +121,8 @@ p {
     color: #802DBD;
     margin-bottom: 15px;
     font-weight: normal;
-    text-align: left
+    text-align: left;
+    height:20%;
 }
 
 .purple-text {
@@ -302,7 +304,6 @@ left: 60px;
 top: 272px;
 font-style: normal;
 font-weight: 400;
-font-size: 26px;
 line-height: 100px;
 color: #000000;
 
@@ -317,7 +318,7 @@ margin-top: 2%;
 
 a {
   text-decoration: none;
-  color: #379937;
+  color: black;
 }
 
 body {
@@ -380,18 +381,43 @@ body {
 }
 
 .redText1 {
-    margin-top: 30;
+    margin-top: 47%;
     color:#E61761;
-    margin-left: 20%;
+    margin-left: 46%;
 }
 
 
 .redText2 {
     color: #E61761;
-    margin-left: 20%;
+    margin-left: 46%;
 }
-.square {
-    width:auto;
+.rectangle {
+width: 100%;
+margin-bottom: 5%;
+}
+
+.rectangletextarea {
+margin-bottom: 5%;
+width: 100%; 
+border-radius: 10px; 
+background: #6E27A387; 
+padding: 40px; 
+overflow: hidden;
+}
+
+.rectangleinnertextarea {
+margin-bottom: 5%;
+font-weight: 400;
+line-height: 48px;
+width: 100%;
+resize: none;
+border: none;
+background: transparent;
+color: rgba(242, 240, 240, 0.8);
+display: flex;
+justify-content: space-around;
+text-align:justify;
+;    
 }
 </style>
 
@@ -435,10 +461,19 @@ body {
                                 <div>Select job type</div>
                                 
                                 <select class="form-select" aria-label="Default select example">
-                                    <option selected>Open this select menu</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option selected>Select job</option>
+                                    <option value="1">Carpenter</option>
+                                    <option value="2">Electrician</option>
+                                    <option value="3">Fence Installation</option>
+                                    <option value="3">Fly Screen Repairs</option>
+                                    <option value="3">Gardening</option>
+                                    <option value="3">House Cleaning</option>
+                                    <option value="3">Oven Repairs</option>
+                                    <option value="3">Painter</option>
+                                    <option value="3">Pest Control</option>
+                                    <option value="3">Plumber</option>
+                                    <option value="3">Roof Cleaning</option>
+                                    <option value="3">Tree Removal</option>
                                   </select>
 
 
@@ -453,6 +488,12 @@ body {
                                 <div class="date-input">
                                     <input type="time" id="time-input" name="time" class="form-control" />
                                     </div>
+
+                                    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
+                                    <label class="btn btn-secondary" for="option1">Set this date as deadline</label>
+                                    
+                                    <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                                    <label class="btn btn-secondary" for="option2">Job done at specific date</label>
 
                                     
                                     
@@ -498,10 +539,21 @@ body {
                                 </div>
                             </div>
                             
-                                <div class= "square">
-                                    
-                                </div>
-                            
+            
+                            <div class= "rectangle">
+                                    <div class="rectangletextarea">
+                                
+                                        <p class="rectangleinnertextarea">
+                                      <span>Task Fee:</span><span>32 AUD</span> <br/> 
+                                        </p>
+                                        <p class="rectangleinnertextarea">
+                                            <span>Booking Fee:</span><span>32 AUD</span> <br/> 
+                                              </p>
+                                              <p class="rectangleinnertextarea">
+                                                <span>Total:</span><span>32 AUD</span> <br/> 
+                                                  </p>
+                                 </div>
+                            </div>  
                             <div>
                                 <div class="redText1">Please note that the price may be subject to change</div>
                                 <div class="redText2">once the professionals have reviewed the details. </div>

@@ -785,18 +785,18 @@ span.offer-count {
 }
 
 .dropdown-menu-header {
-    color: #fff;
     margin-top: -0.65rem;
     margin-bottom: 0.65rem;
     position: relative;
     z-index: 6;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
+    border-bottom: 1px solid #00000026;
 }
 
 .dropdown-menu-header-inner {
     margin: -1px -1px 0;
-    padding: 1.5rem 0.5rem;
+    padding: 0.5rem 0.5rem;
     position: relative;
 }
 
@@ -870,7 +870,7 @@ span.offer-count {
 }
 
 .dropdown-item {
-    font-size: 0.88rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -878,7 +878,7 @@ span.offer-count {
     z-index: 6;
     position: relative;
     width: 100%;
-    padding: 0.4rem 1.5rem;
+    padding: 1rem 1.5rem;
     clear: both;
     font-weight: 400;
     color: #212529;
@@ -910,7 +910,7 @@ span.offer-count {
     list-style: none;
     background-color: #fff;
     background-clip: padding-box;
-    border: 1px solid rgba(0, 0, 0, 0.15);
+    border: 1px solid #00000026;
     border-radius: 0.25rem;
     min-width: 325px;
     right: 0 !important;
@@ -927,6 +927,7 @@ span.offer-count {
     top: 0px;
     left: 0px;
     transform: translate3d(-260px, 62px, 0px);
+    border-radius: 10px;
 }
 
 .dropdown-acc {

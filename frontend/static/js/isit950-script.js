@@ -68,11 +68,19 @@ $('#postBtn123').click(function () {
         })
 })
 
+
+
 $(document).ready(function() {
+    $('').click(function($event) {
+
+    })
+
     $('#offer-price').keyup(function($e){
         if ($('#offer-price').val() > 0) {
-            $amount = $e.target.value
-            $totalEarn = $amount - ($amount * 10) / 100
+            $amount = $e.target.value;
+            $adminFee = ($amount * 10) / 100;
+            $totalEarn = $amount - $adminFee;
+            $('#admin-fee').text($adminFee)
             $('#total-earn').text($totalEarn)
         }
     });

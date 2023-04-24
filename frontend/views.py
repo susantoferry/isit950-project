@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect, JsonResponse
+from django.contrib.auth import logout
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -7,9 +8,9 @@ from django.db.models import Count
 from backend.models import *
 from .constant import *
 
+from django.conf import settings
 import requests
 import re
-
 
 # Create your views here.
 
@@ -25,15 +26,15 @@ def tasks(request):
     
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-    # taskDetail = taskDetailResp.json()
+    taskDetail = taskDetailResp.json()
 
     commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     comments = commentResp.json()
     
     parentQuestion = Question.objects.filter(task_id=firstTaskDetail, parent_id=None).order_by("-create_date")
     childQuestion = Question.objects.filter(task_id=firstTaskDetail).exclude(parent_id=None)
-
-    return render(request, "isit950/index.html", {
+    
+    response =  render(request, "isit950/index.html", {
         "tasks": tasks,
         "taskDetail": taskDetail,
         "user": 1,
@@ -41,6 +42,11 @@ def tasks(request):
         "parentQuestion": parentQuestion,
         "childQuestion": childQuestion
     })
+    a = encryptString(request.user.username)
+    if request.user.is_authenticated and not request.COOKIES.get('usid'):
+        response.set_cookie(key='usid', value=encryptString(request.user.username), max_age=settings.SESSION_COOKIE_AGE)
+        
+    return response
 
 def taskDetail(request, slug):
     
@@ -68,6 +74,8 @@ def taskDetail(request, slug):
 
 def createTask(request):
     if request.method == 'GET':
+        # print(decryptString(request.COOKIES.get('usid')))
+        
         catResp = requests.get(restServer + "category")
         categories = catResp.json()
 
@@ -178,6 +186,25 @@ def myTaskDetail(request, taskId):
         "questions": questionCount
     })
 
+def testHTML(request):
+    return render(request, "isit950/test.html")
+
+def loginView(request):
+    return render(request, "isit950/auth/login.html")
+
+def forgotPassword(request):
+    return render(request, "isit950/auth/forget_password.html")
+
+def signUp(request):
+    return render(request, "isit950/auth/sign-up.html")
+
+def logout_view(request):
+    logout(request)
+    # return HttpResponseRedirect(reverse("index"))
+
+    response = HttpResponseRedirect(reverse("index"))
+    response.delete_cookie('usid')
+    return response
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

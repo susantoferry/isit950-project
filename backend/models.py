@@ -17,7 +17,6 @@ class User(AbstractUser):
     img_background = models.CharField(max_length=100, null=True)
     location = models.CharField(max_length=50, null=True)
     rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
-    membership = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="user_membership", null=True)
 
     def __str__(self):
         return f"Id: {self.username}"
@@ -42,11 +41,6 @@ class Offer(models.Model):
 
     def __str__(self):
         return f"Id: {self.id}, Task ID: {self.task}, User Provider: {self.user}, price: {self.price}"
-
-class Skill(models.Model): 
-    skill_name = models.CharField(max_length=30)
-    def __str__(self):
-        return f"Id: {self.id}, Skill: {self.skill_name}"
     
 # class Profile(models.Model):
 #     first_name = models.CharField(max_length=30)
@@ -72,17 +66,6 @@ class Skill(models.Model):
     skill_name = models.CharField(max_length=30)
     def __str__(self):
         return f"Id: {self.id}, Skill: {self.skill_name}"
-
-
-class Membership(models.Model):
-    package_name=models.CharField(max_length=30)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    create_date = models.DateTimeField(null=True)
-    modify_date = models.DateTimeField(null=True)
-    
-    def __str__(self):
-        return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
 
 class Task(models.Model):
     task_title = models.CharField(max_length=150)

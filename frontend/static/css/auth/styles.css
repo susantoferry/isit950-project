@@ -1,0 +1,527 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	overflow-x: hidden !important;
+	overflow-y: auto !important;
+	overscroll-behavior: none;
+	font-family: 'Inter';
+	font-style: normal;
+ }
+
+/* For website design */
+
+h1 {
+
+
+	position: relative;
+	width: 100%;
+	height: auto;
+	left: 0;
+	margin-bottom: 15px;
+	font-weight: 700;
+	font-size: 30px;
+	line-height: 36px;
+	text-align: center;
+	color: #0C0B0B;
+	transition:all .5s ease;
+}
+
+h2 {
+	position: relative;
+	left: 0;
+	width: 100%;
+	margin-top: 10px;
+	height: auto;
+	margin-bottom: 40px;
+	top: calc(50% - 94px/2 - 87px);
+	font-weight: 400;
+	font-size: 15px;
+	line-height: 18px;
+	text-align: center;
+	color: #0C0B0B;
+}
+
+.fm-forget-pass {
+	padding: 25px;
+	width: 400px;
+	margin: 0 auto;
+	
+}
+
+.emailTxt {
+	position: relative;
+	width: 100%;
+	height: 32.16px;
+	left: 0;
+	text-align: left;
+	color: #786E6E;
+	margin-bottom: 10px;
+
+	/* position: absolute; */
+	/* width: 200.87px;
+	height: 32.16px; */
+	/* left: calc(50% - 366px/2 + 18px); */
+	top: calc(50% - 32.16px/2 - 60.92px);
+	
+	
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 24px;
+	text-align: left;
+
+	color: #786E6E;
+
+}
+
+
+.boxes {
+
+	position: absolute;
+	width: 200.87px;
+	height: 32.16px;
+	left: calc(50% - 366px/2 + 18px);
+	top: calc(50% - 32.16px/2 - 20.92px);
+	
+	
+	font-weight: 500;
+	font-size: 20px;
+	line-height: 24px;
+	text-align: left;
+
+	color: #786E6E;
+
+}
+
+.reset {
+	color: white;
+	position: relative;
+	width: 100%;
+	height: 49px;
+	left: 0;
+	background: #6E27A3;
+	border: 1px solid #7E7373;
+	border-radius: 6px;
+	margin: 0 auto;
+	display: block;
+	top: 30px;
+	margin-top: 20px;
+}
+
+.backToLogin {
+	position: relative;
+	width: 100%;
+	height: auto;
+	left: 0;
+	top: 60px;
+	border: none;
+	background-color: transparent;
+	font-weight: 600;
+	font-size: 16px;
+	line-height: 19px;
+	text-align: center;
+	color: #6E27A3;
+}
+
+br.responsive {
+	display: none;
+}
+
+.proceeding {
+	position: absolute;
+	width: 100%;
+	height: auto;
+	left: 0;
+	bottom: 30px;
+	border: none;
+	background-color: transparent;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 15px;
+	text-align: center;
+	color: #000000;
+}
+
+.agreement {
+	border: none;
+	background-color: transparent;
+}
+
+
+/* End of css website design */
+
+/* Start css for mobile responsive */
+
+@media (max-width: 1440px) {}
+
+@media (max-width: 1024px) {}
+
+@media (min-width: 426px) and (max-width: 768px) {
+	h1 {
+		position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+	}
+
+	h2 {
+		position: relative;
+		left: 0;
+		width: 100%;
+		margin-top: 10px;
+		height: auto;
+		margin-bottom: 40px;
+	}
+
+	.emailTxt {
+		position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+	}
+
+
+	.boxes {
+
+		position: absolute;
+		width: 200.87px;
+		height: 32.16px;
+		left: calc(50% - 366px/2 + 18px);
+		top: calc(50% - 32.16px/2 - 20.92px);
+		
+		
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 24px;
+		text-align: left;
+
+		color: #786E6E;
+
+	}
+
+	.reset {
+		color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 30px;
+    	margin-top: 20px;
+	}
+
+	.backToLogin {
+		position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		top: 60px;
+	}
+
+	br.responsive {
+		display: none;
+	}
+
+	.proceeding {
+		position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+	.agreement {
+		border: none;
+		background-color: transparent;
+	}
+}
+
+@media (max-width: 425px) {
+	h1 {
+		position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+	}
+
+	h2 {
+		position: relative;
+		left: 0;
+		width: 100%;
+		margin-top: 10px;
+		height: auto;
+		margin-bottom: 40px;
+	}
+
+	.emailTxt {
+		position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+	}
+
+
+	.boxes {
+
+		position: absolute;
+		width: 80.87px;
+		height: 52.16px;
+		left: calc(50% - 366px/2 + 58px);
+		top: calc(50% - 32.16px/2 - 20.92px);
+		
+		
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 24px;
+		text-align: left;
+
+		color: #786E6E;
+
+	}
+
+	.reset {
+		color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 30px;
+    	margin-top: 20px;
+	}
+
+	.mobileBreak {
+		display: inline-block
+	}
+
+	.backToLogin {
+		position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		top: 60px;
+	}
+
+	.proceeding {
+		position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+
+	.agreement {
+		line-break: auto;
+		border: none;
+		background-color: transparent;
+	}
+
+	br.responsive {
+		display: inline;
+	}
+
+}
+
+
+@media (max-width: 375px) {
+	h1 {
+		position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+	}
+
+	h2 {
+		position: relative;
+		left: 0;
+		width: 100%;
+		margin-top: 10px;
+		height: auto;
+		margin-bottom: 40px;
+	}
+
+	.emailTxt {
+
+		position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+
+
+	.boxes {
+
+		position: absolute;
+		width: 80.87px;
+		height: 52.16px;
+		left: calc(50% - 366px/2 + 98px);
+		top: calc(50% - 32.16px/2 - 20.92px);
+		
+		
+		font-weight: 500;
+		font-size: 20px;
+		line-height: 24px;
+		text-align: left;
+
+		color: #786E6E;
+
+	}
+
+	.reset {
+		color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 30px;
+    	margin-top: 20px;
+	}
+
+	.mobileBreak {
+		display: inline-block
+	}
+
+	.backToLogin {
+		position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		top: 60px;
+	}
+
+	.proceeding {
+		position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+
+	.agreement {
+		line-break: auto;
+		border: none;
+		background-color: transparent;
+	}
+
+	br.responsive {
+		display: inline;
+	}
+}
+
+@media only screen and (max-width: 320px) {
+	h1 {
+		position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+	}
+
+	h2 {
+		position: relative;
+		left: 0;
+		width: 100%;
+		margin-top: 10px;
+		height: auto;
+		margin-bottom: 40px;
+	}
+
+	.emailTxt {
+
+		position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+
+
+
+	.reset {
+		color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 30px;
+    	margin-top: 20px;
+	}
+
+	.mobileBreak {
+		display: inline-block
+	}
+
+	.backToLogin {
+		position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		top: 60px;
+	}
+
+	.proceeding {
+		position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+
+	.agreement {
+		line-break: auto;
+		border: none;
+		background-color: transparent;
+	}
+
+	br.responsive {
+		display: inline;
+	}
+}
+
+/* End of mobile responsive*/

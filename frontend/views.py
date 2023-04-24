@@ -3,16 +3,21 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
-import requests
+from django.db.models import Count
+from backend.models import *
 from .constant import *
-from backend.models import *
 
-from backend.models import *
+import requests
+import re
+
 
 # Create your views here.
 
 def index(request):
     return redirect("tasks")
+
+def profile(request):
+    return render(request, "isit950/account/profile.html")
 
 def tasks(request):
     taskResp = requests.get(restServer + "task")
@@ -24,7 +29,7 @@ def tasks(request):
 
     commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     comments = commentResp.json()
-
+    
     parentQuestion = Question.objects.filter(task_id=firstTaskDetail, parent_id=None).order_by("-create_date")
     childQuestion = Question.objects.filter(task_id=firstTaskDetail).exclude(parent_id=None)
 
@@ -37,28 +42,14 @@ def tasks(request):
         "childQuestion": childQuestion
     })
 
-    # select a.*
-# from backend_question a left join backend_question b
-# on a.parent_id = b.id
-# order by coalesce(nullif(a.parent_id, 0), b.id)
-#        , (a.parent_id = 0), a.modify_date DESC;
-
-# select *
-# from backend_question as parent
-#     left join backend_question as child
-#     on child.parent_id = parent.parent_id
-# order by coalesce(parent.id, child.id)
-#        , parent.id is not null
-#     ,parent.modify_date desc;
-
-# 7
-# 4 => 5,6 => 8
-# 1 => 2,3
-
+def taskDetail(request, slug):
     
+    taskId = slug.rsplit('-', 1)[-1]
+<<<<<<< HEAD
+    
+=======
 
-def taskDetail(request, taskId):
-
+>>>>>>> 6b7bdf8 (fix history from Alice's branch in settings.py)
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
@@ -67,6 +58,10 @@ def taskDetail(request, taskId):
 
     parentQuestion = Question.objects.filter(task_id=taskId, parent_id=None).order_by("-create_date")
     childQuestion = Question.objects.filter(task_id=taskId).exclude(parent_id=None)
+
+    # return JsonResponse({
+    #     "taskDetail": taskDetail
+    # })
 
     return render(request, "isit950/index.html", {
         "tasks": tasks,
@@ -113,7 +108,33 @@ def createTask(request):
         messages.success(request, "New task has been added successfully")
         return HttpResponseRedirect(reverse("tasks"))
     
+def notification(request):
+    return render(request, "isit950/account/notification.html")
 
+def paymentMethod(request):
+    return render(request, "isit950/account/payment_method.html")
+
+def paymentHistory(request):
+    return render(request, "isit950/account/payment_history.html")
+    
+def testRead(request):
+    if request.method == 'POST':
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+        
+        name = request.POST['text-content']
+        for i in name.split():
+            i = i.lstrip()
+            if(re.fullmatch(regex, i)) or (re.fullmatch('[6-9][0-9]{9}',i)):
+                print("contain number")
+        
+            else:
+                print("no number")
+
+
+
+        return HttpResponseRedirect(reverse("test123"))
+
+    return render(request, "isit950/index.html")
 
 def watchlist(request):
     watchlistResp = requests.get(restServer + "show_my_watchlist/ferry")
@@ -122,6 +143,60 @@ def watchlist(request):
     return render(request, "isit950/watchlist.html", {
         "watchlist": watchlist
     })
+
+def wishlist(request):
+    wishistResp = requests.get(restServer + "show_my_watchlist/ferry")
+    wishlist = wishistResp.json()
+
+    return render(request, "isit950/account/wishlist.html", {
+        "wishlist": wishlist
+    })
+
+def myTask(request):
+    userId = str(request.user.id)
+    myTaskListResp = requests.get(restServer + "get_my_task/" + userId)
+    myTaskList = myTaskListResp.json()
+    
+    firstTaskDetail = myTaskList[0]["id"]
+    taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
+    taskDetail = taskDetailResp.json()
+    
+    return render(request, "isit950/my_task.html", {
+        "myTaskList": myTaskList,
+        "taskDetail": taskDetail,
+        "type": "myTask"
+    })
+
+def myTaskDetail(request, taskId):
+    myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
+    myTaskDetail = myTaskDetailResp.json()
+
+    offerResp = requests.get(restServer + "offer/" + str(taskId))
+    offers = offerResp.json()
+
+    questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
+
+    return render(request, "isit950/my_task_detail.html", {
+        "myTaskDetail": myTaskDetail,
+        "offers": offers,
+        "questions": questionCount
+    })
+
+    def testHTML(request):
+        return render(request, "isit950/test.html")
+
+    def loginView(request):
+        return render(request, "isit950/auth/login.html")
+
+    def forgotPassword(request):
+        return render(request, "isit950/auth/forget_password.html")
+
+    def signUp(request):
+        return render(request, "isit950/auth/sign-up.html")
+# def selectTasker(request, taskId, userId):
+#     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
+
+#     return redirect('my_task', taskId)
 
 # def login_view(request):
 #     if request.method == "POST":

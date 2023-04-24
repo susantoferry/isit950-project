@@ -10,13 +10,22 @@ const Toast = Swal.mixin({
     }
 })
 
-document.getElementById("comment-text").addEventListener("focus", function () {
-    $(".comment-form").addClass("comment-onfocus");
-});
+let arrow = document.querySelectorAll(".arrow");
 
-document.getElementById("comment-text").addEventListener("focusout", function () {
-    $(".comment-form").removeClass("comment-onfocus");
-});
+for (var i = 0; i < arrow.length; i++) {
+    arrow[i].addEventListener("click", (e) => {
+        let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+        arrowParent.classList.toggle("showMenu");
+    });
+}
+
+// document.getElementById("comment-text").addEventListener("focus", function () {
+//     $(".comment-form").addClass("comment-onfocus");
+// });
+
+// document.getElementById("comment-text").addEventListener("focusout", function () {
+//     $(".comment-form").removeClass("comment-onfocus");
+// });
 
 
 function checkPostValue() {
@@ -28,15 +37,14 @@ function checkPostValue() {
     }
 }
 
-$('#postBtn').click(function () {
+$('#postBtn123').click(function () {
     var urlArr = document.URL.split('/');
-
-    var taskId = urlArr[urlArr.indexOf('tasks') + 1];
+    var taskId = window.location.href.split("-").pop()
 
     const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     fetch(`/api/question/${taskId}`, {
-        method: 'GE',
+        method: 'POST',
         credentials: 'same-origin',
         headers: {
             "X-CSRFToken": token,
@@ -48,23 +56,140 @@ $('#postBtn').click(function () {
             question: document.querySelector('#comment-text').value
         })
     })
-    .then(response => response.json())
-    .then(result => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success',
-            text: 'Your comment has been posted',
-        }).then((result) => {
-            location.reload();
+        .then(response => response.json())
+        .then(result => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Your comment has been posted',
+            }).then((result) => {
+                location.reload();
+            })
+        })
+})
+
+$(document).ready(function() {
+    $('#offer-price').keyup(function($e){
+        if ($('#offer-price').val() > 0) {
+            $amount = $e.target.value
+            $totalEarn = $amount - ($amount * 10) / 100
+            $('#total-earn').text($totalEarn)
+        }
+    });
+
+    $('.comm-btn').click(function($event) {
+        const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        const price = document.querySelector('#offer-price').value;
+        const offerDesc = document.querySelector('#offer-desc').value;
+        const adminFee = -Math.abs(Number(document.querySelector('#admin-fee').innerText));
+        const totalEarn = document.querySelector('#total-earn').innerText;
+        
+        fetch(`/api/offer`, {
+            method: "POST",
+            credentials: 'same-origin',
+            headers: {
+                "X-CSRFToken": token,
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                'price': price, 
+                'description': offerDesc, 
+                'admin_fee': adminFee, 
+                'total_price': totalEarn,
+                'task': 23,
+                'user': 5
+            })
+        })
+        .then(response => response.json())
+        .then(res => {
+            if (res.error) {
+                alert("Cannot save");
+            } else {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Your offer has been saved successfully'
+                }).then((result) => {
+                    location.reload();
+                })
+                // success_mail();
+    /*             location.reload(); */
+            }
+        })
+        .catch(err => {
+            alert(err)
         })
     })
-})
+});
 
-$('.task-left-card').click(function () {
-    var taskId = $(this).attr('data-id');
 
-    location.href = "/tasks/" + taskId;
-})
+function accept_offer() {
+    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    // const fname = document.querySelector('#first_name').value;
+
+    Swal.fire({
+        icon: 'success',
+        title: 'Thank you',
+        text: 'We have got your enquiry'
+    }).then((result) => {
+        location.reload();
+    })
+
+    // fetch('/api/accept-offer/', {
+    //     method: "POST",
+    //     credentials: 'same-origin',
+    //     headers: {
+    //         "X-CSRFToken": token,
+    //         "Content-Type": 'application/json'
+    //     },
+    //     body: JSON.stringify({fname, lname, email, phone, msg})
+    // })
+    // .then(response => response.json())
+    // .then(res => {
+    //     if (res.error) {
+    //         alert("Cannot save");
+    //     } else {
+    //         Swal.fire({
+    //             icon: 'success',
+    //             title: 'Thank you',
+    //             text: 'We have got your enquiry'
+    //         }).then((result) => {
+    //             location.reload();
+    //         })
+    //     }
+    // })
+    // .catch(err => {
+    //     alert(err)
+    // })
+}
+
+// $('.task-left-card').click(function () {
+//     var taskId = $(this).attr('data-id');
+
+//     // location.href = "/tasks/" + taskId;
+//     $("#mydiv").load("#mydiv");
+//     console.log("a")
+// })
+
+// document.addEventListener("DOMContentLoaded", function() {
+//     document.querySelectorAll('.task-left-card').forEach(a => {
+//         a.onclick = function(e) {
+//             e.preventDefault()
+//             // console.log(this.dataset.taskId);
+
+//             fetch(`/tasks/${this.dataset.taskId}`)
+//             .then(response => response.text())
+//             .then(res => {
+//                 const obj = JSON.parse(res)
+//                 console.log(obj.taskDetail.id)
+//                 // history.pushState(null, '', `/tasks/${this.dataset.taskId}`)
+
+//             });
+
+
+//         }
+//     })
+// });
 
 // $( "#btn-bookmark" ).click(function() {
 //     alert( "Handler for .click() called." );
@@ -105,3 +230,4 @@ function bookmark(getButton, taskId) {
 //         })
 
 // }
+

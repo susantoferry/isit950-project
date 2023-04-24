@@ -26,7 +26,8 @@
         <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="{% static 'js/isit950-script.js' %}"></script>
-        <script src="{% static 'js/functions.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.4/dist/js.cookie.min.js"></script>
+        
     </head>
     <!-- https://www.airtasker.com/tasks/
     ?task_states=posted%2Cassigned%2Ccompleted%2Coverdue%2Cclosed
@@ -45,7 +46,7 @@
 
         
         
-        
+        <script src="{% static 'js/functions.js' %}"></script>
 
         <script>
             {% if messages %}

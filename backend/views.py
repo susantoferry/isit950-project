@@ -8,6 +8,8 @@ from rest_framework.generics import UpdateAPIView
 from backend.models import *
 from .serializers import *
 
+from frontend.constant import *
+
 from PIL import Image 
 
 import os
@@ -139,6 +141,8 @@ def offer(request):
         return Response(serializer.data)
     
     if request.method == 'POST':
+        request.data['user'] = User.objects.values_list('id', flat=True).get(username=decryptString(request.data['user']))
+        
         serializer = OfferSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

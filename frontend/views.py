@@ -25,7 +25,7 @@ def tasks(request):
     
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-    # taskDetail = taskDetailResp.json()
+    taskDetail = taskDetailResp.json()
 
     commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     comments = commentResp.json()
@@ -186,6 +186,7 @@ def loginView(request):
 
 def forgotPassword(request):
     return render(request, "isit950/auth/forget_password.html")
+<<<<<<< HEAD
 
 def signUp(request):
     return render(request, "isit950/auth/sign-up.html")
@@ -194,6 +195,11 @@ def signUp(request):
 
     
 
+=======
+
+def signUp(request):
+    return render(request, "isit950/auth/sign-up.html")
+>>>>>>> main
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

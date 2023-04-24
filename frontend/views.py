@@ -186,20 +186,9 @@ def loginView(request):
 
 def forgotPassword(request):
     return render(request, "isit950/auth/forget_password.html")
-<<<<<<< HEAD
 
 def signUp(request):
     return render(request, "isit950/auth/sign-up.html")
-
-
-
-    
-
-=======
-
-def signUp(request):
-    return render(request, "isit950/auth/sign-up.html")
->>>>>>> main
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

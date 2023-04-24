@@ -45,7 +45,11 @@ def tasks(request):
 def taskDetail(request, slug):
     
     taskId = slug.rsplit('-', 1)[-1]
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 6b7bdf8 (fix history from Alice's branch in settings.py)
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     

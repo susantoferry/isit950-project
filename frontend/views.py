@@ -23,7 +23,7 @@ def profile(request):
 def tasks(request):
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
-    print(tasks)
+    
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
     taskDetail = taskDetailResp.json()
@@ -37,12 +37,12 @@ def tasks(request):
     response =  render(request, "isit950/index.html", {
         "tasks": tasks,
         "taskDetail": taskDetail,
-        "user": 1,
+        "user": request.user,
         "comments": comments,
         "parentQuestion": parentQuestion,
         "childQuestion": childQuestion
     })
-    a = encryptString(request.user.username)
+    
     if request.user.is_authenticated and not request.COOKIES.get('usid'):
         response.set_cookie(key='usid', value=encryptString(request.user.username), max_age=settings.SESSION_COOKIE_AGE)
         

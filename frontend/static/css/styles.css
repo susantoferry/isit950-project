@@ -174,12 +174,15 @@ input:focus, textarea:focus {
 }
 
 .search-input {
+    display: block!important;
+    opacity: 1!important;
     width: 300px;
     min-height: 35px;
     border-radius: 20px;
     background-color: #f3f3f7;
     box-sizing: border-box;
     text-indent: 20px;
+    
 }
 
 .search-input.my-task {
@@ -553,6 +556,25 @@ span.offer-count {
     .main-navbar {
         display: none!important; 
     }
+
+    .btn-search-nav {
+        width: 40px;
+        height: 40px;
+        outline: none;
+        position: relative;
+        z-index: 2;
+        cursor: pointer;
+        background: #60606021;
+        border-radius: 30px;
+        right: 0;
+        top: 0;
+    }
+
+    .search-input {
+        display: none!important;
+        opacity: 0!important;
+    }
+
 }
 
 .space-bt {
@@ -581,6 +603,16 @@ span.offer-count {
     .space-bt {
         display: flex;
         justify-content: space-between;
+    }
+
+    
+
+    .btn-search-nav {
+        position: absolute;
+        right: 15px;
+        top: 6px;
+        border: 0;
+        background: transparent;
     }
     
 }

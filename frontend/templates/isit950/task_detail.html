@@ -1,137 +1,127 @@
+{% load parse_date %}
 {% csrf_token %}
 <div class="task-detail-container">
     <div class="task-detail-overlay">
         <div class="task-constraint">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1 class="task-detail-header">
-                    {{ taskDetail.task_title }}
-                </h1>
-            </div>
-            <!-- <div class="flex-between task-sec-row"> -->
-            <div class="inlblock">
-                <div class="task-detail-col">
-                    <div class="flex-col task-stat-overlay">
-                        <div class="task-stat">
-                            <span class="task-active">Open</span>
-                        </div>
-                        <div class="task-stat">
-                            <span>Assigned</span>
-                        </div>
-                        <div class="task-stat">
-                            <span>Completed</span>
-                        </div>
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <div>
+                        <h1 class="task-detail-header">
+                            {{ taskDetail.task_title }}
+                        </h1>
                     </div>
                     <div>
-                        
-                        <div class="task-detail-heading">
-                            About the client
-                        </div>
-                        <div>
-                            <div class="flexcc">
-                                <div class="tasker-profile-left">
-                                    <img class="tasker-profile-client tasker-profile" src="https://eu7cmie.cloudimg.io/v7/https://assets-airtasker-com.s3.amazonaws.com/uploads/user/avatar/3411484/image-ab53f784dc250dc55658f54b97629dad.jpg?width=80&amp;height=80">
+                        <div class="task-detail-col">
+                            <div class="flex-col task-stat-overlay">
+                                <div class="task-stat">
+                                    <span class="task-active-lg open">Open</span>
                                 </div>
-                                <div style="width: 225px;">
-                                    <div style="display: flex; justify-content: space-between;">
-                                        <div style="font-size: 1.3rem; font-weight: 600;">
-                                            {{ taskDetail.user_client_id | title }}
+                            </div>
+                            <div>
+                                <div>
+                                    <div class="flexcc">
+                                        <div class="tasker-profile-left">
+                                            <!-- <img width="45" class="tasker-profile" src="/static/{{taskDetail.img_profile}}" alt=""> -->
+                                            {% if taskDetail.img_profile %}
+                                            <img width="45" class="tasker-profile" src="/static/{{ taskDetail.img_profile }}" alt="">    
+                                            {% else %}
+                                            <img width="45" class="tasker-profile" src="/static/images/anonymous_user.png" alt="">
+                                            {% endif %}
                                         </div>
-                                        <div>
-                                            <span style="font-weight: 600;
-                                            font-size: 1.1rem;
-                                            color: #db7228;">4.5 / 5 </span>
-                                            <i class="star-rev fas fa-star"></i>
+                                        <div style="width: 225px;">
+                                            <div style="display: flex; justify-content: space-between;">
+                                                <div id="taskClient" style="font-size: 1rem; font-weight: 600;">
+                                                    <div>
+                                                        <span>Requested by</span>
+                                                    </div>
+                                                    <div>
+                                                        <span>{{ taskDetail.first_name | title }} {{ taskDetail.last_name |title }} </span>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="flexcc">
+                                        <div class="tasker-profile-left">
+                                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#6a7197" stroke="none"><path d="M114 311 c-12 -5 -31 -22 -44 -38 -40 -51 -14 -144 71 -253 l19 -25 19 25 c50 63 84 133 89 179 4 42 1 52 -24 80 -31 35 -90 49 -130 32z m105 -37 c47 -39 43 -90 -11 -177 -24 -37 -45 -67 -48 -67 -3 0 -24 30 -48 67 -54 87 -58 138 -11 177 39 33 79 33 118 0z"/><path d="M115 236 c-30 -45 13 -98 66 -81 55 18 38 105 -21 105 -20 0 -35 -8 -45 -24z m76 -12 c17 -21 0 -49 -31 -49 -31 0 -48 28 -31 49 8 9 21 16 31 16 10 0 23 -7 31 -16z"/> </g></svg>
+                                        </div>
+                                        <div id="taskLocation">
+                                            {{ taskDetail.location }}
                                         </div>
                                     </div>
-                                    
+                                    <div class="flexcc">
+                                        <div class="tasker-profile-left">
+                                            <!-- Must be finished on -->
+                                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#6a7197" stroke="none"><path d="M70 286 c0 -19 4 -37 9 -41 13 -7 24 30 16 55 -10 32 -25 23 -25 -14z"/><path d="M232 284 c2 -22 8 -38 13 -36 15 3 12 65 -3 70 -10 3 -13 -6 -10 -34z"/><path d="M7 283 c-4 -3 -7 -66 -7 -139 0 -111 2 -133 16 -138 23 -9 277 -7 292 2 9 7 12 42 10 143 -3 130 -4 134 -25 137 -17 3 -23 -2 -23 -15 0 -11 -5 -24 -11 -30 -17 -17 -39 -4 -39 23 0 22 -4 24 -53 24 -49 0 -53 -2 -64 -30 -13 -36 -43 -32 -43 6 0 18 -5 24 -23 24 -13 0 -27 -3 -30 -7z m293 -168 l0 -95 -140 0 -140 0 0 95 0 95 140 0 140 0 0 -95z"/><path d="M170 165 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M230 165 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M50 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M110 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M170 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M230 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M50 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M110 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M170 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M230 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/></g></svg>
+                                        </div>
+                                        <div>
+                                            {{ taskDetail.completed_on }}
+                                        </div>
+                                    </div>
+                                    <div style="color: #84878c; font-size: 13px; position: relative; left: 10px; font-size: 11px; margin-top: 10px;">
+                                        <script>
+                                            
+                                        </script>
+                                    </div>
                                 </div>
-                                
-                            </div>
-                            <div class="flexcc">
-                                <div class="tasker-profile-left">
-                                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#6a7197" stroke="none"><path d="M114 311 c-12 -5 -31 -22 -44 -38 -40 -51 -14 -144 71 -253 l19 -25 19 25 c50 63 84 133 89 179 4 42 1 52 -24 80 -31 35 -90 49 -130 32z m105 -37 c47 -39 43 -90 -11 -177 -24 -37 -45 -67 -48 -67 -3 0 -24 30 -48 67 -54 87 -58 138 -11 177 39 33 79 33 118 0z"/><path d="M115 236 c-30 -45 13 -98 66 -81 55 18 38 105 -21 105 -20 0 -35 -8 -45 -24z m76 -12 c17 -21 0 -49 -31 -49 -31 0 -48 28 -31 49 8 9 21 16 31 16 10 0 23 -7 31 -16z"/> </g></svg>
-                                </div>
-                                <div>
-                                    {{ taskDetail.location }}
-                                </div>
-                            </div>
-                            <div class="flexcc">
-                                <div class="tasker-profile-left">
-                                    <!-- Must be finished on -->
-                                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#6a7197" stroke="none"><path d="M70 286 c0 -19 4 -37 9 -41 13 -7 24 30 16 55 -10 32 -25 23 -25 -14z"/><path d="M232 284 c2 -22 8 -38 13 -36 15 3 12 65 -3 70 -10 3 -13 -6 -10 -34z"/><path d="M7 283 c-4 -3 -7 -66 -7 -139 0 -111 2 -133 16 -138 23 -9 277 -7 292 2 9 7 12 42 10 143 -3 130 -4 134 -25 137 -17 3 -23 -2 -23 -15 0 -11 -5 -24 -11 -30 -17 -17 -39 -4 -39 23 0 22 -4 24 -53 24 -49 0 -53 -2 -64 -30 -13 -36 -43 -32 -43 6 0 18 -5 24 -23 24 -13 0 -27 -3 -30 -7z m293 -168 l0 -95 -140 0 -140 0 0 95 0 95 140 0 140 0 0 -95z"/><path d="M170 165 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M230 165 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M50 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M110 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M170 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M230 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M50 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M110 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M170 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M230 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/></g></svg>
-                                </div>
-                                <div>
-                                    14 May 2023 - Afternoon
-                                </div>
-                            </div>
-                            <div class="task-detail-id">Task ID: 121230932</div>
-                            <div style="color: #84878c; font-size: 13px; position: relative; left: 10px; font-size: 10px;">
-                                Posted 1 hour ago
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="task-detail-col-price-overlay">
-                    <div class="task-detail-col-price">
-                    
-                        <div>
-                            <span>Budget</span>
-                        </div>
-                        <div>
-                            <h1>${{ taskDetail.price }}</h1>
+                <div>
+                    <div class="task-detail-col-price-overlay" style="padding-top: 20px;">
+                        <div class="task-detail-col-price">
+                        
+                            <div>
+                                <span style="padding-top: 15px; position: relative; display: block;">Budget</span>
+                            </div>
+                            <div style="padding: 10px 0;">
+                                <h1 id="taskPrice">${{ taskDetail.price }}</h1>
+                            </div>
+                            <div style="padding-bottom: 10px;">
+                               <button class="button btnprimary" 
+                                style="display: block;margin: 0 auto; background: #9162b42b;"
+                                data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>
+                            </div>
                         </div>
                     </div>
-                    
-                
-                    
-                    
-           
-                
                 </div>
-                
                 
             </div>
-            <div class="task-detail-divider"></div>
-            <div>
+            <div style="background: #f3f4f5; border-radius: 44px; width: 100%; padding: 10px 35px; margin: 25px 0;">
                 <div class="task-detail-heading">
-                    <span>Job Description</span>
+                    <span>Description</span>
                 </div>
-                <div style="color: #636363;">
-                    <span style="line-height: 30px;margin-bottom: 30px;display: block;">
+                <div>
+                    <span id="taskDesc" style="margin-bottom: 30px;display: block;">
                         {{ taskDetail.description | safe | linebreaks }}
                     </span>
                 </div>
             </div>
-            <div class="task-detail-divider"></div>
-            <div>
-                <div class="task-detail-heading">
-                    <span class="mt20">Bidders</span>
-                </div>
-                <div style="color: #636363;">
-                    <span style="line-height: 30px;margin-bottom: 30px;display: block;">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Non enim praesent elementum facilisis leo. Aenean sed adipiscing diam donec adipiscing tristique risus nec. Leo vel fringilla est ullamcorper eget. Vulputate odio ut enim blandit volutpat maecenas volutpat blandit. Eu volutpat odio facilisis mauris sit amet. Dignissim cras tincidunt lobortis feugiat vivamus at. Magna etiam tempor orci eu lobortis elementum. Cursus turpis massa tincidunt dui ut. Ac felis donec et odio pellentesque diam volutpat. Lorem ipsum dolor sit amet consectetur adipiscing elit ut.
-                    </span>
-                </div>
-            </div>
-            <div class="task-detail-divider"></div>
-            <div>
-                <div class="task-detail-heading">
-                    <span class="mt20" style="letter-spacing: 1px;">Questions ({{ parentQuestion.count }})</span>
-                </div>
-                <div class="flex-rev">
-                    <div class="rev-usr-img-container">
-                        <div class="rev-usr-img-wrap">
-                            <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
-                                alt="Logo Moonlight Grosir Store"
-                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
-                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
-                        </div>
+            <div style="padding-top: 10px;">
+                <div class="flex comment-form dg-border p15">
+
+                    <div class="rev-usr-img-wrap">
+                        <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
+                            alt="Logo Moonlight Grosir Store"
+                            style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
+                            style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
                     </div>
-                    <div class="comment-form">
-                        <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
-                                onkeyup="checkPostValue();" placeholder="Type something to ask the task"></textarea>
-                        <button type="submit" id="postBtn" class="comm-btn" disabled> Send </button>
+                    <div style="width: 100%; margin-left: 25px;">
+                        <form method='post' action="{% url 'test123' %}">
+                            {% csrf_token %}
+                            <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
+                                onkeyup="checkPostValue();" placeholder="Leave your comment"></textarea>
+                            <button type="submit" id="postBtn" class="comm-btn" disabled> Submit </button>
+                        </form>
                     </div>
+                    
+                </div>
+                <div class="task-detail-heading">
+                    <span class="mt20" style="letter-spacing: 1px;">Comments ({{ parentQuestion.count }})</span>
                 </div>
 
                 {% for pQuestion in parentQuestion %}
@@ -141,26 +131,40 @@
                         <div class="rev-col">
                             <div class="flex-rev">
                                 <div class="rev-usr-img-container">
-                                    <div class="rev-usr-img-wrap">
-                                        <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
-                                            alt="Logo Moonlight Grosir Store"
-                                            style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
-                                            style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
+                                    <div class="rev-usr-img-wrap mb-2">
+                                        {% if pQuestion.user.img_profile %}
+                                        <img src="/static/{{ pQuestion.user.img_profile }}" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                        {% else %}
+                                        <img src="/static/images/anonymous_user.png" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                        {% endif %}
+                                    </div>
+                                    <div style="text-align:center; position: relative; margin-top: -10px;">
+                                        <a href="profile.html">
+                                            <h5 class="rev-name-header">{{ pQuestion.user.username | title }}</h5>
+                                        </a>
                                     </div>
                                 </div>
-                                <div class="ml20">
-                                    <div class="task-comm-flex">
-                                        <a href="profile.html">
-                                            <h5 class="rev-name-header">{{ pQuestion.user.username }}</h5>
-                                        </a>
-                                        <div class="rev-date-col">
-                                            <em class="rev-date ml10">5 minutes ago</em>
+                                <div class="ml10" style="display: flex; justify-content: space-between; width: 100%;">
+                                    <div class="task-comm-flex ml20">
+                                        <div style="display: flex; align-items: center; width: 100%;">
+                                            <span style="font-weight: 600; font-size: 1.5rem; color: #FEA500; margin-right: 15px;">{{ pQuestion.user.rating|floatformat:1 }} </span>
+                                            <i class="star-rev fas fa-star fa-lg"></i>
+                                        </div>
+                                        <div class="rev-rate-col">
+                                            <div class="rev-rate">100% complete rate</div>
                                         </div>
                                     </div>
+                                    <div class="rev-date-col">
+                                        <em class="rev-date ml10" style="font-size: 10px;font-weight: lighter;">5mins ago</em>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex;justify-content: space-between;">
+                                <div style="display: flex; justify-content: space-between; width: 100%;">
                                     <div class="task-comm-txt">
                                         {{ pQuestion.question }}
                                     </div>
-                                    <div>
+                                    <div style="width:65px;">
                                         <a href="#0" class="reply-anchor">
                                             <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                                             width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
@@ -179,68 +183,136 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                        </div>
-                    </div>
-                    {% for cQuestion in childQuestion %}
+                            {% for cQuestion in childQuestion %}
 
                         {% if cQuestion.parent_id == pQuestion.id %}
                             <div class="rev-comment-reply-container mt20">
                                 <div class="flex-rev">
                                     <div class="rev-usr-img-container">
                                         <div class="rev-usr-img-wrap">
-                                            <img src="https://images.tokopedia.net/img/cache/215-square/GAnVPX/2021/5/5/90e31e60-b57e-417c-8507-ca9023290583.jpg"
-                                                alt="Logo Moonlight Grosir Store"
-                                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
-                                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
+                                            {% if cQuestion.user.img_profile %}
+                                            <img src="/static/{{ cQuestion.user.img_profile }}" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                            {% else %}
+                                            <img src="/static/images/anonymous_user.png" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
                                 <div class="rev-row">
                                     <div class="rev-col">
-                                        <div class="flex-col ">
+                                        <div class="flex-col ml10" style="justify-content: space-between;">
                                             <a href="profile.html">
-                                                <h5 class="rev-name-header">{{ cQuestion.user.username}}</h5>
+                                                <h5 class="rev-name-header">Replied by {{ cQuestion.user.username | title }}</h5>
                                             </a>
-                                            {% if taskDetail.user == cQuestion.user.id %}
+                                            {% if taskDetailail.user == cQuestion.user.id %}
                                                 <div class="rev-poster">
                                                     <span>Poster</span>
                                                 </div>
                                             {% endif %}
                                             <div class="rev-date-col">
-                                                <em class="rev-date ml10">1 minute ago</em>
+                                                <em class="ml10" style="font-size: 10px;font-weight: lighter;">1min ago</em>
                                             </div>
                                         </div>
-                                        <div class="" style="font-size: 13px; margin-bottom: 10px; color: #d2691e;">
-                                            <span>Reply to Samuel</span>
-                                        </div>
-                                        <div class="task-comm-txt">
-                                            {{ cQuestion.question}}
-                                        </div>
-                                        <div class="reply-row">
-                                            <a href="#0" class="reply-anchor">
-                                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                                    width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
-                                                    preserveAspectRatio="xMidYMid meet" class="reply-arrow">
-
-                                                    <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
-                                                    fill="#eea47fff" stroke="none">
-                                                    <path d="M35 250 l-39 -40 39 -40 c35 -36 65 -51 65 -33 0 4 -12 20 -27 36
-                                                    l-28 29 97 -4 c86 -3 100 -7 123 -28 27 -26 34 -75 14 -112 -13 -25 -5 -35 15
-                                                    -18 25 20 30 74 11 114 -25 53 -58 66 -166 66 l-93 0 27 28 c15 15 27 31 27
-                                                    35 0 18 -30 3 -65 -33z"/>
-                                                    </g>
-                                                </svg>
-                                                <span class="reply-btn">Reply</span>
-                                            </a>
+                                        <div class="ml10">
+                                            <div style="font-size: 13px; margin-bottom: 10px; color: #d2691e;">
+                                                <span>Reply to Samuel</span>
+                                            </div>
+                                            <div style="display: flex; justify-content: space-between;">
+                                                <div class="task-comm-txt">
+                                                    {{ cQuestion.question}}
+                                                </div>
+                                                <div class="reply-row">
+                                                    <a href="#0" class="reply-anchor">
+                                                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                                                            width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
+                                                            preserveAspectRatio="xMidYMid meet" class="reply-arrow">
+        
+                                                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
+                                                            fill="#eea47fff" stroke="none">
+                                                            <path d="M35 250 l-39 -40 39 -40 c35 -36 65 -51 65 -33 0 4 -12 20 -27 36
+                                                            l-28 29 97 -4 c86 -3 100 -7 123 -28 27 -26 34 -75 14 -112 -13 -25 -5 -35 15
+                                                            -18 25 20 30 74 11 114 -25 53 -58 66 -166 66 l-93 0 27 28 c15 15 27 31 27
+                                                            35 0 18 -30 3 -65 -33z"/>
+                                                            </g>
+                                                        </svg>
+                                                        <span class="reply-btn">Reply</span>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         {% endif %}
                     {% endfor %}
+                        </div>
+                        
+                    </div>
+                    
+                    
                 </div>
                 {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="offerModal" tabindex="-1" role="dialog" aria-labelledby="offerModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 p-md-5">
+                {% csrf_token %}
+                <div class="text-center mb-2" style="font-size: 1.5rem; font-weight: 600;">Make an offer</div>
+                <div class="align-items-center justify-content-center mb-2 flex">
+                    <div class="offer-form p10" style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="position: relative; font-size: 2rem; display: flex;
+                        align-items: center; border: 1px solid #793079; border-radius: 12px;">
+                            <div style="position: absolute; left: 15px; text-align: center;">
+                                <span>$</span>
+                            </div>
+                            <div>
+                                <input type="text" name="offer-price" id="offer-price" value="150" inputmode="numeric" style="width: 150px;
+                                padding: 10px 10px 10px 40px;
+                                text-align: center;">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="flex mb-3" style="flex-direction: column;">
+                    <div class="flex mb-1" style="justify-content: space-between; font-size: 14px; color: #000000c9;">
+                        <div>
+                            <div>Admin Fee</div>
+                        </div>
+                        <div>
+                            <span>-$</span>
+                            <span id="admin-fee">10</span>
+                        </div>
+                    </div>
+                    <div class="flex" style="justify-content: space-between; font-weight: 700; color: #793079;">
+                        <div>Total you'll earn</div>
+                        <div>
+                            <span>$</span>
+                            <span id="total-earn">140</span>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <span>Please explain or describe what make you good for this task</span>
+                </div>
+                <div class="offer-form pp-border p15" style="margin-top: 20px;">
+                    <textarea class="offer-text" name="offer-desc" id="offer-desc" rows="5" placeholder="i.e. I am confident that I can provide you with the high-quality results you are looking for" style="width: 100%;"></textarea>
+                </div>
+                <div style="padding-top: 20px;">
+                    <button type="submit" class="comm-btn"> Submit </button>
+                </div>
             </div>
         </div>
     </div>

@@ -34,7 +34,11 @@
                             <span>{{offer.create_date | date:'m-d-Y H:i A'}}</span>
                             <img class="tasker-profile pos-abs" src="https://eu7cmie.cloudimg.io/v7/https://assets-airtasker-com.s3.amazonaws.com/uploads/user/avatar/3411484/image-ab53f784dc250dc55658f54b97629dad.jpg?width=80&amp;height=80">
                             <p class="card-text">tes</p>
+<<<<<<< HEAD
                             <a href="{% url 'select_sp' offer.task offer.user %}" class="btn btn-primary">Accept</a>
+=======
+                            <a href="{% url 'select_sp' offer.task %}" class="btn btn-primary">Accept</a>
+>>>>>>> remotes/origin/Ferry
                         </div>
                     </div>
                     {% endfor %}

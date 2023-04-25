@@ -8,7 +8,11 @@ body {
     overflow-x: hidden !important;
     overflow-y: scroll !important;
     margin: 0px;
+<<<<<<< HEAD
     background: #eeeef1;
+=======
+    /* background: #eeeef1; */
+>>>>>>> remotes/origin/Ferry
 }
 
 a {
@@ -26,7 +30,13 @@ a img {outline : none;}
 
 img {border : 0;}
 
+<<<<<<< HEAD
 a img {outline : none;}
+=======
+button {
+    border: none;
+}
+>>>>>>> remotes/origin/Ferry
 
 nav {
     background: #fff;
@@ -38,6 +48,15 @@ div {
 
 img {border : 0;}
 
+<<<<<<< HEAD
+=======
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+>>>>>>> remotes/origin/Ferry
 .mb10 {
     margin-bottom: 10px;
 }
@@ -130,7 +149,12 @@ img {border : 0;}
 
 /* Form */
 input {
+<<<<<<< HEAD
     background: #fff;
+=======
+    /* background: #fff; */
+    background: transparent;
+>>>>>>> remotes/origin/Ferry
     border: none;
 }
 
@@ -138,6 +162,17 @@ input:focus, textarea:focus {
     outline: none;
 }
 
+<<<<<<< HEAD
+=======
+.dg-border {
+    border: 1px solid #bfcce1;
+}
+
+.pp-border {
+    border: 1px solid #793079;
+}
+
+>>>>>>> remotes/origin/Ferry
 .btn-search-nav {
     position: absolute;
     right: 15px;
@@ -165,6 +200,12 @@ input:focus, textarea:focus {
     text-indent: 20px;
 }
 
+<<<<<<< HEAD
+=======
+.search-input.my-task {
+    width: 220px !important;
+}
+>>>>>>> remotes/origin/Ferry
 
 .notif-layout {
     border-radius: 9px;
@@ -197,7 +238,10 @@ input:focus, textarea:focus {
     position: relative;
     width: 1024px;
     margin: 0 auto;
+<<<<<<< HEAD
     /* height: 100px; */
+=======
+>>>>>>> remotes/origin/Ferry
 }
 
 .task-content-overlay {
@@ -209,6 +253,10 @@ input:focus, textarea:focus {
 
 .task-list {
     width: 365px;
+<<<<<<< HEAD
+=======
+    transition: left .5s ease-in;
+>>>>>>> remotes/origin/Ferry
 }
 
 .list-scroll-effect {
@@ -251,12 +299,21 @@ input:focus, textarea:focus {
     white-space: initial;
     padding: 0px;
     font-weight: 500;
+<<<<<<< HEAD
 }
 
 .active {
     /* border: 1px solid #2557a7; */
     border: 1px solid #2557a7;
     box-shadow: 1px 1px 3px 0px #2557a76a;
+=======
+    margin-right: 15px;
+}
+
+.active {
+    border: 1px solid #6e27a37a;
+    box-shadow: 1px 1px 3px 0px #6e27a37a;
+>>>>>>> remotes/origin/Ferry
 }
 
 .task-flex {
@@ -264,6 +321,13 @@ input:focus, textarea:focus {
     flex-direction: column;
 }
 
+<<<<<<< HEAD
+=======
+.flex {
+    display: flex;
+}
+
+>>>>>>> remotes/origin/Ferry
 .task-flex-align {
     /* display: flex;
     align-items: center;
@@ -282,20 +346,46 @@ input:focus, textarea:focus {
 }
 
 .task-status {
+<<<<<<< HEAD
     color: white;
+=======
+>>>>>>> remotes/origin/Ferry
     font-size: 11px;
     margin-top: 15px;
 }
 
+<<<<<<< HEAD
 .open {
     width: 70px;
     background: #0080ed;
+=======
+.task-active {
+    width: 70px;
+>>>>>>> remotes/origin/Ferry
     height: 21px;
     border-radius: 20px;
     text-align: center;
     padding-top: 2px;
 }
 
+<<<<<<< HEAD
+=======
+.task-active-lg {
+    padding: 5px 15px;
+    display: block;
+    border-radius: 24px;
+    font-weight: 700;
+}
+
+.open {
+    background: #6e27a31a;
+}
+
+.bookmark:hover {
+    cursor: pointer;
+}
+
+>>>>>>> remotes/origin/Ferry
 .assigned {
     width: 70px;
     background: #c58252;
@@ -407,7 +497,11 @@ span.offer-count {
 }
 
 .task-detail-col-price {
+<<<<<<< HEAD
     background: #e4e4e4;
+=======
+    background: #f3f4f5;
+>>>>>>> remotes/origin/Ferry
     border-radius: 12px;
 }
 
@@ -420,7 +514,11 @@ span.offer-count {
     line-height: 50px;
     font-size: 1.3rem;
     font-weight: 600;
+<<<<<<< HEAD
     padding-bottom: 10px;
+=======
+    padding-top: -10px;
+>>>>>>> remotes/origin/Ferry
 }
 
 .task-detail-heading span {
@@ -455,13 +553,17 @@ span.offer-count {
 }
 
 .task-stat {
+<<<<<<< HEAD
     color: #989ba7;
+=======
+>>>>>>> remotes/origin/Ferry
     font-size: .75rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: 600;
 }
 
+<<<<<<< HEAD
 .task-active {
     padding: 5px 15px;
     background-color: #0080ed;
@@ -471,6 +573,121 @@ span.offer-count {
     font-weight: 700;
 }
 
+=======
+.navbar-section-collapse {
+    display: flex!important;
+    justify-content: space-between;
+    width: 100%;
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 1023px) {
+    .overlay-navbar-top, .overlay-navbar {
+        padding: 0 20px;
+    }
+
+    .task-list {
+        width: 100%;
+    }
+
+    .task-content {
+        width: 100%;
+        margin: 0;
+    }
+
+    .task-content {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        padding: 10px 25px;
+    }
+
+    .task-detail-container {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+    }
+
+    .task-card {
+        padding: 12px 25px;
+    }
+}
+
+
+@media not all and (min-width: 646px) {
+    .navbar-section-collapse {
+        display: flex!important;
+        flex-basis: auto;
+    }
+
+    .main-navbar {
+        display: none!important; 
+    }
+}
+
+.space-bt {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-circle {
+    position: relative;
+    display: block;
+    background: #c15ec1;
+    border-radius: 157px;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    font-size: 21px;
+    color: white;
+}
+
+@media not all and (max-width: 645.98px) {
+    
+    .main-navbar-sm {
+        display: none!important; 
+    }
+
+    .space-bt {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+}
+
+
+@media screen and (max-width:767px) {
+    .task-list {
+        height: 100%;
+        overflow: auto;
+        width: 100%;
+    }
+
+    .task-content-overlay {
+        display: block;
+        height: calc(100vh - 118px);
+        overflow: hidden;
+      }
+
+    .task-detail-container {
+        /* bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0; */
+        display: none;
+    }
+}
+
+
+
+>>>>>>> remotes/origin/Ferry
 .task-detail-scroller {
     overflow-x: hidden;
     overflow-y: auto;
@@ -525,18 +742,35 @@ span.offer-count {
 
 .rev-section {
     background-color: #fff;
+<<<<<<< HEAD
     border-bottom: 1px solid #e5e7e9;
+=======
+>>>>>>> remotes/origin/Ferry
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
     border-radius: 3px;
+<<<<<<< HEAD
     padding: 25px 0 15px 0;
+=======
+    padding: 10px 0;
+}
+
+.rev-row {
+    width: 100%;
+>>>>>>> remotes/origin/Ferry
 }
 
 .rev-overlay {
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;
+<<<<<<< HEAD
+=======
+    background: #f3f4f5;
+    padding: 15px 20px;
+    border-radius: 30px;
+>>>>>>> remotes/origin/Ferry
 }
 .rev-col {
     width: 100%;
@@ -549,17 +783,28 @@ span.offer-count {
 }
 
 .rev-usr-img-container {
+<<<<<<< HEAD
     display: block;
     height: auto;
     margin: 0px;
     flex-shrink: 0;
     height: 55px;
     min-width: 65px;
+=======
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin: 0px;
+>>>>>>> remotes/origin/Ferry
 }
 
 .rev-usr-img-wrap {
     position: relative;
+<<<<<<< HEAD
     display: inline-block;
+=======
+    margin: 0 auto;
+>>>>>>> remotes/origin/Ferry
     width: 55px;
     height: 55px;
     cursor: inherit;
@@ -572,16 +817,26 @@ span.offer-count {
     object-fit: cover;
 }
 
+<<<<<<< HEAD
 .comment-form {
+=======
+.comment-form, .offer-form {
+>>>>>>> remotes/origin/Ferry
     width: 100%;
     border-radius: 10px;
     overflow: hidden;
     transition: border 0.3s linear 0s;
+<<<<<<< HEAD
     border: 1px solid #bfcce1;
     padding: 15px;
 }
 
 .comment-text {
+=======
+}
+
+.comment-text, .offer-text {
+>>>>>>> remotes/origin/Ferry
     width: 100%;
     resize: none;
     border: none;
@@ -597,7 +852,11 @@ span.offer-count {
 
 .comm-btn {
     float: right;
+<<<<<<< HEAD
     background-color: #1d9bf0;
+=======
+    background-color: #6e27a3e0;
+>>>>>>> remotes/origin/Ferry
     color: #fff;
     cursor: pointer;
     border: none;
@@ -614,9 +873,20 @@ span.offer-count {
     opacity: 0.5;
 }
 
+<<<<<<< HEAD
 .rev-name-header {
     font-size: 1rem;
     color: #5171ff;
+=======
+.offer-txt {
+    padding: 16px 16px 16px 56px;
+    width: 140px;
+    line-height: 40px;
+}
+
+.rev-name-header {
+    font-size: 1rem;
+>>>>>>> remotes/origin/Ferry
     margin-top: 5px;
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -626,17 +896,35 @@ span.offer-count {
 .task-comm-flex {
     display: flex;
     align-items: center;
+<<<<<<< HEAD
+=======
+    flex-direction: column;
+>>>>>>> remotes/origin/Ferry
 }
 
 .rev-date-col {
     position: relative;
+<<<<<<< HEAD
     margin-left: 15px;
+=======
+    margin-left: 0px;
+>>>>>>> remotes/origin/Ferry
     top: -2px;
 }
 
 .rev-date {
+<<<<<<< HEAD
     color: #999;
     font-size: 0.9rem;
+=======
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.rev-rate {
+    font-size: .9rem;
+    font-weight: 700;
+>>>>>>> remotes/origin/Ferry
 }
 
 .rev-comment-title {
@@ -661,11 +949,29 @@ span.offer-count {
     display: flex;
     flex-wrap: nowrap;
     align-items: flex-start;
+<<<<<<< HEAD
     padding: 16px 16px 12px 8px;
     margin-bottom: 20px;
     border-radius: 16px;
     background-color: #f3f4f5;
     margin-left: 3rem !important;
+=======
+    padding-right: 25px;
+    padding-left: 8px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    margin-left: 3rem !important;
+    width: 540px;
+}
+
+.rev-comment-container {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    padding-left: 8px;
+    margin-bottom: 20px;
+    width: 500px;
+>>>>>>> remotes/origin/Ferry
 }
 
 .reply-btn {
@@ -734,18 +1040,29 @@ span.offer-count {
 }
 
 .dropdown-menu-header {
+<<<<<<< HEAD
     color: #fff;
+=======
+>>>>>>> remotes/origin/Ferry
     margin-top: -0.65rem;
     margin-bottom: 0.65rem;
     position: relative;
     z-index: 6;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
+<<<<<<< HEAD
+=======
+    border-bottom: 1px solid #00000026;
+>>>>>>> remotes/origin/Ferry
 }
 
 .dropdown-menu-header-inner {
     margin: -1px -1px 0;
+<<<<<<< HEAD
     padding: 1.5rem 0.5rem;
+=======
+    padding: 0.5rem 0.5rem;
+>>>>>>> remotes/origin/Ferry
     position: relative;
 }
 
@@ -819,7 +1136,11 @@ span.offer-count {
 }
 
 .dropdown-item {
+<<<<<<< HEAD
     font-size: 0.88rem;
+=======
+    font-size: 1rem;
+>>>>>>> remotes/origin/Ferry
     display: flex;
     align-items: center;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -827,7 +1148,11 @@ span.offer-count {
     z-index: 6;
     position: relative;
     width: 100%;
+<<<<<<< HEAD
     padding: 0.4rem 1.5rem;
+=======
+    padding: 1rem 1.5rem;
+>>>>>>> remotes/origin/Ferry
     clear: both;
     font-weight: 400;
     color: #212529;
@@ -859,7 +1184,11 @@ span.offer-count {
     list-style: none;
     background-color: #fff;
     background-clip: padding-box;
+<<<<<<< HEAD
     border: 1px solid rgba(0, 0, 0, 0.15);
+=======
+    border: 1px solid #00000026;
+>>>>>>> remotes/origin/Ferry
     border-radius: 0.25rem;
     min-width: 325px;
     right: 0 !important;
@@ -876,9 +1205,206 @@ span.offer-count {
     top: 0px;
     left: 0px;
     transform: translate3d(-260px, 62px, 0px);
+<<<<<<< HEAD
+=======
+    border-radius: 10px;
+>>>>>>> remotes/origin/Ferry
 }
 
 .dropdown-acc {
     border: none;
     cursor: pointer;
+<<<<<<< HEAD
 }
+=======
+}
+
+.profile-content-overlay {
+    position: relative;
+    max-width: 1024px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.profile-img {
+    display: inline-block;
+    border-radius: 50% !important;
+    background-color: rgb(243, 243, 247);
+    object-fit: cover;
+    position: absolute;
+    top: 145px;
+}
+
+.app-sidebar .app-sidebar__inner {
+    padding: 2px 1.5rem 1.5rem;
+}
+
+
+.app-sidebar-nav {
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    margin: 0.75rem 0;
+    font-weight: bold;
+    color: #3f6ad8;
+    white-space: nowrap;
+    position: relative;
+}
+
+.nav-sidebar {
+    position: relative;
+    display: block;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column!important;
+}
+
+.nav-links li {
+    position: relative;
+    list-style: none;
+    transition: all 0.4s ease;
+    margin: 20px 0;
+}
+
+.nav-links li a {
+    align-items: center;
+    text-decoration: none;
+}
+
+.nav-links li a:hover {
+    background: #f3c6f3;
+    color: #16181b;
+}
+
+.nav-links li a .link_name {
+    font-weight: 400;
+    transition: all 0.4s ease;
+}
+
+.nav-links li .iocn-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-links li i {
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    right: 0px;
+    top: 1px;
+}
+
+/* .nav-links li:hover{
+    background: #e3e1fa;
+} */
+
+.nav-links li ul.sub-menu ul>li>a:hover {
+    color: #3f6ad8;
+}
+
+.nav-links li.showMenu i.arrow {
+    transform: rotate(-180deg);
+}
+
+.sub-menu {
+    padding-left: 30px;
+    display: none;
+}
+
+.sub-menu.showMenu {
+    display: block;
+}
+
+.bx {
+    font-family: 'boxicons'!important;
+    font-weight: normal;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    display: inline-block;
+    text-transform: none;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.wishlist-overlay:hover {
+    background: #efe3fa;
+}
+
+.notif-block {
+    display: block;
+}
+
+.notif-block:hover {
+    border-radius: 8px;
+    background: #fac7fa;
+}
+
+.modal-content {
+    border: none;
+    position: relative;
+    padding: 0 !important;
+    -webkit-box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 24%);
+    -moz-box-shadow: 0px 10px 34px -15px rgba(0, 0, 0, 0.24);
+    box-shadow: 0px 10px 34px -15px rgb(0 0 0 / 24%);
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    outline: 0;
+}
+
+.modal-content .modal-header {
+    position: relative;
+    padding: 0;
+    border: none;
+}
+
+.modal-content button.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    z-index: 1;
+}
+
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.close {
+    float: right;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+}
+
+.close:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+>>>>>>> remotes/origin/Ferry

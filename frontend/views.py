@@ -1,25 +1,48 @@
 from django.http import HttpResponseRedirect, JsonResponse
+<<<<<<< HEAD
+=======
+from django.contrib.auth import logout
+>>>>>>> remotes/origin/Ferry
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
 from django.db.models import Count
+<<<<<<< HEAD
 
 import requests
 from .constant import *
 from backend.models import *
 
 from backend.models import *
+=======
+from backend.models import *
+from .constant import *
+
+from django.conf import settings
+import requests
+import re
+>>>>>>> remotes/origin/Ferry
 
 # Create your views here.
 
 def index(request):
     return redirect("tasks")
 
+<<<<<<< HEAD
 def tasks(request):
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
+=======
+def profile(request):
+    return render(request, "isit950/account/profile.html")
+
+def tasks(request):
+    taskResp = requests.get(restServer + "task")
+    tasks = taskResp.json()
+    print(tasks)
+>>>>>>> remotes/origin/Ferry
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
     taskDetail = taskDetailResp.json()
@@ -29,8 +52,13 @@ def tasks(request):
     
     parentQuestion = Question.objects.filter(task_id=firstTaskDetail, parent_id=None).order_by("-create_date")
     childQuestion = Question.objects.filter(task_id=firstTaskDetail).exclude(parent_id=None)
+<<<<<<< HEAD
 
     return render(request, "isit950/index.html", {
+=======
+    
+    response =  render(request, "isit950/index.html", {
+>>>>>>> remotes/origin/Ferry
         "tasks": tasks,
         "taskDetail": taskDetail,
         "user": 1,
@@ -38,6 +66,7 @@ def tasks(request):
         "parentQuestion": parentQuestion,
         "childQuestion": childQuestion
     })
+<<<<<<< HEAD
 
     # select a.*
 # from backend_question a left join backend_question b
@@ -58,12 +87,23 @@ def tasks(request):
 # 1 => 2,3
 
     
+=======
+    a = encryptString(request.user.username)
+    if request.user.is_authenticated and not request.COOKIES.get('usid'):
+        response.set_cookie(key='usid', value=encryptString(request.user.username), max_age=settings.SESSION_COOKIE_AGE)
+        
+    return response
+>>>>>>> remotes/origin/Ferry
 
 def taskDetail(request, slug):
     
     taskId = slug.rsplit('-', 1)[-1]
+<<<<<<< HEAD
     print(request.user.id)
 
+=======
+    
+>>>>>>> remotes/origin/Ferry
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
@@ -86,6 +126,11 @@ def taskDetail(request, slug):
 
 def createTask(request):
     if request.method == 'GET':
+<<<<<<< HEAD
+=======
+        # print(decryptString(request.COOKIES.get('usid')))
+        
+>>>>>>> remotes/origin/Ferry
         catResp = requests.get(restServer + "category")
         categories = catResp.json()
 
@@ -122,7 +167,37 @@ def createTask(request):
         messages.success(request, "New task has been added successfully")
         return HttpResponseRedirect(reverse("tasks"))
     
+<<<<<<< HEAD
 
+=======
+def notification(request):
+    return render(request, "isit950/account/notification.html")
+
+def paymentMethod(request):
+    return render(request, "isit950/account/payment_method.html")
+
+def paymentHistory(request):
+    return render(request, "isit950/account/payment_history.html")
+    
+def testRead(request):
+    if request.method == 'POST':
+        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+        
+        name = request.POST['text-content']
+        for i in name.split():
+            i = i.lstrip()
+            if(re.fullmatch(regex, i)) or (re.fullmatch('[6-9][0-9]{9}',i)):
+                print("contain number")
+        
+            else:
+                print("no number")
+
+
+
+        return HttpResponseRedirect(reverse("test123"))
+
+    return render(request, "isit950/index.html")
+>>>>>>> remotes/origin/Ferry
 
 def watchlist(request):
     watchlistResp = requests.get(restServer + "show_my_watchlist/ferry")
@@ -132,13 +207,35 @@ def watchlist(request):
         "watchlist": watchlist
     })
 
+<<<<<<< HEAD
+=======
+def wishlist(request):
+    wishistResp = requests.get(restServer + "show_my_watchlist/ferry")
+    wishlist = wishistResp.json()
+
+    return render(request, "isit950/account/wishlist.html", {
+        "wishlist": wishlist
+    })
+
+>>>>>>> remotes/origin/Ferry
 def myTask(request):
     userId = str(request.user.id)
     myTaskListResp = requests.get(restServer + "get_my_task/" + userId)
     myTaskList = myTaskListResp.json()
     
+<<<<<<< HEAD
     return render(request, "isit950/my_task.html", {
         "myTaskList": myTaskList
+=======
+    firstTaskDetail = myTaskList[0]["id"]
+    taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
+    taskDetail = taskDetailResp.json()
+    
+    return render(request, "isit950/my_task.html", {
+        "myTaskList": myTaskList,
+        "taskDetail": taskDetail,
+        "type": "myTask"
+>>>>>>> remotes/origin/Ferry
     })
 
 def myTaskDetail(request, taskId):
@@ -150,14 +247,39 @@ def myTaskDetail(request, taskId):
 
     questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
 
+<<<<<<< HEAD
     print(myTaskDetail)
 
+=======
+>>>>>>> remotes/origin/Ferry
     return render(request, "isit950/my_task_detail.html", {
         "myTaskDetail": myTaskDetail,
         "offers": offers,
         "questions": questionCount
     })
 
+<<<<<<< HEAD
+=======
+def testHTML(request):
+    return render(request, "isit950/test.html")
+
+def loginView(request):
+    return render(request, "isit950/auth/login.html")
+
+def forgotPassword(request):
+    return render(request, "isit950/auth/forget_password.html")
+
+def signUp(request):
+    return render(request, "isit950/auth/sign-up.html")
+
+def logout_view(request):
+    logout(request)
+    # return HttpResponseRedirect(reverse("index"))
+
+    response = HttpResponseRedirect(reverse("index"))
+    response.delete_cookie('usid')
+    return response
+>>>>>>> remotes/origin/Ferry
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

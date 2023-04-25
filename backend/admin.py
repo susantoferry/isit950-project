@@ -5,3 +5,6 @@ from .models import *
 
 admin.site.register(User)
 admin.site.register(Category)
+admin.site.register(Offer)
+admin.site.register(Question)
+admin.site.register(Task)

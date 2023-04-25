@@ -1,0 +1,148 @@
+{% extends 'isit950/account_layout.html' %}
+{% load parse_date %}
+{% block body %}
+<div style="width: 100%; overflow: hidden; position: relative; top: -100px;">
+    <div style="border: 1px solid #e3e3e3; border-radius: 10px;">
+        <div
+            style="padding: 10px 20px; border-bottom: 1px solid #e3e3e3; font-size: 1.2rem; font-weight: 700">
+            <span style="margin-right: 10px;">Payment History</span>
+        </div>
+        <div style="display: flex; padding: 20px 30px; height: auto; justify-content: space-between; flex-direction: column;">
+            <div style="display: flex;gap: 40px;flex-wrap: wrap;position: relative;">
+                <div>
+                    <a href="#" class="button btnprimary-outline btnnavtop">Earned</a>
+                </div>
+                <div>
+                    <a href="#" class="button btnprimary btnnavtop">Outgoing</a>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <span style="font-size: 1.24rem; color: #9f419f; font-weight: 300;">Search by transaction date</span>
+
+                <div style="margin-top: 10px;">
+                    <div style="display: flex;gap: 40px;flex-wrap: wrap;position: relative;">
+                        <div>
+                            <a href="#" class="button btnprimary-outline btnnavtop">Earned</a>
+                        </div>
+                        <div>
+                            <a href="#" class="button btnprimary btnnavtop">Outgoing</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <div style="background: #ca82ff5e; padding: 10px 20px; border-radius: 10px; margin: 10px 0;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="max-width: 50%;width: 50%;">
+                            <span>Take away my Oven please!</span>
+                        </div>
+                        <div style="max-width: 50%;width: 50%;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display:inherit; align-items: center;">
+                                    <div>
+                                        <span>assigned to</span>
+                                        <span style="font-weight:700">ABC</span>
+                                    </div>
+                                    <div style="margin-left: 15px;">
+                                        <img width="45" src="/static/images/profiles/Hansel.png" alt="">
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="#" style="color: #800080" data-reid="1" data-bs-toggle="modal" data-bs-target="#receiptModal"> View Receipt</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: #ca82ff5e; padding: 10px 20px; border-radius: 10px; margin: 10px 0;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="max-width: 50%;width: 50%;">
+                            <span>Need someone to clean my garden</span>
+                        </div>
+                        <div style="max-width: 50%;width: 50%;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display:inherit; align-items: center;">
+                                    <div>
+                                        <span>assigned to</span>
+                                        <span style="font-weight:700">Mark</span>
+                                    </div>
+                                    <div style="margin-left: 15px;">
+                                        <img width="45" src="/static/images/profiles/Hansel.png" alt="">
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="#" style="color: #800080" data-reid="2" data-bs-toggle="modal" data-bs-target="#receiptModal"> View Receipt</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="receiptModal" tabindex="-1" role="dialog" aria-labelledby="receiptModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 p-md-5">
+                {% csrf_token %}
+                <div class="text-center mb-2" style="font-size: 1.5rem; font-weight: 600;">Make an offer</div>
+                <div class="align-items-center justify-content-center mb-2 flex">
+                    <div class="offer-form p10" style="display: flex; flex-direction: column; align-items: center;">
+                        <div style="position: relative; font-size: 2rem; display: flex;
+                        align-items: center; border: 1px solid #793079; border-radius: 12px;">
+                            <div style="position: absolute; left: 15px; text-align: center;">
+                                <span>$</span>
+                            </div>
+                            <div>
+                                <input type="text" name="offer-price" id="offer-price" value="150" inputmode="numeric" style="width: 150px;
+                                padding: 10px 10px 10px 40px;
+                                text-align: center;">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="flex mb-3" style="flex-direction: column;">
+                    <div class="flex mb-1" style="justify-content: space-between; font-size: 14px; color: #000000c9;">
+                        <div>
+                            <div>Admin Fee</div>
+                        </div>
+                        <div>
+                            <span>-$</span>
+                            <span id="admin-fee">10</span>
+                        </div>
+                    </div>
+                    <div class="flex" style="justify-content: space-between; font-weight: 700; color: #793079;">
+                        <div>Total you'll earn</div>
+                        <div>
+                            <span>$</span>
+                            <span id="total-earn">140</span>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <span>Please explain or describe what make you good for this task</span>
+                </div>
+                <div class="offer-form pp-border p15" style="margin-top: 20px;">
+                    <textarea class="offer-text" name="offer-desc" id="offer-desc" rows="5" placeholder="i.e. I am confident that I can provide you with the high-quality results you are looking for" style="width: 100%;"></textarea>
+                </div>
+                <div style="padding-top: 20px;">
+                    <button type="submit" class="comm-btn"> Submit </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+{% endblock %}

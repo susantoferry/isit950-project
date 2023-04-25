@@ -10,6 +10,7 @@ const Toast = Swal.mixin({
     }
 })
 
+<<<<<<< HEAD
 document.getElementById("comment-text").addEventListener("focus", function () {
     $(".comment-form").addClass("comment-onfocus");
 });
@@ -17,6 +18,24 @@ document.getElementById("comment-text").addEventListener("focus", function () {
 document.getElementById("comment-text").addEventListener("focusout", function () {
     $(".comment-form").removeClass("comment-onfocus");
 });
+=======
+let arrow = document.querySelectorAll(".arrow");
+
+for (var i = 0; i < arrow.length; i++) {
+    arrow[i].addEventListener("click", (e) => {
+        let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+        arrowParent.classList.toggle("showMenu");
+    });
+}
+
+// document.getElementById("comment-text").addEventListener("focus", function () {
+//     $(".comment-form").addClass("comment-onfocus");
+// });
+
+// document.getElementById("comment-text").addEventListener("focusout", function () {
+//     $(".comment-form").removeClass("comment-onfocus");
+// });
+>>>>>>> remotes/origin/Ferry
 
 
 function checkPostValue() {
@@ -28,7 +47,11 @@ function checkPostValue() {
     }
 }
 
+<<<<<<< HEAD
 $('#postBtn').click(function () {
+=======
+$('#postBtn123').click(function () {
+>>>>>>> remotes/origin/Ferry
     var urlArr = document.URL.split('/');
     var taskId = window.location.href.split("-").pop()
 
@@ -47,6 +70,7 @@ $('#postBtn').click(function () {
             question: document.querySelector('#comment-text').value
         })
     })
+<<<<<<< HEAD
     .then(response => response.json())
     .then(result => {
         Swal.fire({
@@ -58,6 +82,82 @@ $('#postBtn').click(function () {
         })
     })
 })
+=======
+        .then(response => response.json())
+        .then(result => {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Your comment has been posted',
+            }).then((result) => {
+                location.reload();
+            })
+        })
+})
+
+
+
+$(document).ready(function() {
+    $('').click(function($event) {
+
+    })
+
+    $('#offer-price').keyup(function($e){
+        if ($('#offer-price').val() > 0) {
+            $amount = $e.target.value;
+            $adminFee = ($amount * 10) / 100;
+            $totalEarn = $amount - $adminFee;
+            $('#admin-fee').text($adminFee)
+            $('#total-earn').text($totalEarn)
+        }
+    });
+
+    $('.comm-btn').click(function($event) {
+        const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        const price = document.querySelector('#offer-price').value;
+        const offerDesc = document.querySelector('#offer-desc').value;
+        const adminFee = -Math.abs(Number(document.querySelector('#admin-fee').innerText));
+        const totalEarn = document.querySelector('#total-earn').innerText;
+        
+        fetch(`/api/offer`, {
+            method: "POST",
+            credentials: 'same-origin',
+            headers: {
+                "X-CSRFToken": token,
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                'price': price, 
+                'description': offerDesc, 
+                'admin_fee': adminFee, 
+                'total_price': totalEarn,
+                'task': 23,
+                'user': Cookies.get('usid')
+            })
+        })
+        .then(response => response.json())
+        .then(res => {
+            if (res.error) {
+                alert("Cannot save");
+            } else {
+                $('#offerModal').modal('toggle');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Your offer has been saved successfully'
+                }).then((result) => {
+                    location.reload();
+                })
+                // success_mail();
+    /*             location.reload(); */
+            }
+        })
+        .catch(err => {
+            alert(err)
+        })
+    })
+});
+>>>>>>> remotes/origin/Ferry
 
 
 function accept_offer() {
@@ -120,10 +220,17 @@ function accept_offer() {
 //                 const obj = JSON.parse(res)
 //                 console.log(obj.taskDetail.id)
 //                 // history.pushState(null, '', `/tasks/${this.dataset.taskId}`)
+<<<<<<< HEAD
                 
 //             });
             
             
+=======
+
+//             });
+
+
+>>>>>>> remotes/origin/Ferry
 //         }
 //     })
 // });
@@ -166,4 +273,9 @@ function bookmark(getButton, taskId) {
 
 //         })
 
+<<<<<<< HEAD
 // }
+=======
+// }
+
+>>>>>>> remotes/origin/Ferry

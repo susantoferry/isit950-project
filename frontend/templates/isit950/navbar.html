@@ -1,13 +1,17 @@
 {% block body %}
 
 <nav>
+<<<<<<< HEAD
     <!-- 6E27A3 -->
+=======
+>>>>>>> remotes/origin/Ferry
     <div class="main-navbar">
         <div class="overlay-navbar-top line-hz-navbar">
             <div class="navbar-container">
                 <a href="{% url 'index' %}">
                     <img src="/static/images/logo.png" alt="LOGO" width="65px">
                 </a>
+<<<<<<< HEAD
                 <div class="navbar-section">
                     <div class="flex-col nav-left nav-item ml20">
                         <div>
@@ -25,6 +29,26 @@
                 </div>
                 
                 {% if request.user.is_authenticated %}
+=======
+                <div class="collapse navbar-section-collapse">
+                    <div class="navbar-section">
+                        <div class="flex-col nav-left nav-item ml20">
+                            <div>
+                                <a href="{% url 'create_task' %}" class="button btnprimary btnnavtop">View Task</a>
+                            </div>
+                            {% if request.user.is_authenticated %}
+                            <div>
+                                <a href="{% url 'my_task' %}" class="button btnprimary btnnavtop">My Task</a>
+                            </div>
+                            <div>
+                                <a href="{% url 'create_task' %}" class="button btnprimary btnnavtop">Post Task</a>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if request.user.is_authenticated %}
+>>>>>>> remotes/origin/Ferry
                     <div class="flex-col nav-right nav-item ">
                         <div class="pos-rel">
                             <div class="icon">
@@ -34,6 +58,7 @@
                             <div class="notif-layout">
                                 <span class="notif-num">1</span>
                             </div>
+<<<<<<< HEAD
                         </div>
                         <div class="pos-rel">
                             <div class="icon">
@@ -44,11 +69,77 @@
                         <div class="pos-rel">
                             <div class="icon">
                                 <i class="fa-regular fa-message"></i>
+=======
+
+                            <div class="dropdown-menu-acc1 acc-container1 acc-menu-pos1"
+                                style="color: #000; display: none;">
+                                <div style="width: 100%;">
+                                    <div style="background: #ffdbff;">
+                                        <div style="display: flex; align-items: center; padding: 10px 20px;">
+                                            <div><i class="fa-sharp fa-regular fa-bell fa-xl"></i></div>
+                                            <div style="margin-left: 15px;">
+                                                <span>Ferry S. leave a comments on your posted task “ Replace a new
+                                                    curtain”</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="background: #ffdbff;">
+                                        <div style="display: flex; align-items: center; padding: 10px 20px;">
+                                            <div><i class="fa-sharp fa-regular fa-bell fa-xl"></i></div>
+                                            <div style="margin-left: 15px;">
+                                                <span>Ferry S. leave a comments on your posted task “ Replace a new
+                                                    curtain”</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; align-items: center; padding: 10px 20px;">
+                                            <div><i class="fa-sharp fa-regular fa-bell fa-xl"></i></div>
+                                            <div style="margin-left: 15px;">
+                                                <span>Ferry S. leave a comments on your posted task “ Replace a new
+                                                    curtain”</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; align-items: center; padding: 10px 20px;">
+                                            <div><i class="fa-sharp fa-regular fa-bell fa-xl"></i></div>
+                                            <div style="margin-left: 15px;">
+                                                <span>Ferry S. leave a comments on your posted task “ Replace a new
+                                                    curtain”</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; align-items: center; padding: 10px 20px;">
+                                            <div><i class="fa-sharp fa-regular fa-bell fa-xl"></i></div>
+                                            <div style="margin-left: 15px;">
+                                                <span>Ferry S. leave a comments on your posted task “ Replace a new
+                                                    curtain”</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; align-items: center; padding: 10px 20px;">
+                                            <div><i class="fa-sharp fa-regular fa-bell fa-xl"></i></div>
+                                            <div style="margin-left: 15px;">
+                                                <span>Ferry S. leave a comments on your posted task “ Replace a new
+                                                    curtain”</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="text-align: right; position: relative; padding: 5px 20px;color: #5d5757;">
+                                        <span>See all</span>
+                                    </div>
+                                </div>
+>>>>>>> remotes/origin/Ferry
                             </div>
                         </div>
                         <div>
                             <div class="btn-group">
                                 <a class="dropdown-acc">
+<<<<<<< HEAD
                                     <img width="60" class="rounded-circle bd-img" src="/static/images/Hansel.png" alt="">
                                 </a>
                                 <div class="dropdown-menu-acc acc-container acc-menu-pos">
@@ -76,18 +167,49 @@
                                                                 {% endif %}
                                                                 Task Match
                                                             </div>
+=======
+                                    <img width="60" class="rounded-circle bd-img"
+                                        src="/static/images/profiles/Hansel.png" alt="">
+                                </a>
+                                <div class="dropdown-menu-acc acc-container acc-menu-pos">
+                                    <div class="dropdown-menu-header">
+                                        <div class="dropdown-menu-header-inner">
+                                            <div class="menu-header-content">
+                                                <div class="widget-content p-0">
+                                                    <div class="widget-content-left">
+                                                        <img src="/static/images/logo.png" alt="LOGO" width="90">
+                                                        <div
+                                                            style="font-size: 1rem;font-weight: 600;color: #000;margin-top: 10px;">
+                                                            {{ request.user.first_name }} {{ request.user.last_name }}
+>>>>>>> remotes/origin/Ferry
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+<<<<<<< HEAD
                                     <a href="{% url 'create_task' %}" class="dropdown-item">Change Password</a>
                                     <a href="{% url 'create_task' %}" class="dropdown-item">Logout</a>
+=======
+                                    <a href="{% url 'profile' %}" class="dropdown-item">Personal Profile</a>
+                                    <a href="{% url 'profile' %}" class="dropdown-item">My Tasks</a>
+                                    <a href="{% url 'profile' %}" class="dropdown-item">Chat</a>
+                                    <a href="{% url 'profile' %}" class="dropdown-item">Notifications</a>
+                                    <a href="{% url 'profile' %}" class="dropdown-item">Payment History</a>
+                                    <a href="{% url 'create_task' %}" class="dropdown-item">
+                                        <span>Settings</span>
+                                        <i class='bx bxs-chevron-down arrow'
+                                            style="position: absolute; right: 20px;"></i>
+                                    </a>
+
+                                    <a href="{% url 'logout' %}" class="dropdown-item">Logout</a>
+>>>>>>> remotes/origin/Ferry
                                 </div>
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                 {% else %}
                 <div style="display: flex;justify-content: center;align-items: center;background: #E9E7E7;border-radius: 60px;height: 35px; margin-right:5px;">
                     <div>
@@ -110,10 +232,59 @@
             <div class="navbar-container">
                 <div class="pos-rel">
                     <input type="text" class="search-input" placeholder="Search for job">
+=======
+                    {% else %}
+                    <div
+                        style="display: flex;justify-content: center;align-items: center;background: #E9E7E7;border-radius: 60px;height: 35px; margin-right:5px;">
+                        <div>
+                            <a href="{% url 'create_task' %}" class="button btnsecondary">Sign Up</a>
+                        </div>
+                        <div>
+                            <a href="{% url 'create_task' %}" class="button btnsecondary">Login</a>
+                        </div>
+                    </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- For Small Screen -->
+    <div class="main-navbar-sm">
+        <div class="overlay-navbar-top line-hz-navbar">
+            <div class="navbar-container space-bt">
+                <div>
+                    <button style="background: none;">
+                        <img src="/static/images/hamburger.png" width="20px" alt="">
+                    </button>
+                </div>
+                <div>
+                    <a href="{% url 'index' %}">
+                        <img src="/static/images/logo.png" alt="LOGO" width="65px">
+                    </a>
+                </div>
+                <div>
+                    <div>
+                        <a href="{% url 'create_task' %}" class="btn-circle">+</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if not 'account' in request.path %}
+    <div class="second-navbar">
+        <div class="overlay-navbar">
+            <div class="navbar-container" style="overflow-x: auto;overflow-y: hidden;">
+                <div class="pos-rel">
+                    <input type="text" class="search-input{% if type == 'myTask' %} my-task{% endif %}"
+                        placeholder="Search for job">
+>>>>>>> remotes/origin/Ferry
                     <button class="btn-search-nav">
                         <img src="../../static/images/search-icon.png" alt="search-icon">
                     </button>
                 </div>
+<<<<<<< HEAD
                 <div class="navbar-section">
                     <button type="button" class="button btnprimary ml30 btn-nav-sort">
                         <span>Category</span>
@@ -143,10 +314,72 @@
                     </button>
                 </div>
 
+=======
+                <div style="display: block; margin: 0 auto">
+                    <div class="navbar-section">
+                        {% if type != 'myTask' %}
+                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                            <span>Category</span>
+                            <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
+                        </button>
+                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                            <div class="btn-icon-overlay">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span class="ml10">Location</span>
+                                <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
+                            </div>
+
+                        </button>
+                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                            <div class="btn-icon-overlay">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span class="ml10">Price</span>
+                                <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
+                            </div>
+                        </button>
+                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                            <div class="btn-icon-overlay">
+                                <i class="fa-solid fa-sliders"></i>
+                                <span class="ml10">Sort</span>
+                                <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
+                            </div>
+                        </button>
+                        {% else %}
+                        <button type="button" class="menu-bar-task active">
+                            <span>Posted tasks</span>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Pending offers</span>
+                            </div>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Tasks assigned</span>
+                            </div>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Task completed</span>
+                            </div>
+                        </button>
+                        <button type="button" class="menu-bar-task">
+                            <div class="btn-icon-overlay">
+                                <span class="ml10">Watchlist</span>
+                            </div>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+>>>>>>> remotes/origin/Ferry
             </div>
 
         </div>
     </div>
+<<<<<<< HEAD
+=======
+    {% endif %}
+>>>>>>> remotes/origin/Ferry
 </nav>
 
 {% endblock %}

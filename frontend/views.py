@@ -23,7 +23,7 @@ def profile(request):
 def tasks(request):
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
-    
+    print(tasks)
     firstTaskDetail = tasks[0]["id"]
     taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
     taskDetail = taskDetailResp.json()

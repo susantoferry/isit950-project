@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
@@ -80,3 +81,18 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Id: {self.id}, User: {self.user}, Task: {self.task.id}"
+
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="rev_user_id")
+    content = models.TextField()
+    rating = models.PositiveSmallIntegerField(
+        default=1,
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    create_date = models.DateTimeField(null=True)
+    modify_date = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return f"Id: {self.id}, User: {self.user}, Rating: {self.rating}"
+    

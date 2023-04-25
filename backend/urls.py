@@ -18,6 +18,7 @@ urlpatterns = [
     path("watchlist", views.watchlist, name="watchlist"),
     path("getnotification/<int:userId>", views.notification, name="getnotification"),
     path("getnotificationID/<int:userId>/<notificationID>", views.notificationID, name="getnotificationID"),
+    path("getreview/<int:reviewId>", views.review, name="getreview"),
 ]
 
 if settings.DEBUG:

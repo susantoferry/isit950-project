@@ -2,8 +2,12 @@
   "ExpandedNodes": [
     "",
     "\\backend",
-    "\\csit950",
-    "\\frontend"
+    "\\frontend",
+    "\\frontend\\migrations",
+    "\\frontend\\static",
+    "\\frontend\\static\\css",
+    "\\frontend\\__pycache__"
   ],
+  "SelectedNode": "\\backend\\models.py",
   "PreviewInSolutionExplorer": false
 }

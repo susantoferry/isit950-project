@@ -257,12 +257,12 @@ def  notificationID(request, userId, notificationID):
 @api_view(['GET', 'POST'])
 def review(request, reviewId):
     if request.method == 'GET':
-        review = Notification.objects.filter(review=reviewId).order_by("-create_date")
+        review = Review.objects.filter(review=reviewId).order_by("-create_date")
         serializer = ReviewSerializer(review, many=True)
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = reviewSerializer(data=request.data)
+        serializer = ReviewSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
         else:

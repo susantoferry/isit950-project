@@ -4,7 +4,7 @@
     <div class="list-scroll-effect">
         {% for task in tasks %}
         <div>
-            <div id="task-bookmark123" class="task-bookmark" data-task-id="{{ task.task_title_to_url}}"
+            <div id="task-bookmark123" data-task-id="{{ task.task_title_to_url}}"
                 class="task-card flex-row task-left-card {% if task.task_title_to_url in request.resolver_match.kwargs.slug %} active {% endif %}">
                 <div class="task-l-content" style="width: 210px;">
                     <div class="task-header mb10">

@@ -1,7 +1,7 @@
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -14,37 +14,22 @@ body {
 	font-style: normal;
  }
 
-/* For website design */
 
-h1 {
+/*for website design */
+h1{
 
 
-	position: relative;
-	width: 100%;
-	height: auto;
-	left: 0;
-	margin-bottom: 15px;
-	font-weight: 700;
-	font-size: 30px;
-	line-height: 36px;
-	text-align: center;
-	color: #0C0B0B;
-	transition:all .5s ease;
-}
-
-h2 {
-	position: relative;
-	left: 0;
-	width: 100%;
-	margin-top: 10px;
-	height: auto;
-	margin-bottom: 40px;
-	top: calc(50% - 94px/2 - 87px);
-	font-weight: 400;
-	font-size: 15px;
-	line-height: 18px;
-	text-align: center;
-	color: #0C0B0B;
+position: relative;
+width: 100%;
+height: auto;
+left: 0;
+margin-bottom: 15px;
+font-weight: 700;
+font-size: 30px;
+line-height: 36px;
+text-align: center;
+color: #6E27A3;
+transition:all .5s ease;
 }
 
 .fm-forget-pass {
@@ -54,162 +39,125 @@ h2 {
 	
 }
 
-.emailTxt {
-	position: relative;
-	width: 100%;
-	height: 32.16px;
-	left: 0;
-	text-align: left;
-	color: #786E6E;
-	margin-bottom: 10px;
+.newPass {
 
-	/* position: absolute; */
-	/* width: 200.87px;
-	height: 32.16px; */
-	/* left: calc(50% - 366px/2 + 18px); */
-	top: calc(50% - 32.16px/2 - 60.92px);
-	
-	
-	font-weight: 500;
-	font-size: 20px;
-	line-height: 24px;
-	text-align: left;
+ position: absolute;
+width: 200.87px;
+height: 32.16px;
+left: calc(50% - 366px/2 + 28px );
+top: calc(50% - 12.16px/2 - 168.92px); 
+font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+text-align: left;
 
-	color: #786E6E;
+color: #786E6E;
 
 }
 
+.confirmPass {
 
-.boxes {
-
-	position: absolute;
-	width: 200.87px;
-	height: 32.16px;
-	left: calc(50% - 366px/2 + 18px);
-	top: calc(50% - 32.16px/2 - 20.92px);
-	
-	
-	font-weight: 500;
-	font-size: 20px;
-	line-height: 24px;
-	text-align: left;
-
-	color: #786E6E;
+ position: absolute;
+width: 200.87px;
+height: 32.16px;
+left: calc(50% - 366px/2 + 85px );
+top: calc(50% - 32.16px/2 + 120px); 
+font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+text-align: left;
+color: #786E6E;
 
 }
-
 .reset {
-	color: white;
-	position: relative;
-	width: 100%;
-	height: 49px;
-	left: 0;
-	background: #6E27A3;
-	border: 1px solid #7E7373;
-	border-radius: 6px;
-	margin: 0 auto;
-	display: block;
-	top: 30px;
-	margin-top: 20px;
+  color: white;
+  position: absolute;
+width: 366px;
+height: 49px;
+left: calc(50% - 366px/2 + 58px);
+top: calc(50% - 49px/2 + 206.5px);
+background: #6E27A3;
+border: 1px solid #7E7373;
+border-radius: 6px;
 }
 
-.backToLogin {
-	position: relative;
-	width: 100%;
-	height: auto;
-	left: 0;
-	top: 60px;
-	border: none;
-	background-color: transparent;
-	font-weight: 600;
-	font-size: 16px;
-	line-height: 19px;
-	text-align: center;
-	color: #6E27A3;
+
+.proceeding {
+border: none;
+background-color: transparent;
+position: absolute;
+width: 536px;
+height: 26px;
+left: calc(50% - 528px/2 + 1px);
+top: calc(50% - 49px/2 + 286.5px);
+font-family: 'Inter';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 15px;
+text-align: center;
+color: #000000;
 }
 
 br.responsive {
-	display: none;
-}
-
-.proceeding {
-	position: absolute;
-	width: 100%;
-	height: auto;
-	left: 0;
-	bottom: 30px;
-	border: none;
-	background-color: transparent;
-	font-weight: 700;
-	font-size: 12px;
-	line-height: 15px;
-	text-align: center;
-	color: #000000;
+  display: none;
 }
 
 .agreement {
-	border: none;
-	background-color: transparent;
+border: none;
+background-color: transparent;
 }
-
 
 /* End of css website design */
 
 /* Start css for mobile responsive */
-
-@media (max-width: 1440px) {}
-
-@media (max-width: 1024px) {}
-
-@media (min-width: 426px) and (max-width: 768px) {
-	h1 {
-		position: relative;
+@media (max-width: 1440px) {
+  h1{
+    top: 10px;
+    position: relative;
 		width: 100%;
 		height: auto;
 		left: 0;
 		margin-bottom: 15px;
-	}
-
-	h2 {
-		position: relative;
-		left: 0;
-		width: 100%;
-		margin-top: 10px;
-		height: auto;
-		margin-bottom: 40px;
-	}
-
-	.emailTxt {
-		position: relative;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+  
+  .newPass {
+  
+  	position: relative;
 		width: 100%;
 		height: 32.16px;
 		left: 0;
 		text-align: left;
 		color: #786E6E;
 		margin-bottom: 10px;
-	}
 
-
-	.boxes {
-
-		position: absolute;
-		width: 200.87px;
+  
+  }
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
 		height: 32.16px;
-		left: calc(50% - 366px/2 + 18px);
-		top: calc(50% - 32.16px/2 - 20.92px);
-		
-		
-		font-weight: 500;
-		font-size: 20px;
-		line-height: 24px;
+		left: 0;
 		text-align: left;
-
 		color: #786E6E;
+		margin-bottom: 10px;
 
 	}
-
-	.reset {
-		color: white;
+  
+  
+  .reset {
+    color: white;
 		position: relative;
 		width: 100%;
 		height: 49px;
@@ -219,155 +167,218 @@ br.responsive {
 		border-radius: 6px;
 		margin: 0 auto;
 		display: block;
-		top: 30px;
+		top: 10px;
     	margin-top: 20px;
 	}
-
-	.backToLogin {
-		position: relative;
-		width: 100%;
-		height: auto;
-		left: 0;
-		top: 60px;
-	}
-
-	br.responsive {
-		display: none;
-	}
-
-	.proceeding {
-		position: absolute;
+  
+  .proceeding {
+    position: absolute;
 		width: 100%;
 		height: auto;
 		left: 0;
 		bottom: 30px;
 	}
 
-	.agreement {
-		border: none;
-		background-color: transparent;
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
+   
+}
+
+@media (max-width: 1024px) {
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+  
+  .newPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+  
+  }
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
 	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+  
+  .newPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+  
+  }
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
 }
 
 @media (max-width: 425px) {
-	h1 {
-		position: relative;
-		width: 100%;
-		height: auto;
-		left: 0;
-		margin-bottom: 15px;
-	}
-
-	h2 {
-		position: relative;
-		left: 0;
-		width: 100%;
-		margin-top: 10px;
-		height: auto;
-		margin-bottom: 40px;
-	}
-
-	.emailTxt {
-		position: relative;
-		width: 100%;
-		height: 32.16px;
-		left: 0;
-		text-align: left;
-		color: #786E6E;
-		margin-bottom: 10px;
-	}
-
-
-	.boxes {
-
-		position: absolute;
-		width: 80.87px;
-		height: 52.16px;
-		left: calc(50% - 366px/2 + 58px);
-		top: calc(50% - 32.16px/2 - 20.92px);
-		
-		
-		font-weight: 500;
-		font-size: 20px;
-		line-height: 24px;
-		text-align: left;
-
-		color: #786E6E;
-
-	}
-
-	.reset {
-		color: white;
-		position: relative;
-		width: 100%;
-		height: 49px;
-		left: 0;
-		background: #6E27A3;
-		border: 1px solid #7E7373;
-		border-radius: 6px;
-		margin: 0 auto;
-		display: block;
-		top: 30px;
-    	margin-top: 20px;
-	}
-
-	.mobileBreak {
-		display: inline-block
-	}
-
-	.backToLogin {
-		position: relative;
-		width: 100%;
-		height: auto;
-		left: 0;
-		top: 60px;
-	}
-
-	.proceeding {
-		position: absolute;
-		width: 100%;
-		height: auto;
-		left: 0;
-		bottom: 30px;
-	}
-
-
-	.agreement {
-		line-break: auto;
-		border: none;
-		background-color: transparent;
-	}
-
-	br.responsive {
-		display: inline;
-	}
-
-}
-
-
-@media (max-width: 375px) {
-	h1 {
-		position: relative;
+  h1{
+    top: 10px;
+    position: relative;
 		width: 100%;
 		height: auto;
 		left: 0;
 		margin-bottom: 15px;
 		font-size: 25px;
 		transition:all 1s ease;
-	}
-
-	h2 {
-		position: relative;
-		left: 0;
+    color: #6E27A3;
+  }
+  
+  
+  
+  .newPass {
+  
+  	position: relative;
 		width: 100%;
-		margin-top: 10px;
-		height: auto;
-		margin-bottom: 40px;
-	}
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
 
-	.emailTxt {
-
-		position: relative;
+  
+  }
+  
+  .confirmPass {
+  
+  	position: relative;
 		width: 100%;
 		height: 32.16px;
 		left: 0;
@@ -376,28 +387,10 @@ br.responsive {
 		margin-bottom: 10px;
 
 	}
-
-
-	.boxes {
-
-		position: absolute;
-		width: 80.87px;
-		height: 52.16px;
-		left: calc(50% - 366px/2 + 98px);
-		top: calc(50% - 32.16px/2 - 20.92px);
-		
-		
-		font-weight: 500;
-		font-size: 20px;
-		line-height: 24px;
-		text-align: left;
-
-		color: #786E6E;
-
-	}
-
-	.reset {
-		color: white;
+  
+  
+  .reset {
+    color: white;
 		position: relative;
 		width: 100%;
 		height: 49px;
@@ -407,65 +400,141 @@ br.responsive {
 		border-radius: 6px;
 		margin: 0 auto;
 		display: block;
-		top: 30px;
+		top: 10px;
     	margin-top: 20px;
 	}
-
-	.mobileBreak {
-		display: inline-block
-	}
-
-	.backToLogin {
-		position: relative;
-		width: 100%;
-		height: auto;
-		left: 0;
-		top: 60px;
-	}
-
-	.proceeding {
-		position: absolute;
+  
+  .proceeding {
+    position: absolute;
 		width: 100%;
 		height: auto;
 		left: 0;
 		bottom: 30px;
 	}
 
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
 
-	.agreement {
-		line-break: auto;
-		border: none;
-		background-color: transparent;
+
+}
+
+@media (max-width: 375px) {
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+  
+  .newPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+  
+  }
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
 	}
 
-	br.responsive {
-		display: inline;
-	}
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
 }
 
 @media only screen and (max-width: 320px) {
-	h1 {
-		position: relative;
+
+  h1{
+    top: 10px;
+    position: relative;
 		width: 100%;
 		height: auto;
 		left: 0;
 		margin-bottom: 15px;
 		font-size: 25px;
 		transition:all 1s ease;
-	}
-
-	h2 {
-		position: relative;
-		left: 0;
+    color: #6E27A3;
+  }
+  
+  
+  
+  .newPass {
+  
+  	position: relative;
 		width: 100%;
-		margin-top: 10px;
-		height: auto;
-		margin-bottom: 40px;
-	}
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
 
-	.emailTxt {
-
-		position: relative;
+  
+  }
+  
+  .confirmPass {
+  
+  	position: relative;
 		width: 100%;
 		height: 32.16px;
 		left: 0;
@@ -474,11 +543,10 @@ br.responsive {
 		margin-bottom: 10px;
 
 	}
-
-
-
-	.reset {
-		color: white;
+  
+  
+  .reset {
+    color: white;
 		position: relative;
 		width: 100%;
 		height: 49px;
@@ -488,40 +556,28 @@ br.responsive {
 		border-radius: 6px;
 		margin: 0 auto;
 		display: block;
-		top: 30px;
+		top: 10px;
     	margin-top: 20px;
 	}
-
-	.mobileBreak {
-		display: inline-block
-	}
-
-	.backToLogin {
-		position: relative;
-		width: 100%;
-		height: auto;
-		left: 0;
-		top: 60px;
-	}
-
-	.proceeding {
-		position: absolute;
+  
+  .proceeding {
+    position: absolute;
 		width: 100%;
 		height: auto;
 		left: 0;
 		bottom: 30px;
 	}
 
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
 
-	.agreement {
-		line-break: auto;
-		border: none;
-		background-color: transparent;
-	}
-
-	br.responsive {
-		display: inline;
-	}
 }
-
-/* End of mobile responsive*/
+/* End of mobile responsive*/ 

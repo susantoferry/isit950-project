@@ -186,17 +186,23 @@ def myTaskDetail(request, taskId):
         "questions": questionCount
     })
 
-def testHTML(request):
-    return render(request, "isit950/test.html")
+def postTask(request):
+    return render(request, "isit950/postTask.html")
+
+def test2HTML(request):
+    return render(request, "isit950/test2.html")
+
+def test3HTML(request):
+    return render(request, "isit950/test3.html")
 
 def loginView(request):
     return render(request, "isit950/auth/login.html")
 
-def forgotPassword(request):
-    return render(request, "isit950/auth/forget_password.html")
+def forgotPass(request):
+    return render(request, "isit950/auth/forgotPass.html")
 
-def signUp(request):
-    return render(request, "isit950/auth/sign-up.html")
+def resetPass(request):
+    return render(request, "isit950/auth/resetPass.html")
 
 def logout_view(request):
     logout(request)

@@ -28,8 +28,8 @@
     <div class="membershipPlan-overlay" >
         <div style="width: 100%">
             <form action="http://library.whosville/bsearch" method="get">
-                <div class="plan">
-                    <label for="plan">Select your plan</label></br>
+                <div>
+                    <label for="plan" class="plan">Select your plan</label></br>
                 
             
                 </div>
@@ -65,8 +65,8 @@
                 
                 
 
-                <div class="pay">
-                    <label for="pay"> Pay with</label></br>
+                <div>
+                    <label for="pay" class="pay"> Pay with</label></br>
                     <label>
                         <input type="radio" name="pay" value="cash">
                         Cash
@@ -80,17 +80,12 @@
                         Transfer
                     </label>
                 </div>
-                <div class="" style="display: flex;align-items: end;">
-                    <div style="
-    width: 100%;
-">
-                        <label for="card"> Card number</label><br>
+                <div style="display: flex;align-items: end;">
+                    <div style="width: 100%;">
+                        <label for="card" style="margin-bottom: 10px;"> Card number</label><br>
                         <input type="text" name="card" id="card" class="form-control" placeholder="1234 1234 1234 1234">
                     </div>
-                    <div style="
-    width: 50%;
-    margin-left: 10px;
-">
+                    <div style=" width: 50%; margin-left: 10px;">
                         <img src="/static/images/Visa.png" alt="" width="50">
                     
                         <img src="/static/images/Mastercard.png" alt="" width="50">
@@ -98,21 +93,23 @@
                         <img src="/static/images/Amex.png" alt="" width="50">
                     </div>
                 </div>
+                <div class="expiry__cvc" style="margin-bottom: 32px;">
                 <div class="expiry">
-                    <label for="expiry"> Expiry</label></br>
+                    <label for="expiry" style="margin-bottom: 10px;"> Expiry</label></br>
                     <input type="text" name="expiry" id="expiry" class="form-control" placeholder="MM/YY"/>
                 </div>
                     <div class="cvc">
-                        <label for="cvc"> CVC</label>
+                        <label for="cvc" style="margin-bottom: 10px;"> CVC</label>
                         <input type="text" name="cvc" id="cvc" class="form-control" placeholder="123"/>
                     </div>
-                    
+                </div>
                 
                 
                 <div>
-                    <label for="Country">Country</label></br>
+                    <div>
+                        <label for="Country" style="margin-bottom: 10px;">Country</label>
                     
-                    <select class="form-select" aria-label="Default select example">
+                      <select class="form-select" aria-label="Default select example">
                         <option selected>Select Country name</option>
                         <option value="1">Australia</option>
                         <option value="2">United States Of America</option>
@@ -121,13 +118,15 @@
                         <option value="5">South Korea</option>
                         <option value="6">Honkong</option>
                       </select>
+                    </div>
+                    
                     
                 </div>
 
 
-                <div class="start">
+                <div>
                     <span>
-                        <button type="button" class="btn btn-outline-secondary">Start</button>
+                        <button type="button" class="btn btn-outline-secondary start ">Start</button>
                     </span>
                 </div>
             </form>

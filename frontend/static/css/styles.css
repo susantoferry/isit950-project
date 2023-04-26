@@ -174,12 +174,15 @@ input:focus, textarea:focus {
 }
 
 .search-input {
+    display: block!important;
+    opacity: 1!important;
     width: 300px;
     min-height: 35px;
     border-radius: 20px;
     background-color: #f3f3f7;
     box-sizing: border-box;
     text-indent: 20px;
+    
 }
 
 .search-input.my-task {
@@ -228,6 +231,7 @@ input:focus, textarea:focus {
 
 .task-list {
     width: 365px;
+    transition: left .5s ease-in;
 }
 
 .list-scroll-effect {
@@ -244,7 +248,7 @@ input:focus, textarea:focus {
 .task-card {
     position: relative;
     -webkit-box-pack: justify;
-    justify-content: space-around;
+    justify-content: space-between;
     min-height: 140px;
     padding: 12px 16px;
     border-radius: 12px;
@@ -495,6 +499,146 @@ span.offer-count {
     letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: 600;
+}
+
+.navbar-section-collapse {
+    display: flex!important;
+    justify-content: space-between;
+    width: 100%;
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 1023px) {
+    .overlay-navbar-top, .overlay-navbar {
+        padding: 0 20px;
+    }
+
+    .task-list {
+        width: 100%;
+    }
+
+    .task-content {
+        width: 100%;
+        margin: 0;
+    }
+
+    .task-content {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        padding: 10px 25px;
+    }
+
+    .task-detail-container {
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+    }
+
+    .task-card {
+        padding: 12px 25px;
+    }
+}
+
+
+@media not all and (min-width: 646px) {
+    .navbar-section-collapse {
+        display: flex!important;
+        flex-basis: auto;
+    }
+
+    .main-navbar {
+        display: none!important; 
+    }
+
+    .btn-search-nav {
+        width: 40px;
+        height: 40px;
+        outline: none;
+        position: relative;
+        z-index: 2;
+        cursor: pointer;
+        background: #60606021;
+        border-radius: 30px;
+        right: 0;
+        top: 0;
+    }
+
+    .search-input {
+        display: none!important;
+        opacity: 0!important;
+    }
+
+}
+
+.space-bt {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-circle {
+    position: relative;
+    display: block;
+    background: #c15ec1;
+    border-radius: 157px;
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    font-size: 21px;
+    color: white;
+}
+
+@media not all and (max-width: 645.98px) {
+    
+    .main-navbar-sm {
+        display: none!important; 
+    }
+
+    .space-bt {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    
+
+    .btn-search-nav {
+        position: absolute;
+        right: 15px;
+        top: 6px;
+        border: 0;
+        background: transparent;
+    }
+    
+}
+
+
+@media screen and (max-width:767px) {
+    .task-list {
+        height: 100%;
+        overflow: auto;
+        width: 100%;
+    }
+
+    .task-content-overlay {
+        display: block;
+        height: calc(100vh - 118px);
+        overflow: hidden;
+      }
+
+    .task-detail-container {
+        /* bottom: 0;
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0; */
+        display: none;
+    }
 }
 
 

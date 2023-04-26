@@ -13,10 +13,10 @@ class Membership(models.Model):
         return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
 
 class User(AbstractUser):
-    img_profile = models.CharField(max_length=100, null=True)
-    img_background = models.CharField(max_length=100, null=True)
-    location = models.CharField(max_length=50, null=True)
-    rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
+    img_profile = models.CharField(max_length=100, null=True, blank=True)
+    img_background = models.CharField(max_length=100, null=True, blank=True)
+    location = models.CharField(max_length=50, null=True, blank=True)
+    rating = models.DecimalField(default=0, max_digits=3, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return f"Id: {self.username}"
@@ -77,10 +77,10 @@ class Task(models.Model):
     completed_on = models.DateField()
     status = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_client", related_query_name="profile", null=True)
-    user_provider = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_provider", null=True)
+    user_provider = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_provider", null=True, blank=True)
     is_paid = models.BooleanField(default=False)
-    create_date = models.DateTimeField(null=True)
-    modify_date = models.DateTimeField(null=True)
+    create_date = models.DateTimeField(null=True, blank=True)
+    modify_date = models.DateTimeField(null=True, blank=True)
 
     @property
     def my_bookmark(self):

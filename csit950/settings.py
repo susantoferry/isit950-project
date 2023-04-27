@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'knox',
-    
+    'django_extensions',
 ]
 
 REST_FRAMEWORK = {

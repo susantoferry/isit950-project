@@ -236,7 +236,7 @@ input:focus, textarea:focus {
 
 .list-scroll-effect {
     transition: padding-top .6s cubic-bezier(.68,-.55,.265,1.55);
-    height: calc(100vh - 100px);
+    height: calc(100vh - 120px);
     overflow-y: scroll;
 }
 
@@ -1267,3 +1267,7 @@ button.close {
     text-decoration: none;
 }
 
+#map {
+    height: calc(100vh - 120px);
+    width: 100%;
+}

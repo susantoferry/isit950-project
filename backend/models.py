@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import geocoder
 # Create your models here.
 
 class Membership(models.Model):
@@ -72,8 +73,10 @@ class Task(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category")
     description = models.TextField()
     price = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-    location = models.CharField(max_length=80)
-    location_link = models.CharField(max_length=100)
+    location = models.TextField(null=True)
+    location_link = models.CharField(max_length=100, blank=True, null=True)
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
     completed_on = models.DateField()
     status = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_client", related_query_name="profile", null=True)
@@ -81,6 +84,13 @@ class Task(models.Model):
     is_paid = models.BooleanField(default=False)
     create_date = models.DateTimeField(null=True, blank=True)
     modify_date = models.DateTimeField(null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        g = geocoder.mapbox(self.location, key=mapbox_token)
+        g = g.latlng
+        self.lat = g[0]
+        self.long = g[1]
+        return super(Task, self).save(*args, **kwargs)
 
     @property
     def my_bookmark(self):
@@ -92,7 +102,7 @@ class Task(models.Model):
         return task_title.replace(' ', '-')
 
     def __str__(self):
-        return f"User: {self.user}, Category: {self.category}, Task: {self.task_title}, Paid: {self.is_paid}, User: {self.user}"
+        return f"Id: {self.id}, User: {self.user}, Category: {self.category}, Task: {self.task_title}, Paid: {self.is_paid}, User: {self.user}"
     
 
 
@@ -114,13 +124,36 @@ class Watchlist(models.Model):
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task}, User: {self.user}"
 
-        
+mapbox_token = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
+
+class Address(models.Model):
+    address = models.TextField()
+    lat = models.FloatField(blank=True, null=True)
+    long = models.FloatField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        g = geocoder.mapbox(self.address, key=mapbox_token)
+        g = g.latlng
+        self.lat = g[0]
+        self.long = g[1]
+        return super(Address, self).save(*args, **kwargs)
+
 class UserSkill(models.Model):
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return f"Id: {self.id}, Skill: {self.skill}, User: {self.user}"
+    
+class PasswordToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="userToken")
+    token = models.CharField(max_length=60)
+    status = models.BooleanField(default=False)
+    create_date = models.DateTimeField(null=True, blank=True)
+    modify_date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"User: {self.user}, Status: {self.status}"
 
 class PaymentInformation(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_paymentinfo", null=True)

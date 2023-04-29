@@ -1,11 +1,16 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth import authenticate, login, logout
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.generics import UpdateAPIView
 from backend.models import *
+from knox.auth import AuthToken
 from .serializers import *
 
 from frontend.constant import *
@@ -15,10 +20,11 @@ from PIL import Image
 import os
 import time
 import uuid
-
-from io import BytesIO
+import random
+import string
 import base64
 
+from io import BytesIO
 from asgiref.sync import sync_to_async
 
 # Create your views here.
@@ -570,7 +576,148 @@ def mySkillList(request,user):
         return Response("User cannot be found!")
 
         
+@api_view(['GET','POST'])
+def login(request):
+    if request.method == 'GET':
+        user = request.user
 
+        if user.is_authenticated:
+            return Response({
+                'user_info': {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email
+                }
+            })
+        return Response({'error': 'not authenticated'}, status=400)
+
+    if request.method == "POST":
+        serializer = AuthTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token = AuthToken.objects.create(user)[1]
+
+        return Response({
+            'user_info': {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email
+            },
+            'token': token
+        })
+
+@api_view(['POST'])
+def AddUser(request):
+    
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
+    else:
+        return Response(serializer.errors)
+    
+    return Response({
+        'userDetail': {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email
+        },
+        "token": AuthToken.objects.create(user)[1]
+    })
+
+@api_view(['POST'])
+def ChangePassword(request, id):
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return Response(status=404)
+    
+
+    serializer = ChangePasswordSerializer(data=request.data)
+    if not user.check_password(request.data["old_password"]):
+        raise serializers.ValidationError({"old_password": "Old password is not correct"})
+    
+    if serializer.is_valid():
+        user.set_password(request.data['password'])
+        user.save()
+        return Response({
+            "message": "Password has succefully changed"
+        })
+    else:
+        return Response(serializer.errors)
+
+def RandomTokenGen():
+    char = string.ascii_letters + string.digits
+    rand_token = ''.join(random.choice(char) for i in range(50))
+
+    return rand_token
+
+@api_view(['POST'])
+def ForgotPassword(request):
+    token = RandomTokenGen()
+
+    email = request.data["email"]
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        user = ""
+    
+    if user != "":
+        data = {
+            'user': user.id,
+            'token': token
+        }
+        serializer = PasswordTokenSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+
+            html_content = render_to_string("forgot_password.html", data)
+            email = EmailMessage(
+                subject = 'Please reset your password',
+                body = html_content,
+                from_email = "Ferry Susanto UOW <ferry.milanisti22@gmail.com>",
+                to = ["yohanesfersusanto@gmail.com"]
+            )
+            email.content_subtype = "html"
+            time.sleep(2)
+            email.send()
+        else:
+            return Response(serializer.errors)
+        return Response(token)
+    
+    return Response({
+        "message": "Email is incorrect!"
+    })
+    
+@api_view(['GET', 'POST'])
+def ResetPassword(request, token):
+    if request.method == "POST":
+        # variable expired token
+        expiredToken = False
+
+        # verify token user
+        try:
+            userToken = PasswordToken.objects.get(token=token)
+        except PasswordToken.DoesNotExist:
+            userToken = ""
+
+        try:
+            user = User.objects.get(pk=userToken.user_id)
+        except User.DoesNotExist:
+            return Response(status=404)
+        
+
+        serializer = ResetPasswordSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            user.set_password(request.data['password'])
+            user.save()
+            return Response({
+                "message": "Password has succefully changed"
+            })
+        else:
+            return Response(serializer.errors)
+    else:
+        return Response("a")
 
 
     

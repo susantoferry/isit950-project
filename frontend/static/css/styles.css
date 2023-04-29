@@ -77,7 +77,7 @@ ul {
 
 .overlay-navbar {
     width: 100%;
-    height: 55px;
+    height: 65px;
     border-bottom: 1px solid #d9d9d9;
 }
 
@@ -182,7 +182,7 @@ input:focus, textarea:focus {
     background-color: #f3f3f7;
     box-sizing: border-box;
     text-indent: 20px;
-    
+    padding-right: 45px;
 }
 
 .search-input.my-task {
@@ -400,7 +400,22 @@ span.offer-count {
 .task-detail-container {
     flex: 1;
     position: relative;
-    transition: left .5s ease-in;
+    /* transition: left .5s ease-in; */
+    background-color: #fff;
+    bottom: 0;
+    left: 0;
+    overflow-y: scroll;
+    position: absolute;
+    top: 0;
+    transition-delay: .1s;
+    transition: left .5s ease-out;
+    width: 100%;
+    z-index: 2;
+
+}
+
+.task-detail-container.no-selected {
+    left: 100vw;
 }
 
 .task-detail-overlay {
@@ -546,6 +561,10 @@ span.offer-count {
     }
 }
 
+.btn-input-close {
+    position: absolute;
+}
+
 
 @media not all and (min-width: 646px) {
     .navbar-section-collapse {
@@ -560,6 +579,7 @@ span.offer-count {
     .btn-search-nav {
         width: 40px;
         height: 40px;
+        float: right;
         outline: none;
         position: relative;
         z-index: 2;
@@ -570,9 +590,83 @@ span.offer-count {
         top: 0;
     }
 
-    .search-input {
-        display: none!important;
-        opacity: 0!important;
+    .search-overlay {
+        position: relative;
+    }
+
+    .input-overlay {
+        height: 42px;
+        width: 42px;
+        border-radius: 50px;
+        transition: all .3s ease-in-out;
+    }
+
+    .search-overlay.active-input {
+        height: 42px;
+        width: 250px;
+        border-radius: 50px;
+        transition: all .3s ease-in-out;
+    }
+
+    .search-overlay.active-input .input-overlay {
+        width: 250px;
+        border-radius: 50px;
+        background: rgba(0,0,0,.05);
+    
+    }
+
+    .search-overlay.active-input .input-overlay .search-input {
+        transform: translate(0, 0);
+        margin-top: 4px;
+    }
+
+    .search-overlay .input-overlay .search-input {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: 0 0;
+        box-sizing: border-box;
+        border: none;
+        outline: none;
+        transform: translate(0,60px);
+        font-size: .88rem;
+    }
+
+    .btn-input-close {
+        opacity: 0;
+    }
+
+    .search-overlay.active-input .btn-input-close {
+        opacity: 1;
+        position: relative;
+        top: -35px;
+        margin-right: -14px;
+        float: right;
+        background: none;
+        transform: rotate(45deg);
+    }
+
+    .search-overlay .btn-input-close::before {
+        position: absolute;
+        content: '';
+        background: #a157a1;
+        border-radius: 2px;
+        width: 2px;
+        height: 20px;
+        left: 9px;
+        top: 0;
+    }
+
+    .search-overlay .btn-input-close::after {
+        position: absolute;
+        content: '';
+        background: #a157a1;
+        border-radius: 2px;
+        width: 20px;
+        height: 2px;
+        left: 0px;
+        top: 9px;
     }
 
 }
@@ -1270,4 +1364,12 @@ button.close {
 #map {
     height: calc(100vh - 120px);
     width: 100%;
+}
+
+.marker {
+    background-image: url('../images/pin-location.png');
+    background-size: cover;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
 }

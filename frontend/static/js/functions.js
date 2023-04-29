@@ -19,7 +19,8 @@ function initMap() {
         center: {lat: -34.407, lng: 150.878},
         zoom: 13,
         streetViewControl: false,
-        mapTypeControl: false
+        mapTypeControl: false,
+        fullscreenControl: false
     };
 
     map = new google.maps.Map(document.getElementById('map'), options);

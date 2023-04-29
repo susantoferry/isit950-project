@@ -71,6 +71,22 @@ $('#postBtn123').click(function () {
 
 
 $(document).ready(function() {
+    
+    window.addEventListener('resize', function(event) {
+        if ($(".search-overlay").hasClass("active-input")) {
+            $(".search-overlay").removeClass("active-input")
+        }
+    }, true);
+
+    $(".btn-search-nav").click(function(){
+        if (screen.width < 646)
+            $(".search-overlay").addClass("active-input");
+    });
+
+    $(".btn-input-close").click(function(){
+        $(".search-overlay").removeClass("active-input");
+    });
+
     $('.task-bookmark').click(function($event) {
         console.log("test")
     })

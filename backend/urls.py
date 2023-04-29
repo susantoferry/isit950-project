@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from knox import views as knox_views
 
 from . import views
 
@@ -21,10 +22,15 @@ urlpatterns = [
     path("membership", views.membership, name="membership"),
     path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
     path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
-    # path("get_profile", views.getProfile, name="get_profile"),
-    # path("get_profile/<profileId>", views.getProfileDetail, name="get_profile_detail")
     path("skill/<str:skillId>", views.skillDetail, name="skill_detail"),
     path("update_user/<str:user>", views.updateUserDetail, name="update_user_detail"),
+
+    path("user_login", views.login, name="login"),
+    path('add_user', views.AddUser, name="add_user"),
+    path('change_password/<int:id>', views.ChangePassword, name="change_password"),
+    path("forgot_password", views.ForgotPassword, name="forgot_password"),
+    path("reset_password/<str:token>", views.ResetPassword, name="reset_password"),
+    path("logout", knox_views.LogoutView.as_view()),
 ]
 
 if settings.DEBUG:

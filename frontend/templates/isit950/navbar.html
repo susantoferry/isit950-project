@@ -180,13 +180,16 @@
     <div class="second-navbar">
         <div class="overlay-navbar">
             <div class="navbar-container" style="overflow-x: auto;overflow-y: hidden;">
-                <div class="pos-rel">
-                    <input type="text" class="search-input{% if type == 'myTask' %} my-task{% endif %}"
-                        placeholder="Search for job">
-                    <button class="btn-search-nav">
-                        <img src="../../static/images/search-icon.png" alt="search-icon">
-                    </button>
+                <div class="pos-rel search-overlay">
+                    <div class="input-overlay">
+                        <input type="text" class="search-input{% if type == 'myTask' %} my-task{% endif %}" placeholder="Search for job">
+                        <button class="btn-search-nav">
+                            <img src="../../static/images/search-icon.png" alt="search-icon">
+                        </button>
+                    </div>
+                    <button class="btn-input-close"></button>
                 </div>
+                
                 <div style="display: block; margin: 0 auto">
                     <div class="navbar-section">
                         {% if type != 'myTask' %}
@@ -194,7 +197,7 @@
                             <span>Category</span>
                             <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
                         </button>
-                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                        <button type="button" class="button btnprimary ml20 btn-nav-sort">
                             <div class="btn-icon-overlay">
                                 <i class="fa-solid fa-sliders"></i>
                                 <span class="ml10">Location</span>
@@ -202,14 +205,14 @@
                             </div>
 
                         </button>
-                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                        <button type="button" class="button btnprimary ml20 btn-nav-sort">
                             <div class="btn-icon-overlay">
                                 <i class="fa-solid fa-sliders"></i>
                                 <span class="ml10">Price</span>
                                 <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
                             </div>
                         </button>
-                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                        <button type="button" class="button btnprimary ml20 btn-nav-sort">
                             <div class="btn-icon-overlay">
                                 <i class="fa-solid fa-sliders"></i>
                                 <span class="ml10">Sort</span>

@@ -23,6 +23,7 @@ import uuid
 import random
 import string
 import base64
+import json
 
 from io import BytesIO
 from asgiref.sync import sync_to_async
@@ -234,6 +235,9 @@ def task(request):
     
 @api_view(['GET', 'PUT', 'DELETE'])
 def taskDetail(request, taskId):
+
+    taskId = taskId.rsplit('-', 1)[-1]
+    
     try:
         task = Task.objects.get(id=taskId)
     except Task.DoesNotExist:
@@ -253,6 +257,43 @@ def taskDetail(request, taskId):
         else:
             print(serializer.errors)
             return Response(status=404)
+        
+@api_view(['GET'])
+def taskSearch(request):
+    if request.method == 'GET':
+        search_keyword = request.GET.get('search_keyword', None)
+        category = request.GET.getlist('category', None)
+        min_price = request.GET.get('min_price', 0)
+        max_price = request.GET.get('max_price', 9999)
+        location = request.GET.get('location', None)
+        sort = request.GET.get('sort_type', None)
+
+        print(search_keyword)
+
+        if search_keyword != None:
+            searchTask = Task.objects.filter(task_title__icontains = search_keyword, price__gte=min_price, price__lte=max_price)
+        else:
+            if len(category) == 0:
+                searchTask = Task.objects.filter(price__gte=min_price, price__lte=max_price, location__icontains=location)
+            else:
+                searchTask = Task.objects.filter(category__name__in=category, price__gte=min_price, price__lte=max_price, location__icontains=location)
+
+        if sort is None or sort.lower() == "newest":
+            searchTask = searchTask.order_by('create_date')
+
+        if sort is not None:
+            if sort.lower() == 'oldest':
+                searchTask = searchTask.order_by('-create_date')
+            if sort.lower() == 'lowtohigh':
+                searchTask = searchTask.order_by('price')
+            if sort.lower() == 'hightolow':
+                searchTask = searchTask.order_by('-price')
+
+        serializer = TaskSerializer(searchTask, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status=400)
+
     
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def taskDetail(request, taskId):
@@ -319,24 +360,40 @@ def watchlist(request):
     if request.method == 'POST':
         user = request.data['user']
         task = request.data['task']
+
         try:
-            watchlist = Watchlist.objects.get(task=task, user=user)
-        except Watchlist.DoesNotExist:
-            watchlist = ""
+            userId = User.objects.get(username=user)
+        except User.DoesNotExist:
+            userId = ""
+        
+        if userId != "":
+            try:
+                watchlist = Watchlist.objects.get(task=task, user=userId.id)
+            except Watchlist.DoesNotExist:
+                watchlist = ""
 
-        if watchlist == "":
-            serializer = WatchlistSerializer(data=request.data)
+            if watchlist == "":
 
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+                data = {
+                    'task': request.data['task'],
+                    'user': userId.id
+                }
+
+                serializer = WatchlistSerializer(data=data)
+
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(serializer.errors,status=400)
             else:
-                return Response(serializer.errors,status=400)
+                watchlist.delete()
+                return Response({
+                    "success"
+                }, status=200)
         else:
-           # watchlist.delete()
-            return Response({
-                "success"
-            }, status=200)
+            print("a")
+            return Response("error")
 
 
 @api_view(['GET', 'POST'])

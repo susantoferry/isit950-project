@@ -32,8 +32,7 @@
 
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
-
-        <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}">
+        <script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.16/web.js"></script>
     </head>
     <!-- https://www.airtasker.com/tasks/
     ?task_states=posted%2Cassigned%2Ccompleted%2Coverdue%2Cclosed
@@ -81,14 +80,14 @@
 
         <script>
             
-                function testBookmark(event) {
-                    console.log("test");
+                // function testBookmark(event) {
+                //     event.stopPropagation();
+                //     console.log("test");
                     
-                }
+                // }
 
-                $('#task-bookmark123').bind('click', function(e) {
-                    console.log("nice")
-                })
+                // $('#task-bookmark123').bind('click', function(e) {
+                
                 // $('div .task-bookmark').bind('click', function(e){
                 //     e.stopPropagation();
                 //     console.log(e)

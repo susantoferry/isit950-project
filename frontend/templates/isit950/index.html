@@ -5,71 +5,63 @@
 <div style="background: #f0f0f0;">
     <div class="task-content">
         <div class="task-content-overlay">
-            <!-- {% for i in tasks %}
-                {{i}}
-            {% endfor %} -->
             {% include "isit950/task.html" %}
 
 
-            <div id='map'></div>
-            <script>
-                $(function () {
-                    mapboxgl.accessToken = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
-                    const map = new mapboxgl.Map({
-                        container: 'map', // container ID
-                        style: 'mapbox://styles/mapbox/streets-v12', // style URL
-                        center: [150.893, -34.424], // starting position [lng, lat]
-                        zoom: 12, // starting zoom
-                    });
-
-
-
-                    // function addMarker(property) {
-                    //     var marker = new mapboxgl.Marker()
-                    //         .setLngLat([[property.long], property.lat]) // lng, lat
-                    //         .setPopup(new mapboxgl.Popup().setHTML("<h2>Hello world!</h2>"))
-                    //         .addTo(map);
-                    // }
-
-                    // addMarker({long: 150.878, lat: -34.407})
-                    var locations = [{
-                        coordinates: [150.878, -34.407],
-                        name: 'Paris'
-                    }, {
-                        coordinates: [150.873, -34.405],
-                        name: 'New York'
-                    }, {
-                        coordinates: [150.874, -34.403],
-                        name: 'Marrakech'
-                    }];
-
-                    {% for task in tasks %}
-                    var el = document.createElement('div');
-                    el.className = 'marker';
-
-                    new mapboxgl.Marker(el)
-                        .setLngLat([{{ task.long }}, {{ task.lat }}])
-                    .setPopup(new mapboxgl.Popup()
-                        .setHTML(`<span> {{ task.task_title }} </span>`))
-                    .addTo(map);
-
-                {% endfor %}
-            // locations.forEach(trip => {
-
-                // var el = document.createElement('div');
-                // el.className = 'marker';
-
-                // new mapboxgl.Marker(el)
-                // .setLngLat(trip.coordinates)
-                // .setPopup(new mapboxgl.Popup()
-                //     .setHTML('<span>' + trip.name + '</span>'))
-                // .addTo(map);
-
-                
+            <div class="task-detail-wrapper task-blank">
+                <div id='map'></div>
+                <script>
+                    $(function () {
+                        mapboxgl.accessToken = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
+                        const map = new mapboxgl.Map({
+                            container: 'map', // container ID
+                            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+                            center: [150.893, -34.424], // starting position [lng, lat]
+                            zoom: 12, // starting zoom
+                        });
+    
+    
+    
+                        // function addMarker(property) {
+                        //     var marker = new mapboxgl.Marker()
+                        //         .setLngLat([[property.long], property.lat]) // lng, lat
+                        //         .setPopup(new mapboxgl.Popup().setHTML("<h2>Hello world!</h2>"))
+                        //         .addTo(map);
+                        // }
+    
+                        // addMarker({long: 150.878, lat: -34.407})
+                        var locations = [{
+                            coordinates: [150.878, -34.407],
+                            name: 'Paris'
+                        }, {
+                            coordinates: [150.873, -34.405],
+                            name: 'New York'
+                        }, {
+                            coordinates: [150.874, -34.403],
+                            name: 'Marrakech'
+                        }];
+    
+                        {% for task in tasks %}
+                        var el = document.createElement('div');
+                        el.className = 'marker';
+    
+                        new mapboxgl.Marker(el)
+                            .setLngLat([{{ task.long }}, {{ task.lat }}])
+                        .setPopup(new mapboxgl.Popup()
+                            .setHTML(`<span> {{ task.task_title }} </span>`))
+                        .addTo(map);
+    
+                    {% endfor %}   
+                    
+                });
+                </script>
+                {% include "isit950/task_detail.html" %}
+            </div>
             
-            });
-            </script>
-            {% include "isit950/task_detail.html" %}
+            
+            
+            
+            
 
         </div>
     </div>

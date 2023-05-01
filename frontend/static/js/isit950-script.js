@@ -66,12 +66,30 @@ $('#postBtn123').click(function () {
                 location.reload();
             })
         })
-})
+});
 
-
+window.onload = function() {
+    window.onpopstate = function(event) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramVal = urlParams.get('name');
+        if (paramVal != '' && paramVal != null) {
+            showDetail(paramVal);
+            const newClass = document.querySelector('.task-detail-container');
+            newClass.style.setProperty('transition', 'none');
+        }
+    };
+};
 
 $(document).ready(function() {
-    
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramVal = urlParams.get('name');
+    if (paramVal != '' && paramVal != null) {
+        showDetail(paramVal);
+        const newClass = document.querySelector('.task-detail-container');
+        newClass.style.setProperty('transition', 'none');
+    }
+
     window.addEventListener('resize', function(event) {
         if ($(".search-overlay").hasClass("active-input")) {
             $(".search-overlay").removeClass("active-input")
@@ -87,8 +105,63 @@ $(document).ready(function() {
         $(".search-overlay").removeClass("active-input");
     });
 
-    $('.task-bookmark').click(function($event) {
-        console.log("test")
+    // $('.search-input').change(function() {
+    //     var searchKeyword = $(this).val();
+
+    //     fetch(`/task/task_state/?search_keyword=${searchKeyword}`)
+    //     .then(response => response.json())
+    //     .then(result => {
+    //         console.log(result)
+    //     });
+    // });
+
+    $('.task-bookmark').click(function(event) {
+        event.stopPropagation();
+        var taskId = $(this).attr('data-id');
+        
+        const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+        fetch(`/api/watchlist`, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                "X-CSRFToken": token,
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                user: Cookies.get('usid'),
+                task: taskId
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if($(this).find('i').hasClass('unbookmark')) {
+                $(this).find('i').removeClass("fa-regular unbookmark")
+                $(this).find('i').addClass("fa bookmarked")
+                toastr.success('Bookmarked the task');
+            } else {
+                $(this).find('i').removeClass("bookmarked")
+                $(this).find('i').addClass("fa-regular unbookmark")
+                toastr.info('The task has been removed from your bookmark.');
+            }
+        })
+    })
+
+    $('.task-bookmark123').click(function(event) {
+        
+
+        var taskId = $(this).attr('data-task-id');
+        showDetail(taskId)
+
+    })
+
+    $('.return-map').click(function(event) {
+        if (!$(".task-detail-wrapper").hasClass("task-blank") && !$(".task-detail-container").hasClass("no-selected")) {
+            $(".task-detail-wrapper").addClass("task-blank")
+            $(".task-detail-container").addClass("no-selected")   
+        }
+        history.pushState(null, null, `/tasks`)
+        document.title = 'ISIT950 Group Project';
     })
 
     $('#offer-price').keyup(function($e){
@@ -146,6 +219,27 @@ $(document).ready(function() {
         })
     })
 });
+
+function showDetail(taskId) {
+    if ($(".task-detail-wrapper").hasClass("task-blank") && $(".task-detail-container").hasClass("no-selected")) {
+        $(".task-detail-wrapper").removeClass("task-blank")
+        $(".task-detail-container").removeClass("no-selected")   
+    }
+
+    fetch(`/api/task/${taskId}`)
+    .then(response => response.json())
+    .then(result => {
+        document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
+        document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
+        document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
+        document.querySelector('#task-location').innerHTML = `${result.location}`;
+        document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
+        document.querySelector('#task-price').innerHTML = `${result.price}`;
+        document.querySelector('#task-desc').innerHTML = `${result.description}`;
+        history.pushState(null, null, `/tasks/?name=${taskId}`)
+        document.title = `${taskId} - ISIT950 Group Project`;
+    })
+}
 
 
 function accept_offer() {

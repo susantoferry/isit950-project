@@ -1,6 +1,8 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.utils.http import urlencode
+from django.urls import include, re_path
 
 from . import views
 
@@ -11,6 +13,7 @@ urlpatterns = [
     path("account/payment-method", views.paymentMethod, name="payment_method"),
     path("account/payment-history", views.paymentHistory, name="payment_history"),
     path("account/profile", views.profile, name="profile"),
+    path("account/edit-profile", views.editProfile, name="edit_profile"),
     path("account/wishlist", views.wishlist, name="my_wishlist"),
 
     path("create-task", views.createTask, name="create_task"),
@@ -19,8 +22,9 @@ urlpatterns = [
     path("my-watchlist", views.watchlist, name="my_watchlist"),
     path("select-sp/<taskId>", views.myTaskDetail, name="select_sp"),
     path("tasks/", views.tasks, name="tasks"),
-    path("tasks/<slug:slug>", views.taskDetail, name="tasks"),
-    
+    path("tasks/?name=<slug>", views.taskDetail, name="tasks"),
+    re_path(r'^task/task_state/$', views.searchTask, name='task_state'),
+
     path("test123", views.testRead, name="test123"),
 
     path("test", views.testHTML, name="test_page"),

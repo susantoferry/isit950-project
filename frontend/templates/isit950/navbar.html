@@ -182,10 +182,12 @@
             <div class="navbar-container" style="overflow-x: auto;overflow-y: hidden;">
                 <div class="pos-rel search-overlay">
                     <div class="input-overlay">
-                        <input type="text" class="search-input{% if type == 'myTask' %} my-task{% endif %}" placeholder="Search for job">
-                        <button class="btn-search-nav">
-                            <img src="../../static/images/search-icon.png" alt="search-icon">
-                        </button>
+                        <form action="{% url 'task_state' %}" method="get">
+                            <input type="text" class="search-input {% if type == 'myTask' %} my-task{% endif %}" name="search_keyword" placeholder="Search for job">
+                            <button class="btn-search-nav">
+                                <img src="../../static/images/search-icon.png" alt="search-icon">
+                            </button>
+                        </form>
                     </div>
                     <button class="btn-input-close"></button>
                 </div>

@@ -158,18 +158,18 @@ input:focus, textarea:focus {
 .btn-search-nav {
     position: absolute;
     right: 15px;
-    top: 6px;
+    top: 4px;
     border: 0;
     background: transparent;
 }
 
 .btn-search-nav img {
-    width: 20px;
+    width: 16px;
     filter: opacity(0.6);
 }
 
 .btn-search-nav img:hover {
-    width: 20px;
+    width: 16px;
     filter: opacity(1);
 }
 
@@ -256,6 +256,7 @@ input:focus, textarea:focus {
     margin-top: 8px;
     margin-right: 10px;
     margin-bottom: 14px;
+    cursor: pointer;
 }
 
 .task-header, .task-price {
@@ -397,21 +398,19 @@ span.offer-count {
     right: 0;
 }
 
-.task-detail-container {
-    flex: 1;
+.task-detail-wrapper {
+    width: 100%; 
     position: relative;
-    /* transition: left .5s ease-in; */
-    background-color: #fff;
+}
+
+.task-detail-container {
+    position: absolute;
     bottom: 0;
     left: 0;
-    overflow-y: scroll;
-    position: absolute;
     top: 0;
-    transition-delay: .1s;
-    transition: left .5s ease-out;
+    transition: left .7s ease-in-out;
     width: 100%;
     z-index: 2;
-
 }
 
 .task-detail-container.no-selected {
@@ -420,21 +419,27 @@ span.offer-count {
 
 .task-detail-overlay {
     background-color: #fff;
-    bottom: 0;
-    left: 0;
     overflow-y: scroll;
+    height: 100%;
+    /* bottom: 0;
+    left: 0;
     position: absolute;
     top: 0;
     transition-delay: .1s;
     transition: left .5s ease-out;
     width: 100%;
-    z-index: 2;
+    z-index: 2; */
 }
 
 .task-constraint {
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 10px;
+}
+
+.task-detail-left {
+    display: flex; 
+    justify-content: space-between;
 }
 
 .task-detail-header {
@@ -448,22 +453,21 @@ span.offer-count {
     padding-bottom: 15px;
 }
 
-.task-detail-col {
+/* .task-detail-col {
     width: 385px;
     float: left;
-}
+} */
 
 .task-detail-col-price-overlay {
     float: right;
     position: relative;
-    right: 12px;
-    width: 220px;
     text-align: center;
 }
 
 .task-detail-col-price {
     background: #f3f4f5;
     border-radius: 12px;
+    padding: 10px 25px;
 }
 
 .task-detail-divider {
@@ -528,13 +532,10 @@ span.offer-count {
     align-items: center;
 }
 
+
 @media screen and (max-width: 1023px) {
     .overlay-navbar-top, .overlay-navbar {
         padding: 0 20px;
-    }
-
-    .task-list {
-        width: 100%;
     }
 
     .task-content {
@@ -546,14 +547,7 @@ span.offer-count {
         position: relative;
         width: 100%;
         margin: 0 auto;
-        padding: 10px 25px;
-    }
-
-    .task-detail-container {
-        position: absolute;
-        bottom: 0;
-        top: 0;
-        left: 0;
+        padding: 0 25px;
     }
 
     .task-card {
@@ -704,7 +698,7 @@ span.offer-count {
     .btn-search-nav {
         position: absolute;
         right: 15px;
-        top: 6px;
+        top: 4px;
         border: 0;
         background: transparent;
     }
@@ -723,15 +717,51 @@ span.offer-count {
         display: block;
         height: calc(100vh - 118px);
         overflow: hidden;
-      }
+    }
 
-    .task-detail-container {
-        /* bottom: 0;
-        left: 0;
+    /* .task-detail-wrapper > :not(.task-detail-container.no-selected)  {
+        width: 100%;
         position: absolute;
+        bottom: 0;
+        top: 0;
         right: 0;
-        top: 0; */
+        left: 0;
+    } */
+
+    .task-detail-wrapper.task-blank {
+        position: relative;
+    } 
+
+    .task-detail-wrapper {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+
+    #map {
         display: none;
+    }
+
+    /* .task-detail-container.no-selected {
+        left: 100vw;
+    } */
+
+    /* .task-detail {
+        position: absolute;
+    } */
+}
+
+@media screen and (max-width:540px) {
+    .task-detail-left {
+        display: block;
+    }
+
+    .task-detail-col-price-overlay {
+        display: block;
+        float: none;
     }
 }
 
@@ -1372,4 +1402,21 @@ button.close {
     width: 32px;
     height: 32px;
     cursor: pointer;
+}
+
+.return-map {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #2e77dc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.return-map span {
+    text-decoration: underline;
+}
+
+.return-map:hover {
+    color: #bf2edc;
 }

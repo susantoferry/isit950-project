@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from knox import views as knox_views
@@ -13,7 +13,8 @@ urlpatterns = [
     path("question/<int:taskId>", views.question, name="question"),
     path("my-task/accept-offer/<taskId>/<userSpId>", views.acceptOffer, name="accept_offer"),
     path("task", views.task, name="task"),
-    path("task/<int:taskId>", views.taskDetail, name="task_detail"),
+    path("task/<slug:taskId>", views.taskDetail, name="task_detail"),
+    re_path(r"^search_task/$", views.taskSearch, name="task_search"),
     path("get_my_task/<int:userId>", views.getMyTask, name="get_my_task"),
     path("show_my_watchlist/<str:user>", views.myWatchlist, name="show_my_watchlist"),
     path("watchlist", views.watchlist, name="watchlist"),

@@ -1,4 +1,4 @@
-{% extends 'isit950/layout.html' %}
+{% extends 'isit950/auth_layout.html' %}
 
 {% block body %}
 <div style="background: #fff;">
@@ -9,8 +9,7 @@
                     <div style="position: relative;">
                         <div>
                             <div>
-                                <div
-                                    style="background-color: #cfd0d6;background-size: cover;border-radius: 24px; height: 200px;position: relative;">
+                                <div style="background-color: #cfd0d6;background-size: cover;border-radius: 24px; height: 200px;position: relative;">
 
                                 </div>
                             </div>
@@ -108,7 +107,7 @@
                                         </a>
                                         <i class='bx bxs-chevron-down arrow'></i>
                                         <ul class="sub-menu showMenu">
-                                            <li><a href="#">Edit Profile</a></li>
+                                            <li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
                                             <li><a href="#">Change Password</a></li>
                                             <li><a href="#">Membership Plan</a></li>
                                             <li><a href="#">Payment Method</a></li>

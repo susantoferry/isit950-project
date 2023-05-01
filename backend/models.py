@@ -19,9 +19,6 @@ class User(AbstractUser):
     location = models.CharField(max_length=50, null=True, blank=True)
     rating = models.DecimalField(default=0, max_digits=3, decimal_places=2, null=True, blank=True)
 
-    def __str__(self):
-        return f"Id: {self.username}"
-
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -94,6 +91,7 @@ class Task(models.Model):
 
     @property
     def my_bookmark(self):
+        # print([u.user for u in self.task_bookmark.all()])
         return [u.user for u in self.task_bookmark.all()]
     
     @property
@@ -119,10 +117,10 @@ class Question(models.Model):
 
 class Watchlist(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_bookmark")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_bookmark")
 
     def __str__(self):
-        return f"Id: {self.id}, Task: {self.task}, User: {self.user}"
+        return f"Id: {self.id}, Task: {self.task.id}, User: {self.user}"
 
 mapbox_token = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
 

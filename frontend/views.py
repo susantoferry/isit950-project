@@ -18,7 +18,15 @@ def index(request):
     return redirect("tasks")
 
 def profile(request):
-    return render(request, "isit950/account/profile.html")
+    return render(request, "isit950/account/profile/dashboard-profile.html")
+
+def editProfile(request):
+    if request.method == 'GET':
+        return render(request, "isit950/account/profile/edit_profile.html")
+
+    if request.method == 'PUT':
+
+        return render
 
 def tasks(request):
     taskResp = requests.get(restServer + "task")
@@ -44,7 +52,7 @@ def tasks(request):
     })
     
     if request.user.is_authenticated and not request.COOKIES.get('usid'):
-        response.set_cookie(key='usid', value=encryptString(request.user.username), max_age=settings.SESSION_COOKIE_AGE)
+        response.set_cookie(key='usid', value=request.user.username, max_age=settings.SESSION_COOKIE_AGE)
         
     return response
 
@@ -70,6 +78,24 @@ def taskDetail(request, slug):
         "taskDetail": taskDetail,
         "parentQuestion": parentQuestion,
         "childQuestion": childQuestion
+    })
+
+def searchTask(request):
+    params = {
+                'search_keyword': request.GET.get('search_keyword', None),
+                'category': request.GET.getlist('category', None), 
+                'min_price': request.GET.get('min_price', 0),
+                'max_price': request.GET.get('max_price', 9999),
+                'location': request.GET.get('location', None),
+                'sort_type': request.GET.get('sort_type', None)      
+            }
+    
+    print(params)
+    searchTaskResp = requests.get(restServer + "search_task", params=params)
+    searchTask = searchTaskResp.json()
+
+    return render(request, "isit950/index.html", {
+        "tasks": searchTask    
     })
 
 def createTask(request):

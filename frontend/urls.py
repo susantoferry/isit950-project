@@ -27,10 +27,12 @@ urlpatterns = [
 
     path("test123", views.testRead, name="test123"),
 
-    path("test", views.testHTML, name="test_page"),
+    path("postTask", views.postTask, name="postTask"),
+    path("test2", views.test2HTML, name="test_page"),
+    path("test3", views.test3HTML, name="test_page"),
     path("login", views.loginView, name="login"),
-    path("forgot_password", views.forgotPassword, name="forgot_password"),
-    path("sign_up", views.signUp, name="sign_up"),
+    path("forgotPass", views.forgotPass, name="forgotPass"),
+    path("resetPass", views.resetPass, name="resetPass"),
     path("logout", views.logout_view, name="logout"),
     
     # path("logout", views.logoutView, name="logout"),

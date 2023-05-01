@@ -135,14 +135,14 @@ def question(request, taskId):
 
 @api_view(['GET', 'POST'])
 def offer(request):
-    if request.method == 'GET':
-        offers = Offer.objects.all().order_by("status","-modify_date")
-        serializer = OfferSerializer(offers, many=True)
-        return Response(serializer.data)
+    # if request.method == 'GET':
+    #     offers = Offer.objects.all().order_by("status","-modify_date")
+    #     serializer = OfferSerializer(offers, many=True)
+    #     return Response(serializer.data)
     
     if request.method == 'POST':
         request.data['user'] = User.objects.values_list('id', flat=True).get(username=decryptString(request.data['user']))
-        
+        print(request.data)
         serializer = OfferSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

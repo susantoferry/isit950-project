@@ -71,8 +71,8 @@ $('#postBtn123').click(function () {
 
 
 $(document).ready(function() {
-    $('').click(function($event) {
-
+    $('.task-bookmark').click(function($event) {
+        console.log("test")
     })
 
     $('#offer-price').keyup(function($e){

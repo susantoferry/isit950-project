@@ -1,6 +1,5 @@
 from django.test import Client,TestCase
 from backend.models import Category
-import math
 import unittest
 class CategoryTestCase(TestCase):
     def setUp(self):

@@ -15,6 +15,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
+        <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
         <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/utilise.css' %}">
@@ -25,10 +26,14 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+        <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHDmpvYTOdgwFOVOKvhpyIIMQJXr36dZA&callback=initMap"></script> -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="{% static 'js/isit950-script.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.4/dist/js.cookie.min.js"></script>
-        
+
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+        <script id="search-js-1" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.16/web.js"></script>
     </head>
     <!-- https://www.airtasker.com/tasks/
     ?task_states=posted%2Cassigned%2Ccompleted%2Coverdue%2Cclosed
@@ -75,15 +80,27 @@
         </script>
 
         <script>
-            
-                function testBookmark(event) {
-                    console.log("test");
-                    
-                }
+            const accessTokenAddr1 = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
 
-                $('#task-bookmark123').bind('click', function(e) {
-                    console.log("nice")
-                })
+            const script = document.getElementById('search-js-1');
+            script.onload = () => {
+                const elements = document.querySelectorAll('mapbox-address-autofill');
+                for (const autofill of elements) {
+                    autofill.accessToken = accessTokenAddr1;
+                }
+            };
+        </script>
+
+        <script>
+            
+                // function testBookmark(event) {
+                //     event.stopPropagation();
+                //     console.log("test");
+                    
+                // }
+
+                // $('#task-bookmark123').bind('click', function(e) {
+                
                 // $('div .task-bookmark').bind('click', function(e){
                 //     e.stopPropagation();
                 //     console.log(e)

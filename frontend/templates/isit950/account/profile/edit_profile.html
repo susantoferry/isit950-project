@@ -1,0 +1,173 @@
+{% extends 'isit950/account_layout.html' %}
+
+{% block body %}
+
+<div style="width: 100%;">
+    <div style="display: flex; flex-direction: column;">
+        <div style="display: flex;">
+
+            <div style="width: 100%; overflow: hidden; position: relative; top: 15px;">
+                <form method="POST" class="fm-validation" action="{% url 'edit_profile' %}" novalidate enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div style="padding: 10px 0; font-size: 1.2rem; font-weight: 700">
+                        <span>Profile Details</span>
+                    </div>
+                    <div style="padding: 10px 0px;">
+                        <div style="width: 100%;">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="firstName" class="">First Name</label>
+                                        <input name="firstName" value="{{ profile.first_name}}" placeholder="Enter your first name" type="text" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="lastName" class="">Last Name</label>
+                                        <input name="lastName" value="{{ profile.last_name}}" placeholder="password placeholder" type="text" class="form-control"  disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="username" class="">@Username</label>
+                                        <input name="username" value="{{ profile.username}}" type="text" class="form-control" disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="col-md-8">
+                                    <div class="position-relative form-group">
+                                        <label for="description" class="">Describe yourself</label>
+                                        <textarea class="form-control" name="description" rows="5"
+                                            placeholder="Describe your skills, strength, and experience">{{ profile.description }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px 0; font-size: 1.2rem; font-weight: 700">
+                        <span>Pictures</span>
+                    </div>
+                    <div style="padding: 10px 0px;">
+                        <div style="width: 100%;">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="uploadProfile" class="">Upload Profile</label>
+                                        <div style="border-radius: 50% !important; background-color: rgb(243, 243, 247); max-width: 70px; max-height: 70px;">
+                                            {% if profile.img_profile %}
+                                                <img width="70" src="/static/{{ profile.img_profile }}" alt="" style="border-radius: 50%; object-fit: cover;">
+                                            {% else %}
+                                                <img width="70" src="/static/images/user-default.png" alt="" style="border-radius: 50%; object-fit: cover;">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="uploadBackground" class="">Upload Background Profile</label>
+                                    <div>
+                                        {% if profile.img_background %}
+                                        <img src="/static/{{ profile.img_background }}" alt="" style="width: 250px; height: 100px; border-radius: 20px; object-fit: cover;">
+                                        {% else %}
+                                        <img style="width: 250px; height: 100px; border-radius: 20px; background: #cecece;">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px 0; font-size: 1.2rem; font-weight: 700">
+                        <span>Skills</span>
+                    </div>
+                    <div style="padding: 10px 0px;">
+                        <div style="width: 100%;">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <input name="skill" placeholder="Enter your skill" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="border: 1px solid #e3e3e3; border-radius: 10px;">
+                                <div style="padding: 10px 20px; height: 150px;">
+                                    <div class="skill-layout">
+                                        {% for skill in skills %}
+                                        <div class="skill-capsule">
+                                            <span class="skill-title">{{ skill.skill }}</span>
+                                            <button class="skill-rm-btn">
+                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                                    <path
+                                                        d="M2.00065 9.16634L5.00065 6.16634L8.00065 9.16634L9.16732 7.99968L6.16732 4.99967L9.16732 1.99967L8.00065 0.833008L5.00065 3.83301L2.00065 0.833008L0.833984 1.99967L3.83398 4.99967L0.833984 7.99968L2.00065 9.16634Z"
+                                                        fill="#061257"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+            
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px 0; font-size: 1.2rem; font-weight: 700">
+                        <span>Address Details</span>
+                    </div>
+                    <div style="padding: 10px 0px;">
+                        <div style="width: 100%;">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="address">Address</label>
+                                        <mapbox-address-autofill>
+                                            <input value="{{ profile.address }}" placeholder="Enter your address" autocomplete="profile address-line1" type="text" class="form-control">
+                                        </mapbox-address-autofill>
+                                    </div>    
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="unit" class="">Unit Number</label>
+                                        <input name="unit" {% if profile.unit %} value="{{profile.unit}}" {% else %} value="" {%endif%}
+                                        placeholder="Optional enter your unit number" autocomplete="profile address-line2" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="city" class="">City</label>
+                                        <input name="city" value="{{profile.city}}" placeholder="Enter your city" autocomplete="profile address-level2" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="state" class="">State</label>
+                                        <input name="state" value="{{profile.state}}" placeholder="Enter your state" autocomplete="profile address-level1" type="text" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                    <div class="position-relative form-group">
+                                        <label for="zip" class="">ZIP/Postcode</label>
+                                        <input name="zip" value="{{profile.zip}}" placeholder="Enter your zip" type="text" autocomplete="profile postal-code" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: center; padding: 3rem 0;">
+                        <button class="button btncancel-outline">Cancel</button>
+                        <button class="button btnsave-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

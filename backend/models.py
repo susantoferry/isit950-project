@@ -126,9 +126,9 @@ class UserSkill(models.Model):
 
 class PaymentInformation(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_paymentinfo", null=True)
-    credit_card =models.CharField(max_length=50)
-    expiry_date=models.CharField(max_length=50)
-    cvv=models.CharField(max_length=50)
+    credit_card = models.CharField(max_length=128)
+    expiry_date = models.CharField(max_length=128)
+    cvv = models.CharField(max_length=128)
     create_date = models.DateTimeField(null=True)
     modify_date = models.DateTimeField(null=True)
 

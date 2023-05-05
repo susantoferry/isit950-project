@@ -75,6 +75,7 @@ class UserSkillSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PaymentInformationSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = PaymentInformation
         fields = '__all__'

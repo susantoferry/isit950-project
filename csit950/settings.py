@@ -149,6 +149,8 @@ TIME_ZONE = 'Australia/Sydney'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = False
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -177,6 +179,8 @@ CORS_ALLOW_HEADERS = [
 # SESSION_COOKIE_AGE = 60 * 60
 
 STATIC_URL = 'static/'
+
+LOGIN_URL = 'login'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'frontend/static/')
 MEDIA_URL = '/images/'

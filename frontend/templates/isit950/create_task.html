@@ -49,31 +49,19 @@
                 <div class="col-md-4">
                     <!-- <input name="location" id="search-js" placeholder="Enter your location" type="text" class="form-control"> -->
                     <mapbox-address-autofill>
-                        <input class="input mb12" name="address" autocomplete="shipping address-line1"
-                            placeholder="Address">
+                        <input class="input mb12" name="address" autocomplete="test address-line1" placeholder="Address">
                     </mapbox-address-autofill>
+                    <!-- <input class="input mb12" name="address" autocomplete="test address-line1" placeholder="Address"> -->
 
-                    <input class="input mb12" name="apartment" autocomplete="shipping address-line2"
-                        placeholder="Apartment">
+                    <input class="input mb12" name="apartment" autocomplete="test address-line2" placeholder="Apartment">
                     <div class="flex">
-                        <input class="input mb12" name="city" autocomplete="shipping address-level2" placeholder="City">
-                        <input class="input mb12 ml6" name="state" autocomplete="shipping address-level1"
-                            placeholder="State">
-                        <input class="input mb12 ml6" autocomplete="shipping postal-code" placeholder="ZIP / Postcode">
+                        <input class="input mb12" name="city" autocomplete="test address-level2" placeholder="City">
+                        <input class="input mb12 ml6" name="state" autocomplete="test address-level1" placeholder="State">
+                        <input class="input mb12 ml6" autocomplete="test postal-code" placeholder="ZIP / Postcode">
                     </div>
                 </div>
             </div>
-            <script>
-                const accessTokenAddr = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
-
-                const script = document.getElementById('search-js');
-                script.onload = () => {
-                    const elements = document.querySelectorAll('mapbox-address-autofill');
-                    for (const autofill of elements) {
-                        autofill.accessToken = accessTokenAddr;
-                    }
-                };
-            </script>
+            
             <div class="position-relative row form-group">
                 <label for="location_url" class="col-md-2 col-form-label">Location Link</label>
                 <div class="col-md-4">

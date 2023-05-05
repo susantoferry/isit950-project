@@ -24,13 +24,15 @@ urlpatterns = [
     path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
     path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
     path("skill/<str:skillId>", views.skillDetail, name="skill_detail"),
-    path("update_user/<str:user>", views.updateUserDetail, name="update_user_detail"),
+    path("profile_api/<str:user>", views.userProfile, name="profile_api"),
 
-    path("user_login", views.login, name="login"),
-    path('add_user', views.AddUser, name="add_user"),
+    path("user_login", views.userLogin, name="user_login"),
+    path('register_api', views.userRegister, name="register_api"),
+    path('resend_email_api', views.resendEmailAPI, name="resend_email_api"),
+    path('verifying-email-api', views.verifyingEmailAPI, name="verifying_email_api"),
     path('change_password/<int:id>', views.ChangePassword, name="change_password"),
-    path("forgot_password", views.ForgotPassword, name="forgot_password"),
-    path("reset_password/<str:token>", views.ResetPassword, name="reset_password"),
+    path("forgot_password_api", views.ForgotPassword, name="forgot_password_api"),
+    path("reset_password_api/<str:token>", views.ResetPassword, name="reset_password_api"),
     path("logout", knox_views.LogoutView.as_view()),
 ]
 

@@ -14,7 +14,7 @@ body {
     overflow-y: scroll !important;
     margin: 0px;
     /* background: #eeeef1; */
-    font-family: 'Inter';
+    /* font-family: 'Inter'; */
     
 }
 
@@ -35,6 +35,10 @@ img {border : 0;}
 
 button {
     border: none;
+}
+
+label {
+    margin-bottom: 10px;
 }
 
 nav {
@@ -153,6 +157,10 @@ input {
 input:focus, textarea:focus {
     outline: none;
 }
+
+input[type="text"]:disabled {
+    cursor: not-allowed;
+  }
 
 .dg-border {
     border: 1px solid #bfcce1;
@@ -1426,4 +1434,24 @@ button.close {
 
 .return-map:hover {
     color: #bf2edc;
+}
+
+.handy-label {
+    margin-bottom: 10px;
+    font-size: .9rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-row>.col, .form-row>[class*=col-] {
+    padding: 0 10px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
 }

@@ -13,6 +13,7 @@ urlpatterns = [
     path("account/payment-method", views.paymentMethod, name="payment_method"),
     path("account/payment-history", views.paymentHistory, name="payment_history"),
     path("account/profile", views.profile, name="profile"),
+    path("account/profile-form", views.createProfile, name="profile_form"),
     path("account/edit-profile", views.editProfile, name="edit_profile"),
     path("account/wishlist", views.wishlist, name="my_wishlist"),
 
@@ -27,12 +28,17 @@ urlpatterns = [
 
     path("test123", views.testRead, name="test123"),
 
+    path("verify-email/<email>", views.verifyEmail, name="verify_email"),
+    path("verifying-email/<email>", views.verifyingEmail, name="verifying_email"),
+    path("resend_email/<email>", views.resendEmail, name="resend_email"),
+
     path("postTask", views.postTask, name="postTask"),
     path("test2", views.test2HTML, name="test_page"),
     path("test3", views.test3HTML, name="test_page"),
     path("login", views.loginView, name="login"),
-    path("forgotPass", views.forgotPass, name="forgotPass"),
-    path("resetPass", views.resetPass, name="resetPass"),
+    path("register", views.registerView, name="register"),
+    path("forgot-password", views.forgotPass, name="forgot_password"),
+    path("reset-password/<token>", views.resetPass, name="reset_password"),
     path("logout", views.logout_view, name="logout"),
     
     # path("logout", views.logoutView, name="logout"),

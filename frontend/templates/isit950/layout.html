@@ -33,7 +33,7 @@
 
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
-        <script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.16/web.js"></script>
+        <script id="search-js-1" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.16/web.js"></script>
     </head>
     <!-- https://www.airtasker.com/tasks/
     ?task_states=posted%2Cassigned%2Ccompleted%2Coverdue%2Cclosed
@@ -77,6 +77,18 @@
                 {% endfor %}
                 
             {% endif %}
+        </script>
+
+        <script>
+            const accessTokenAddr1 = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
+
+            const script = document.getElementById('search-js-1');
+            script.onload = () => {
+                const elements = document.querySelectorAll('mapbox-address-autofill');
+                for (const autofill of elements) {
+                    autofill.accessToken = accessTokenAddr1;
+                }
+            };
         </script>
 
         <script>

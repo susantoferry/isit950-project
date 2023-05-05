@@ -3,22 +3,29 @@ from django.contrib.auth.models import AbstractUser
 import geocoder
 # Create your models here.
 
-class Membership(models.Model):
-    package_name=models.CharField(max_length=30)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    create_date = models.DateTimeField(null=True)
-    modify_date = models.DateTimeField(null=True)
+mapbox_token = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
+
+# class Membership(models.Model):
+#     package_name=models.CharField(max_length=30)
+#     description = models.TextField()
+#     price = models.DecimalField(max_digits=6, decimal_places=2)
+#     create_date = models.DateTimeField(null=True)
+#     modify_date = models.DateTimeField(null=True)
     
-    def __str__(self):
-        return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
+#     def __str__(self):
+#         return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
 
 class User(AbstractUser):
     img_profile = models.CharField(max_length=100, null=True, blank=True)
     img_background = models.CharField(max_length=100, null=True, blank=True)
-    location = models.CharField(max_length=50, null=True, blank=True)
+    address = models.CharField(max_length=50, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    unit = models.CharField(default="-", max_length=10, null=True, blank=True)
+    city = models.CharField(max_length=30, null=True, blank=True)
+    state = models.CharField(max_length=20, null=True, blank=True)
+    zip = models.CharField(max_length=10, null=True, blank=True)
     rating = models.DecimalField(default=0, max_digits=3, decimal_places=2, null=True, blank=True)
-
+    email_verified = models.BooleanField(default=0, null=True)
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -60,10 +67,10 @@ class Offer(models.Model):
 # 1, 2, 2,0,1
 
 
-class Skill(models.Model): 
-    skill_name = models.CharField(max_length=30)
-    def __str__(self):
-        return f"Id: {self.id}, Skill: {self.skill_name}"
+# class Skill(models.Model): 
+#     skill_name = models.CharField(max_length=30)
+#     def __str__(self):
+#         return f"Id: {self.id}, Skill: {self.skill_name}"
 
 class Task(models.Model):
     task_title = models.CharField(max_length=150)
@@ -122,7 +129,7 @@ class Watchlist(models.Model):
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task.id}, User: {self.user}"
 
-mapbox_token = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
+
 
 class Address(models.Model):
     address = models.TextField()
@@ -137,7 +144,7 @@ class Address(models.Model):
         return super(Address, self).save(*args, **kwargs)
 
 class UserSkill(models.Model):
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    skill = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):

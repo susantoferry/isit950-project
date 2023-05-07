@@ -87,6 +87,12 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = '__all__'
+
+class NotificationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Notification
+        fields = '__all__'
     
 
 class OfferSerializer(serializers.ModelSerializer):
@@ -105,15 +111,15 @@ class WatchlistSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class SkillSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Skill
-#         fields = '__all__'
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = '__all__'
         
-# class MembershipSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Membership
-#         fields = '__all__'
+class MembershipSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Membership
+        fields = '__all__'
 
 class UserSkillSerializer(serializers.ModelSerializer):
     class Meta:
@@ -153,3 +159,9 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"password": "Password fields didn't match."})
 
         return attrs
+    
+class PaymentInformationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PaymentInformation
+        fields = '__all__'

@@ -160,7 +160,11 @@ input:focus, textarea:focus {
 
 input[type="text"]:disabled {
     cursor: not-allowed;
-  }
+}
+
+.handy-f-14 {
+    font-size: 14px;
+}
 
 .dg-border {
     border: 1px solid #bfcce1;

@@ -23,8 +23,9 @@ urlpatterns = [
     path("membership", views.membership, name="membership"),
     path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
     path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
-    path("skill/<str:skillId>", views.skillDetail, name="skill_detail"),
+    path("notification_api", views.notification, name="notification_api"),
     path("profile_api/<str:user>", views.userProfile, name="profile_api"),
+    path("paymentInformation/<str:user>", views.paymentInformation, name="paymentInformation"),
 
     path("user_login", views.userLogin, name="user_login"),
     path('register_api', views.userRegister, name="register_api"),

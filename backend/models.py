@@ -5,15 +5,15 @@ import geocoder
 
 mapbox_token = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
 
-# class Membership(models.Model):
-#     package_name=models.CharField(max_length=30)
-#     description = models.TextField()
-#     price = models.DecimalField(max_digits=6, decimal_places=2)
-#     create_date = models.DateTimeField(null=True)
-#     modify_date = models.DateTimeField(null=True)
+class Membership(models.Model):
+    package_name=models.CharField(max_length=30)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    create_date = models.DateTimeField(null=True)
+    modify_date = models.DateTimeField(null=True)
     
-#     def __str__(self):
-#         return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
+    def __str__(self):
+        return f"Id: {self.id}, Membership: {self.package_name}, Price: {self.price}"
 
 class User(AbstractUser):
     img_profile = models.CharField(max_length=100, null=True, blank=True)
@@ -67,10 +67,10 @@ class Offer(models.Model):
 # 1, 2, 2,0,1
 
 
-# class Skill(models.Model): 
-#     skill_name = models.CharField(max_length=30)
-#     def __str__(self):
-#         return f"Id: {self.id}, Skill: {self.skill_name}"
+class Skill(models.Model): 
+    skill_name = models.CharField(max_length=30)
+    def __str__(self):
+        return f"Id: {self.id}, Skill: {self.skill_name}"
 
 class Task(models.Model):
     task_title = models.CharField(max_length=150)
@@ -131,17 +131,17 @@ class Watchlist(models.Model):
 
 
 
-class Address(models.Model):
-    address = models.TextField()
-    lat = models.FloatField(blank=True, null=True)
-    long = models.FloatField(blank=True, null=True)
+# class Address(models.Model):
+#     address = models.TextField()
+#     lat = models.FloatField(blank=True, null=True)
+#     long = models.FloatField(blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        g = geocoder.mapbox(self.address, key=mapbox_token)
-        g = g.latlng
-        self.lat = g[0]
-        self.long = g[1]
-        return super(Address, self).save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         g = geocoder.mapbox(self.address, key=mapbox_token)
+#         g = g.latlng
+#         self.lat = g[0]
+#         self.long = g[1]
+#         return super(Address, self).save(*args, **kwargs)
 
 class UserSkill(models.Model):
     skill = models.CharField(max_length=50)
@@ -162,11 +162,31 @@ class PasswordToken(models.Model):
 
 class PaymentInformation(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user_paymentinfo", null=True)
-    credit_card =models.CharField(max_length=50)
-    expiry_date=models.CharField(max_length=50)
-    cvv=models.CharField(max_length=50)
+    credit_card =models.CharField(max_length=255)
+    expiry_date=models.CharField(max_length=255)
+    cvv=models.CharField(max_length=255)
     create_date = models.DateTimeField(null=True)
     modify_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return f"Id: {self.id}, User: {self.user}"
+    
+class Notification(models.Model):
+    content_notif = models.IntegerField(null=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_notification", blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_notif")
+    user_sp = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_sp", blank=True, null=True)
+    is_read = models.BooleanField(default=False)
+    create_date = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return f"Id: {self.id}, Task: {self.task.id}"
+    
+class MembershipTransaction(models.Model):
+    membership = models.IntegerField()
+    payment = models.ForeignKey(PaymentInformation, on_delete=models.CASCADE, related_name="payment_id")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="trans_user_id")
+    create_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Id: {self.id}, Membership: {self.membership}, User: {self.user}"

@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.generics import UpdateAPIView
+from rest_framework import status
 from backend.models import *
 from knox.auth import AuthToken
 from .serializers import *
@@ -162,15 +163,21 @@ def offer(request):
     #     return Response(serializer.data)
     
     if request.method == 'POST':
-        request.data['user'] = User.objects.values_list('id', flat=True).get(username=decryptString(request.data['user']))
-        print(request.data)
+        request.data["task"] = request.data["task"].rsplit('-', 1)[-1]
+
+        request.data['user'] = User.objects.values_list('id', flat=True).get(username=request.data['user'])
+        
         serializer = OfferSerializer(data=request.data)
+
         if serializer.is_valid():
             serializer.save()
+            return Response({"status": 200, "message": "Saved successfully"})
         else:
             return Response(serializer.errors,status=400)
-        
-        return Response(serializer.data)
+
+@api_view(['GET', 'POST'])        
+def notification(request):
+    return
     
 
 @api_view(['GET'])
@@ -651,7 +658,8 @@ def getUsername(user):
         
 @api_view(['GET','POST'])
 def userLogin(request):
-    # if request.method == 'GET':
+    if request.method == 'GET':
+        return Response("a")
     #     user = 'ferry'
     #     print(user)
 
@@ -668,13 +676,12 @@ def userLogin(request):
     if request.method == "POST":
         if "email" in request.data:
             user = User.objects.values_list('username', flat=True).filter(email=request.data["email"], email_verified=1)
-            if len(user) > 0:
+            if user.exists():
                 request.data["username"]= user[0]
             else:
-                return Response({"message", "Oops. Something wrong when login. Please check your username or password"}, status=404)
+                return Response({"message", "Not found."}, status=404)
         
         serializer = AuthTokenSerializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
 
         if serializer.is_valid():
             user = serializer.validated_data['user']
@@ -682,7 +689,7 @@ def userLogin(request):
             
             return Response({'message': 'Success', 'user': str(user)}, status=200)
         else:
-            return Response({"message", "Oops. Something wrong when login. Please check your username or password"}, status=404)
+            return Response(serializer.errors, status=404)
         # return Response({
         #     'user_info': {
         #         'id': user.id,
@@ -701,7 +708,7 @@ def userRegister(request):
         email = User.objects.get(email = request.data["email"])
     except:
         email = ""
-
+    
     if email == "":
         user = {
             'username': username,
@@ -887,8 +894,50 @@ def ResetPassword(request, token):
                 tokenVal.save()
             return Response({"error"}, status=400)
 
+@api_view(['GET','POST','PUT'])
+@csrf_exempt
+def paymentInformation(request,user):
+    try:
+        user = User.objects.get(username=user)
+    except User.DoesNotExist:
+        user = ""
+    if user != "":
+        try:
+            paymentInformation = PaymentInformation.objects.get(user=user.id)
+        except PaymentInformation.DoesNotExist:
+            paymentInformation = ""
 
-    
+        if request.method == "POST":
+
+            data = {
+                "user": user.id,
+                "credit_card": str(encryptString(request.data['credit_card'])),
+                "expiry_date": str(encryptString(request.data['expiry_date'])),
+                'cvv': str(encryptString(request.data['cvv']))  
+            }
+
+            if paymentInformation == "":
+                serializer = PaymentInformationSerializer(data=data)
+            else:
+                serializer = PaymentInformationSerializer(paymentInformation, data=data)
+
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=400)
+            return Response({'message': 'success', 'status': 200 }, status=200)
+        
+        if request.method == 'GET':
+            
+            if paymentInformation !="":
+
+                serializer = PaymentInformationSerializer(paymentInformation, many=False)
+
+                return Response(serializer.data, status=200)
+            else:
+                return Response(serializer.errors, status=400)    
+    else:
+        return Response("User cannot be found!")     
         
         
     

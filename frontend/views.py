@@ -16,7 +16,7 @@ from urllib.parse import urlparse
 import hashlib
 
 # Create your views here.
-@login_required
+
 def index(request):
     return redirect("tasks")
 
@@ -173,7 +173,17 @@ def notification(request):
     return render(request, "isit950/account/notification.html")
 
 def paymentMethod(request):
-    return render(request, "isit950/account/payment_method.html")
+    userPaymentMethodResp = requests.get(restServer + "paymentInformation/" + request.user.username)
+    if userPaymentMethodResp.status_code == 200:
+        userPaymentMethod = userPaymentMethodResp.json()
+        userPaymentMethod["credit_card"] = decryptString(userPaymentMethod["credit_card"])[-4:]
+        userPaymentMethod["expiry_date"] = decryptString(userPaymentMethod["expiry_date"])
+    else:
+        userPaymentMethod = ""
+    
+    return render(request, "isit950/account/payment_method.html", {
+        "userPaymentMethod": userPaymentMethod
+    })
 
 def paymentHistory(request):
     return render(request, "isit950/account/payment_history.html")
@@ -289,11 +299,13 @@ def loginView(request):
         }
         
         userRequest = requests.post(restServer + "user_login" , json=userData)
-
+        
         if userRequest.status_code == 200:
             username = userRequest.json()['user']
+            print(username)
+            print(request.POST["password"])
             user = authenticate(request, username=username, password=request.POST["password"])
-
+            
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:

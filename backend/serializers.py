@@ -88,18 +88,15 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class NotificationSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Notification
-        fields = '__all__'
-    
+        fields = '__all__'  
 
 class OfferSerializer(serializers.ModelSerializer):
     user_provider = serializers.CharField(read_only=True, source='user.username')
     class Meta:
         model = Offer
         fields = '__all__'
-
 
 class WatchlistSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(read_only=True, source="task")
@@ -109,7 +106,6 @@ class WatchlistSerializer(serializers.ModelSerializer):
         model = Watchlist
         fields = '__all__'
 
-
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
@@ -118,6 +114,16 @@ class SkillSerializer(serializers.ModelSerializer):
 class MembershipSerializer(serializers.ModelSerializer):
     class Meta:
         model = Membership
+        fields = '__all__'
+
+class MembershipTransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MembershipTransaction
+        fields = '__all__'
+
+class PaymentInformationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentInformation
         fields = '__all__'
 
 class UserSkillSerializer(serializers.ModelSerializer):
@@ -159,8 +165,3 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
 
         return attrs
     
-class PaymentInformationSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = PaymentInformation
-        fields = '__all__'

@@ -173,7 +173,12 @@ def membershipPlan(request):
     return render(request, "isit950/account/membership_plan.html")
 
 def notification(request):
-    return render(request, "isit950/account/notification.html")
+    notificationResp = requests.get(restServer + "notification/" + str(request.user.id))
+    notifications = notificationResp.json()
+
+    return render(request, "isit950/account/notification.html", {
+        "notifications": notifications
+    })
 
 def paymentMethod(request):
     userPaymentMethodResp = requests.get(restServer + "paymentInformation/" + request.user.username)

@@ -23,7 +23,8 @@ urlpatterns = [
     path("membership", views.membership, name="membership"),
     path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
     path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
-    path("notification_api", views.notification, name="notification_api"),
+    path("notification/<user>", views.notification, name="notification"),
+
     path("profile_api/<str:user>", views.userProfile, name="profile_api"),
     path("paymentInformation/<str:user>", views.paymentInformation, name="paymentInformation"),
 

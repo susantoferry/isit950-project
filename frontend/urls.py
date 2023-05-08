@@ -29,6 +29,7 @@ urlpatterns = [
     path("forgot_password", views.forgotPassword, name="forgot_password"),
     path("sign_up", views.signUp, name="sign_up"),
     path("logout", views.logout_view, name="logout"),
+    path("cancel_popup_1", views.cancel_popup_1, name="cancel_popup_1"),
     
     # path("logout", views.logoutView, name="logout"),
     # path("change_password", views.changePassword, name="change_password"),

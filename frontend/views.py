@@ -208,6 +208,10 @@ def logout_view(request):
     response = HttpResponseRedirect(reverse("index"))
     response.delete_cookie('usid')
     return response
+
+def cancel_popup_1(request):
+    return render(request, "isit950/cancel_popup_1.html")
+
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

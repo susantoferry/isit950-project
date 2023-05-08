@@ -664,8 +664,6 @@ def userLogin(request):
     #     user = 'ferry'
     #     print(user)
 
-<<<<<<< HEAD
-=======
     #     if user.is_authenticated:
     #         return Response({
     #             'user_info': {
@@ -942,7 +940,6 @@ def paymentInformation(request,user):
     else:
         return Response("User cannot be found!")     
         
->>>>>>> origin/Ferry
         
     
 # @api_view(['GET', 'PUT', 'DELETE'])

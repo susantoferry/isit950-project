@@ -33,23 +33,34 @@
     background-color: #007bff;
 }
 
-.cAYMhj {
+.skill-layout {
     display: flex;
+    flex-wrap: wrap;
     position: relative;
     width: 100%;
-    flex-wrap: wrap;
-    gap: 8px 12px;
+    row-gap: 10px;
+    column-gap: 12px;
 }
 
 .kdDMzH {
     display: inline-flex;
     align-items: center;
     border-radius: 50px;
-    background-color: #ebeefd;
-    padding: 0 16px;
+    background-color: #ffdeff;
+    padding: 0px 20px;
+    font-weight: 500;
 }
 
-.zJlDv {
+.skill-capsule {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 50px;
+    background-color: #dce2ff;
+    padding: 0px 20px;
+    font-weight: 500;
+}
+
+.skill-title {
     color: #061257;
     font-size: .9rem;
     letter-spacing: 0.35px;
@@ -59,7 +70,17 @@
     padding: 6px 0;
 }
 
-.dTKxLf {
+.skill-title {
+    color: #283061;
+    font-size: .9rem;
+    letter-spacing: 0.4px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: initial;
+    padding: 5px 0;
+}
+
+.skill-rm-btn {
     display: flex;
     cursor: pointer;
     background-color: transparent;

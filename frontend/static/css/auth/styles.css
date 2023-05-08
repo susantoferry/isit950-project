@@ -12,8 +12,11 @@ body {
 	overscroll-behavior: none;
 	font-family: 'Inter';
 	font-style: normal;
- }
+}
 
+a {
+	text-decoration: none;
+}
 
 /*for website design */
 h1{
@@ -39,23 +42,6 @@ transition:all .5s ease;
 	
 }
 
-.newPass {
-
- position: absolute;
-width: 200.87px;
-height: 32.16px;
-left: calc(50% - 366px/2 + 28px );
-top: calc(50% - 12.16px/2 - 168.92px); 
-font-family: 'Inter';
-font-style: normal;
-font-weight: 500;
-font-size: 20px;
-line-height: 24px;
-text-align: left;
-
-color: #786E6E;
-
-}
 
 .confirmPass {
 
@@ -130,19 +116,6 @@ background-color: transparent;
   
   
   
-  .newPass {
-  
-  	position: relative;
-		width: 100%;
-		height: 32.16px;
-		left: 0;
-		text-align: left;
-		color: #786E6E;
-		margin-bottom: 10px;
-
-  
-  }
-  
   .confirmPass {
   
   	position: relative;
@@ -207,19 +180,7 @@ background-color: transparent;
   }
   
   
-  
-  .newPass {
-  
-  	position: relative;
-		width: 100%;
-		height: 32.16px;
-		left: 0;
-		text-align: left;
-		color: #786E6E;
-		margin-bottom: 10px;
 
-  
-  }
   
   .confirmPass {
   
@@ -286,18 +247,7 @@ background-color: transparent;
   
   
   
-  .newPass {
-  
-  	position: relative;
-		width: 100%;
-		height: 32.16px;
-		left: 0;
-		text-align: left;
-		color: #786E6E;
-		margin-bottom: 10px;
-
-  
-  }
+ 
   
   .confirmPass {
   
@@ -361,21 +311,7 @@ background-color: transparent;
     color: #6E27A3;
   }
   
-  
-  
-  .newPass {
-  
-  	position: relative;
-		width: 100%;
-		height: 32.16px;
-		left: 0;
-		text-align: left;
-		color: #786E6E;
-		margin-bottom: 10px;
 
-  
-  }
-  
   .confirmPass {
   
   	position: relative;
@@ -440,19 +376,7 @@ background-color: transparent;
   }
   
   
-  
-  .newPass {
-  
-  	position: relative;
-		width: 100%;
-		height: 32.16px;
-		left: 0;
-		text-align: left;
-		color: #786E6E;
-		margin-bottom: 10px;
 
-  
-  }
   
   .confirmPass {
   
@@ -518,19 +442,8 @@ background-color: transparent;
   }
   
   
-  
-  .newPass {
-  
-  	position: relative;
-		width: 100%;
-		height: 32.16px;
-		left: 0;
-		text-align: left;
-		color: #786E6E;
-		margin-bottom: 10px;
 
-  
-  }
+
   
   .confirmPass {
   

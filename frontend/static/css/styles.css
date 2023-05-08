@@ -14,7 +14,7 @@ body {
     overflow-y: scroll !important;
     margin: 0px;
     /* background: #eeeef1; */
-    font-family: 'Inter';
+    /* font-family: 'Inter'; */
     
 }
 
@@ -35,6 +35,10 @@ img {border : 0;}
 
 button {
     border: none;
+}
+
+label {
+    margin-bottom: 10px;
 }
 
 nav {
@@ -84,7 +88,7 @@ ul {
 
 .overlay-navbar {
     width: 100%;
-    height: 55px;
+    height: 65px;
     border-bottom: 1px solid #d9d9d9;
 }
 
@@ -154,6 +158,14 @@ input:focus, textarea:focus {
     outline: none;
 }
 
+input[type="text"]:disabled {
+    cursor: not-allowed;
+}
+
+.handy-f-14 {
+    font-size: 14px;
+}
+
 .dg-border {
     border: 1px solid #bfcce1;
 }
@@ -165,18 +177,18 @@ input:focus, textarea:focus {
 .btn-search-nav {
     position: absolute;
     right: 15px;
-    top: 6px;
+    top: 4px;
     border: 0;
     background: transparent;
 }
 
 .btn-search-nav img {
-    width: 20px;
+    width: 16px;
     filter: opacity(0.6);
 }
 
 .btn-search-nav img:hover {
-    width: 20px;
+    width: 16px;
     filter: opacity(1);
 }
 
@@ -189,7 +201,7 @@ input:focus, textarea:focus {
     background-color: #f3f3f7;
     box-sizing: border-box;
     text-indent: 20px;
-    
+    padding-right: 45px;
 }
 
 .search-input.my-task {
@@ -243,7 +255,7 @@ input:focus, textarea:focus {
 
 .list-scroll-effect {
     transition: padding-top .6s cubic-bezier(.68,-.55,.265,1.55);
-    height: calc(100vh - 100px);
+    height: calc(100vh - 120px);
     overflow-y: scroll;
 }
 
@@ -263,6 +275,7 @@ input:focus, textarea:focus {
     margin-top: 8px;
     margin-right: 10px;
     margin-bottom: 14px;
+    cursor: pointer;
 }
 
 .task-header, .task-price {
@@ -404,29 +417,48 @@ span.offer-count {
     right: 0;
 }
 
-.task-detail-container {
-    flex: 1;
+.task-detail-wrapper {
+    width: 100%; 
     position: relative;
-    transition: left .5s ease-in;
+}
+
+.task-detail-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    transition: left .7s ease-in-out;
+    width: 100%;
+    z-index: 2;
+}
+
+.task-detail-container.no-selected {
+    left: 100vw;
 }
 
 .task-detail-overlay {
     background-color: #fff;
-    bottom: 0;
-    left: 0;
     overflow-y: scroll;
+    height: 100%;
+    /* bottom: 0;
+    left: 0;
     position: absolute;
     top: 0;
     transition-delay: .1s;
     transition: left .5s ease-out;
     width: 100%;
-    z-index: 2;
+    z-index: 2; */
 }
 
 .task-constraint {
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 10px;
+}
+
+.task-detail-left {
+    display: flex; 
+    justify-content: space-between;
 }
 
 .task-detail-header {
@@ -440,22 +472,21 @@ span.offer-count {
     padding-bottom: 15px;
 }
 
-.task-detail-col {
+/* .task-detail-col {
     width: 385px;
     float: left;
-}
+} */
 
 .task-detail-col-price-overlay {
     float: right;
     position: relative;
-    right: 12px;
-    width: 220px;
     text-align: center;
 }
 
 .task-detail-col-price {
     background: #f3f4f5;
     border-radius: 12px;
+    padding: 10px 25px;
 }
 
 .task-detail-divider {
@@ -520,13 +551,10 @@ span.offer-count {
     align-items: center;
 }
 
+
 @media screen and (max-width: 1023px) {
     .overlay-navbar-top, .overlay-navbar {
         padding: 0 20px;
-    }
-
-    .task-list {
-        width: 100%;
     }
 
     .task-content {
@@ -538,19 +566,16 @@ span.offer-count {
         position: relative;
         width: 100%;
         margin: 0 auto;
-        padding: 10px 25px;
-    }
-
-    .task-detail-container {
-        position: absolute;
-        bottom: 0;
-        top: 0;
-        left: 0;
+        padding: 0 25px;
     }
 
     .task-card {
         padding: 12px 25px;
     }
+}
+
+.btn-input-close {
+    position: absolute;
 }
 
 
@@ -567,6 +592,7 @@ span.offer-count {
     .btn-search-nav {
         width: 40px;
         height: 40px;
+        float: right;
         outline: none;
         position: relative;
         z-index: 2;
@@ -577,9 +603,83 @@ span.offer-count {
         top: 0;
     }
 
-    .search-input {
-        display: none!important;
-        opacity: 0!important;
+    .search-overlay {
+        position: relative;
+    }
+
+    .input-overlay {
+        height: 42px;
+        width: 42px;
+        border-radius: 50px;
+        transition: all .3s ease-in-out;
+    }
+
+    .search-overlay.active-input {
+        height: 42px;
+        width: 250px;
+        border-radius: 50px;
+        transition: all .3s ease-in-out;
+    }
+
+    .search-overlay.active-input .input-overlay {
+        width: 250px;
+        border-radius: 50px;
+        background: rgba(0,0,0,.05);
+    
+    }
+
+    .search-overlay.active-input .input-overlay .search-input {
+        transform: translate(0, 0);
+        margin-top: 4px;
+    }
+
+    .search-overlay .input-overlay .search-input {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: 0 0;
+        box-sizing: border-box;
+        border: none;
+        outline: none;
+        transform: translate(0,60px);
+        font-size: .88rem;
+    }
+
+    .btn-input-close {
+        opacity: 0;
+    }
+
+    .search-overlay.active-input .btn-input-close {
+        opacity: 1;
+        position: relative;
+        top: -35px;
+        margin-right: -14px;
+        float: right;
+        background: none;
+        transform: rotate(45deg);
+    }
+
+    .search-overlay .btn-input-close::before {
+        position: absolute;
+        content: '';
+        background: #a157a1;
+        border-radius: 2px;
+        width: 2px;
+        height: 20px;
+        left: 9px;
+        top: 0;
+    }
+
+    .search-overlay .btn-input-close::after {
+        position: absolute;
+        content: '';
+        background: #a157a1;
+        border-radius: 2px;
+        width: 20px;
+        height: 2px;
+        left: 0px;
+        top: 9px;
     }
 
 }
@@ -617,7 +717,7 @@ span.offer-count {
     .btn-search-nav {
         position: absolute;
         right: 15px;
-        top: 6px;
+        top: 4px;
         border: 0;
         background: transparent;
     }
@@ -636,15 +736,51 @@ span.offer-count {
         display: block;
         height: calc(100vh - 118px);
         overflow: hidden;
-      }
+    }
 
-    .task-detail-container {
-        /* bottom: 0;
-        left: 0;
+    /* .task-detail-wrapper > :not(.task-detail-container.no-selected)  {
+        width: 100%;
         position: absolute;
+        bottom: 0;
+        top: 0;
         right: 0;
-        top: 0; */
+        left: 0;
+    } */
+
+    .task-detail-wrapper.task-blank {
+        position: relative;
+    } 
+
+    .task-detail-wrapper {
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        left: 0;
+    }
+
+    #map {
         display: none;
+    }
+
+    /* .task-detail-container.no-selected {
+        left: 100vw;
+    } */
+
+    /* .task-detail {
+        position: absolute;
+    } */
+}
+
+@media screen and (max-width:540px) {
+    .task-detail-left {
+        display: block;
+    }
+
+    .task-detail-col-price-overlay {
+        display: block;
+        float: none;
     }
 }
 
@@ -1274,3 +1410,52 @@ button.close {
     text-decoration: none;
 }
 
+#map {
+    height: calc(100vh - 120px);
+    width: 100%;
+}
+
+.marker {
+    background-image: url('../images/pin-location.png');
+    background-size: cover;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.return-map {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #2e77dc;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.return-map span {
+    text-decoration: underline;
+}
+
+.return-map:hover {
+    color: #bf2edc;
+}
+
+.handy-label {
+    margin-bottom: 10px;
+    font-size: .9rem;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-row>.col, .form-row>[class*=col-] {
+    padding: 0 10px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}

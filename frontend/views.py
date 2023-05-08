@@ -332,11 +332,14 @@ def registerView(request):
             return render(request, "isit950/auth/register.html")
         else:
             userData = {
-                'first_name': request.POST["firstName"],
-                'last_name': request.POST["lastName"],
-                'email': request.POST["email"],
-                'password': request.POST["password"]
+                'review': request.POST["qwerrty"],
+                'star': request.POST["star123"]
             }
+            # print(userData)
+            # {
+            #     'first_name': 'dipesh',
+            #     'star': 5
+            # }
 
             # return HttpResponseRedirect(reverse("verify_email", args=[encryptString(request.POST["email"])]))
 

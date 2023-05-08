@@ -8,115 +8,44 @@
             <span style="margin-right: 10px;">Notification</span>
         </div>
         <div style="display: flex; padding: 20px 30px; height: auto; flex-direction: column;">
-            <!-- <div style="display: flex;gap: 40px;flex-wrap: wrap;position: relative;">
-                <div>
-                    <a href="#" class="button btnprimary-outline btnnavtop">All</a>
-                </div>
-                <div>
-                    <a href="#" class="button btnprimary btnnavtop">Unread</a>
-                </div>
-            </div> -->
             <div>
-                <div style="font-weight: 700; letter-spacing: .5px; font-size: 1.2rem;">
-                    <span>Unread notifications</span>
-                </div>
                 <div style="width: 100%; border-radius: 10px;">
-                    <div style="padding-top: 20px;">
-                        <a href="#" class="notif-block">
-                            <div style="display: flex; padding: 10px;">
-                                <div>
-                                    <img width="55" src="/static/images/profiles/Hansel.png" alt="">
-                                </div>
-                                <div style="display: flex; justify-content: space-between; position:relative; 
-                                margin-left: 20px; width: 100%; align-items: center;">
-                                    <div style="width: 100%;">
-                                        <span>Ferry S. leave a comments on your posted task “ Replace a new curtain”</span>
-                                        <div style="font-size: 13px; color: #920092; font-weight: 500;">
-                                            18 mins ago
-                                        </div>
+                {% if notifications %}
+                    {% for notif in notifications %}
+                        <div>
+                            <a href="{% url 'task' %}" class="notif-block">
+                                <div style="display: flex; padding: 10px;">
+                                    <div>
+                                        <img width="55" src="/static/images/profiles/Hansel.png" alt="">
                                     </div>
-                                    <div style="padding-left: 10px;">
-                                        <div style="width: 20px; height: 40px; display: flex; align-items: center; justify-content: right;">
-                                            <span style="background: #cb2ecb; height: 10px; display: block;
-                                            width: 10px; border-radius: 50px;"></span>
+                                    <div style="display: flex; justify-content: space-between; position:relative; 
+                                    margin-left: 20px; width: 100%; align-items: center;">
+                                        <div style="width: 100%;">
+                                            <span>Ferry S. leave a comments on your posted task “{{ notif.task }}”</span>
+                                            <div style="font-size: 13px; color: #920092; font-weight: 500;">
+                                                18 mins ago
+                                            </div>
                                         </div>
-                                        
+                                        {% if notif.is_read == False %}
+                                        <div style="padding-left: 10px;">
+                                            <div style="width: 20px; height: 40px; display: flex; align-items: center; justify-content: right;">
+                                                <span style="background: #cb2ecb; height: 10px; display: block;
+                                                width: 10px; border-radius: 50px;"></span>
+                                            </div>
+                                        </div>
+                                        {% endif %}
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
                     <div>
-                        <a href="#" class="notif-block">
-                            <div style="display: flex; padding: 10px;">
-                                <div>
-                                    <img width="55" src="/static/images/profiles/Hansel.png" alt="">
-                                </div>
-                                <div style="display: flex; justify-content: space-between; position:relative; 
-                                margin-left: 20px; width: 100%; align-items: center;">
-                                    <div style="width: 100%;">
-                                        <span>Ferry S. leave a comments on your posted task “ Replace a new curtain”</span>
-                                        <div style="font-size: 13px; color: #920092; font-weight: 500;">
-                                            18 mins ago
-                                        </div>
-                                    </div>
-                                    <div style="padding-left: 10px;">
-                                        <div style="width: 20px; height: 40px; display: flex; align-items: center; justify-content: right;">
-                                            <span style="background: #cb2ecb; height: 10px; display: block;
-                                            width: 10px; border-radius: 50px;"></span>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
+                        <div style="text-align: center;">You have no notifications</div>
                     </div>
+                {% endif %}
                 </div>
             </div>
-            <div style="padding-top: 20px;">
-                <div style="font-weight: 700; letter-spacing: .5px; font-size: 1.2rem;">
-                    <span>Past notifications</span>
-                </div>
-                <div style="width: 100%; border-radius: 10px;">
-                    <div style="padding-top: 20px;">
-                        <a href="#" class="notif-block">
-                            <div style="display: flex; padding: 10px;">
-                                <div>
-                                    <img width="55" src="/static/images/profiles/Hansel.png" alt="">
-                                </div>
-                                <div style="display: flex; justify-content: space-between; position:relative; 
-                                margin-left: 20px; width: 100%; align-items: center;">
-                                    <div style="width: 100%;">
-                                        <span>Ferry S. leave a comments on your posted task “ Replace a new curtain”</span>
-                                        <div style="font-size: 13px; color: #920092; font-weight: 500;">
-                                            18 mins ago
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="#" class="notif-block">
-                            <div style="display: flex; padding: 10px;">
-                                <div>
-                                    <img width="55" src="/static/images/profiles/Hansel.png" alt="">
-                                </div>
-                                <div style="display: flex; justify-content: space-between; position:relative; 
-                                margin-left: 20px; width: 100%; align-items: center;">
-                                    <div style="width: 100%;">
-                                        <span>Ferry S. leave a comments on your posted task “ Replace a new curtain”</span>
-                                        <div style="font-size: 13px; color: #920092; font-weight: 500;">
-                                            18 mins ago
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
         </div>
     </div>
 </div>

@@ -178,6 +178,7 @@ class Notification(models.Model):
     user_sp = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_sp", blank=True, null=True)
     is_read = models.BooleanField(default=False)
     create_date = models.DateTimeField(null=True)
+    modify_date = models.DateTimeField(null=True)
 
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task.id}"
@@ -186,6 +187,8 @@ class MembershipTransaction(models.Model):
     membership = models.IntegerField()
     payment = models.ForeignKey(PaymentInformation, on_delete=models.CASCADE, related_name="payment_id")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="trans_user_id")
+    price = models.DecimalField(max_digits=4, decimal_places=0, default=0)
+    trans_type = models.CharField(max_length=1, null=True)
     create_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):

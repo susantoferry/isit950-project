@@ -17,6 +17,7 @@
     </div>
     <div>
         <div style="display: flex; padding: 25px;">
+            {% if userPaymentMethod %}
             <div>
                 <svg width="59" height="46" viewBox="0 0 59 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="58.6074" height="46" rx="4" fill="black"/>
@@ -36,7 +37,17 @@
                 color: purple;
                 cursor: pointer;" data-bs-toggle="modal" data-bs-target="#paymentMethodModal">Update</a>
             </div>
+            {% else %}
+            <div>
+                <div class="mb-3">
+                    <span>You have no payment method. Add your credit card/ debit card.</span>
+                </div>
                 
+                <button class="button btnsave-primary" data-bs-toggle="modal" data-bs-target="#paymentMethodModal" style="font-size: 1rem; width:100%; font-weight: 400;">
+                    Add payment method
+                </button>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -75,7 +86,13 @@
                 
                 <div style="padding-top: 20px; display: flex; gap: 0 10px;">
                     <button class="button btncancel-outline" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1rem; width: 100%; margin: 0; font-weight: 400;">Cancel</button>
-                    <button class="button btnsave-primary cc-func" style="font-size: 1rem; width: 100%; margin: 0; font-weight: 400;">Update</button>
+                    <button class="button btnsave-primary cc-func" style="font-size: 1rem; width: 100%; margin: 0; font-weight: 400;">
+                        {% if userPaymentMethod %}
+                        <span>Update payment</span>
+                        {% else %}
+                        <span>Add payment</span>
+                        {% endif %}
+                    </button>
                 </div>
             </div>
         </div>

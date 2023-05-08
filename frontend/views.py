@@ -211,6 +211,10 @@ def logout_view(request):
     response = HttpResponseRedirect(reverse("index"))
     response.delete_cookie('usid')
     return response
+
+
+
+
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

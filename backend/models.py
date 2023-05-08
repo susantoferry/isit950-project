@@ -121,4 +121,3 @@ class UserSkill(models.Model):
     
     def __str__(self):
         return f"Id: {self.id}, Skill: {self.skill}, User: {self.user}"
-

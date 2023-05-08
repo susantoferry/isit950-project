@@ -75,7 +75,7 @@ ROOT_URLCONF = 'csit950.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'frontend/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -196,3 +196,4 @@ EMAIL_HOST_PASSWORD = 'zrendwnblmljiqwv'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+

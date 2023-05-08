@@ -21,6 +21,7 @@ import base64
 
 from asgiref.sync import sync_to_async
 
+
 # Create your views here.
 
 @api_view(['GET', 'POST'])
@@ -572,9 +573,6 @@ def mySkillList(request,user):
         
 
 
-
-    
-        
         
     
 # @api_view(['GET', 'PUT', 'DELETE'])

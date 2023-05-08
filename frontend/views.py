@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect, JsonResponse
-from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -7,10 +8,12 @@ from django.urls import reverse
 from django.db.models import Count
 from backend.models import *
 from .constant import *
-
+from urllib.parse import urlencode
 from django.conf import settings
 import requests
 import re
+from urllib.parse import urlparse
+import hashlib
 
 # Create your views here.
 
@@ -18,33 +21,70 @@ def index(request):
     return redirect("tasks")
 
 def profile(request):
-    return render(request, "isit950/account/profile.html")
+    return render(request, "isit950/account/profile/dashboard-profile.html")
+
+def createProfile(request):
+    return render(request, "isit950/account/profile/create_profile.html")
+
+def editProfile(request):
+    if request.method == 'GET':
+        profileResp = requests.get(restServer + "profile_api/" + request.user.username)
+        skillsResp = requests.get(restServer + "my_skilllist/" + request.user.username)
+        if profileResp.status_code == 200 and skillsResp.status_code == 200:
+            profile = profileResp.json()
+            skills = skillsResp.json()
+            
+            return render(request, "isit950/account/profile/edit_profile.html", {
+                "profile": profile,
+                "skills": skills
+            })
+        else:
+            return render(request, "isit950/404.html")
+
+    if request.method == 'POST':
+        profileData = {
+            'description': request.POST["description"],
+            'address': request.POST["address-search"],
+            'unit': request.POST["unit"],
+            'city': request.POST["city"],
+            'state': request.POST["state"],
+            'zip': request.POST["zip"]
+        }
+
+        profileResp = requests.put(f"{restServer}profile_api/{request.user.username}", json=profileData)
+
+        if profileResp.status_code == 200:
+            messages.success(request, "Profile has been updated successfully")
+            return HttpResponseRedirect(reverse("edit_profile"))
+        else:
+            messages.error(request, "There is an error when updating")
+            return HttpResponseRedirect(reverse("edit_profile"))
 
 def tasks(request):
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
-    firstTaskDetail = tasks[0]["id"]
-    taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-    taskDetail = taskDetailResp.json()
+    # firstTaskDetail = tasks[0]["id"]
+    # taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
+    # taskDetail = taskDetailResp.json()
 
-    commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
-    comments = commentResp.json()
+    # commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
+    # comments = commentResp.json()
     
-    parentQuestion = Question.objects.filter(task_id=firstTaskDetail, parent_id=None).order_by("-create_date")
-    childQuestion = Question.objects.filter(task_id=firstTaskDetail).exclude(parent_id=None)
+    # parentQuestion = Question.objects.filter(task_id=firstTaskDetail, parent_id=None).order_by("-create_date")
+    # childQuestion = Question.objects.filter(task_id=firstTaskDetail).exclude(parent_id=None)
     
     response =  render(request, "isit950/index.html", {
         "tasks": tasks,
-        "taskDetail": taskDetail,
-        "user": 1,
-        "comments": comments,
-        "parentQuestion": parentQuestion,
-        "childQuestion": childQuestion
+        # "taskDetail": taskDetail,
+        "user": request.user,
+        # "comments": comments,
+        # "parentQuestion": parentQuestion,
+        # "childQuestion": childQuestion
     })
-    a = encryptString(request.user.username)
+    
     if request.user.is_authenticated and not request.COOKIES.get('usid'):
-        response.set_cookie(key='usid', value=encryptString(request.user.username), max_age=settings.SESSION_COOKIE_AGE)
+        response.set_cookie(key='usid', value=request.user.username, max_age=settings.SESSION_COOKIE_AGE)
         
     return response
 
@@ -70,6 +110,23 @@ def taskDetail(request, slug):
         "taskDetail": taskDetail,
         "parentQuestion": parentQuestion,
         "childQuestion": childQuestion
+    })
+
+def searchTask(request):
+    params = {
+                'search_keyword': request.GET.get('search_keyword', None),
+                'category': request.GET.getlist('category', None), 
+                'min_price': request.GET.get('min_price', 0),
+                'max_price': request.GET.get('max_price', 9999),
+                'location': request.GET.get('location', None),
+                'sort_type': request.GET.get('sort_type', None)      
+            }
+    
+    searchTaskResp = requests.get(restServer + "search_task", params=params)
+    searchTask = searchTaskResp.json()
+
+    return render(request, "isit950/index.html", {
+        "tasks": searchTask    
     })
 
 def createTask(request):
@@ -119,7 +176,17 @@ def notification(request):
     return render(request, "isit950/account/notification.html")
 
 def paymentMethod(request):
-    return render(request, "isit950/account/payment_method.html")
+    userPaymentMethodResp = requests.get(restServer + "paymentInformation/" + request.user.username)
+    if userPaymentMethodResp.status_code == 200:
+        userPaymentMethod = userPaymentMethodResp.json()
+        userPaymentMethod["credit_card"] = decryptString(userPaymentMethod["credit_card"])[-4:]
+        userPaymentMethod["expiry_date"] = decryptString(userPaymentMethod["expiry_date"])
+    else:
+        userPaymentMethod = ""
+    
+    return render(request, "isit950/account/payment_method.html", {
+        "userPaymentMethod": userPaymentMethod
+    })
 
 def paymentHistory(request):
     return render(request, "isit950/account/payment_history.html")
@@ -189,17 +256,148 @@ def myTaskDetail(request, taskId):
         "questions": questionCount
     })
 
-def testHTML(request):
-    return render(request, "isit950/test.html")
+def resendEmail(request, email):
+
+    resendResp = requests.post(restServer + 'resend_email_api', json={'email': email})
+
+    return HttpResponseRedirect(reverse("verify_email", args=[email]))
+
+def verifyEmail(request, email):
+    
+    return render(request, "isit950/auth/verify_account.html", {
+        "email": decryptString(email),
+        "code": email
+    })
+
+def verifyingEmail(request, email):
+    verifyResp = requests.post(restServer + 'verifying-email-api', json={'email': email})
+
+    if verifyResp.status_code == 200:
+        return HttpResponseRedirect(reverse('login'))
+    else:
+        return HttpResponseRedirect(reverse("verify_email", args=[email]))
+
+def postTask(request):
+    return render(request, "isit950/postTask.html")
+
+def test2HTML(request):
+    return render(request, "isit950/test2.html")
+
+def test3HTML(request):
+    return render(request, "isit950/test3.html")
+
+def loginView1(request):
+    return render(request, "isit950/auth/login1.html")
 
 def loginView(request):
-    return render(request, "isit950/auth/login.html")
+    
+    if request.method == 'GET':
+        
+        return render(request, "isit950/auth/login.html")
+    
+    if request.method == 'POST':
+        userData = {
+            'email': request.POST["email"],
+            'password': request.POST["password"]
+        }
+        
+        userRequest = requests.post(restServer + "user_login" , json=userData)
+        
+        if userRequest.status_code == 200:
+            username = userRequest.json()['user']
+            print(username)
+            print(request.POST["password"])
+            user = authenticate(request, username=username, password=request.POST["password"])
+            
+            login(request, user)
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "isit950/auth/login.html", {
+                "message": "Invalid username and/or password.",
+                "status": "danger"
+            })
+        
+def registerView(request):
+    if request.method == 'GET':
+        return render(request, "isit950/auth/register.html")
 
-def forgotPassword(request):
-    return render(request, "isit950/auth/forget_password.html")
+    if request.method == 'POST':
 
-def signUp(request):
-    return render(request, "isit950/auth/sign-up.html")
+        if request.POST["password"] != request.POST["confirmPassword"]:
+            return render(request, "isit950/auth/register.html")
+        else:
+            userData = {
+                'first_name': request.POST["firstName"],
+                'last_name': request.POST["lastName"],
+                'email': request.POST["email"],
+                'password': request.POST["password"]
+            }
+
+            # return HttpResponseRedirect(reverse("verify_email", args=[encryptString(request.POST["email"])]))
+
+            registerRequest = requests.post(restServer + "register_api" , json=userData)
+
+            if registerRequest.status_code == 200:
+               return HttpResponseRedirect(reverse("verify_email", args=[encryptString(request.POST["email"])]))
+            else:
+                return render(request, "isit950/auth/register.html")
+
+def forgotPass(request):
+    if request.method == "POST":
+        data = {
+            'email': request.POST["email"],
+        }
+
+        forgotPass = requests.post(restServer + "forgot_password_api", json=data)
+
+        if forgotPass.status_code == 200:
+            return render(request, "isit950/auth/forgot_password.html", {
+                "submit": True
+            })
+        else:
+            return render(request, "isit950/auth/forgot_password.html", {
+                "message": "Invalid username and/or password.",
+                "status": "danger"
+            })
+    else:
+
+        return render(request, "isit950/auth/forgot_password.html")
+
+def resetPass(request, token):
+    if request.method == 'POST':
+        data = {
+            'password': request.POST["password"],
+            'password2': request.POST["confPassword"]
+        }
+        
+        resetPassRequest = requests.post(f"{restServer}reset_password_api/{token}", json=data)
+        if resetPassRequest.status_code == 200:
+            return HttpResponseRedirect(reverse("index"))
+        else:
+
+            # Construct the redirect URL with args and redirect the user
+            # return HttpResponseRedirect(reverse("reset_password", args=[token]))
+            error = "Password cannot be common and must match"
+
+            return render(request, "isit950/auth/reset_password.html",{
+                "token": token,
+                "error": error
+            })
+
+    if request.method == 'GET':
+        # check token status and datetime
+        checkToken = requests.get(f"{restServer}reset_password_api/{token}")
+
+        # if token is been used or expired
+        if checkToken.status_code == 200:
+
+            return render(request, "isit950/auth/reset_password.html",{
+                "token": token
+            })
+        else:
+            return render(request, "isit950/auth/reset_password.html", {
+                "expired": True
+            })
 
 def logout_view(request):
     logout(request)

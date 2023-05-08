@@ -1,12 +1,21 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth import authenticate, login, logout
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from datetime import datetime, timedelta
+
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.generics import UpdateAPIView
+from rest_framework import status
 from backend.models import *
+from knox.auth import AuthToken
 from .serializers import *
+
+from random import randint
 
 from frontend.constant import *
 
@@ -15,10 +24,12 @@ from PIL import Image
 import os
 import time
 import uuid
+import random
+import string
+import base64
+import json
 
 from io import BytesIO
-import base64
-
 from asgiref.sync import sync_to_async
 
 # Create your views here.
@@ -87,17 +98,28 @@ def categoryDetail(request, id):
             return Response(serializer.errors)
         
         return Response(serializer.data)
-    
-@api_view(['PUT'])
-def updateUserDetail(request, user):
+
+
+@api_view(['GET', 'PUT'])
+def userProfile(request, user):
+    try:
+        profile = User.objects.get(username=user)
+    except User.DoesNotExist:
+        return Response(status=404)
+
+    if request.method == 'GET':
+        if profile:
+            serializer = ProfileSerializer(profile)
+            return Response(serializer.data, status=200)
+        else:
+            return Response(status=400)
+
     if request.method == 'PUT':
         try:
             user = User.objects.get(username=user)
         except User.DoesNotExist:
             return Response(status=404)
         
-        # img_profile = request.FILES.get('img_profile', "")
-        # img_background = request.FILES.get('img_background', "")
         saveUser = {}
         if user != "":
             for i in request.data:
@@ -108,7 +130,7 @@ def updateUserDetail(request, user):
                 else:
                     saveUser.update({i: request.data[i]})
 
-            serializer = UserSerializer(user, data=saveUser)
+            serializer = ProfileSerializer(user, data=saveUser)
             if serializer.is_valid():
                 serializer.save()
                 return Response("User has been successfully updated")
@@ -135,21 +157,27 @@ def question(request, taskId):
 
 @api_view(['GET', 'POST'])
 def offer(request):
-    if request.method == 'GET':
-        offers = Offer.objects.all().order_by("status","-modify_date")
-        serializer = OfferSerializer(offers, many=True)
-        return Response(serializer.data)
+    # if request.method == 'GET':
+    #     offers = Offer.objects.all().order_by("status","-modify_date")
+    #     serializer = OfferSerializer(offers, many=True)
+    #     return Response(serializer.data)
     
     if request.method == 'POST':
-        request.data['user'] = User.objects.values_list('id', flat=True).get(username=decryptString(request.data['user']))
+        request.data["task"] = request.data["task"].rsplit('-', 1)[-1]
+
+        request.data['user'] = User.objects.values_list('id', flat=True).get(username=request.data['user'])
         
         serializer = OfferSerializer(data=request.data)
+
         if serializer.is_valid():
             serializer.save()
+            return Response({"status": 200, "message": "Saved successfully"})
         else:
             return Response(serializer.errors,status=400)
-        
-        return Response(serializer.data)
+
+@api_view(['GET', 'POST'])        
+def notification(request):
+    return
     
 
 @api_view(['GET'])
@@ -228,6 +256,9 @@ def task(request):
     
 @api_view(['GET', 'PUT', 'DELETE'])
 def taskDetail(request, taskId):
+
+    taskId = taskId.rsplit('-', 1)[-1]
+    
     try:
         task = Task.objects.get(id=taskId)
     except Task.DoesNotExist:
@@ -247,6 +278,41 @@ def taskDetail(request, taskId):
         else:
             print(serializer.errors)
             return Response(status=404)
+        
+@api_view(['GET'])
+def taskSearch(request):
+    if request.method == 'GET':
+        search_keyword = request.GET.get('search_keyword', None)
+        category = request.GET.getlist('category', None)
+        min_price = request.GET.get('min_price', 0)
+        max_price = request.GET.get('max_price', 9999)
+        location = request.GET.get('location', None)
+        sort = request.GET.get('sort_type', None)
+
+        if search_keyword != None:
+            searchTask = Task.objects.filter(task_title__icontains = search_keyword, price__gte=min_price, price__lte=max_price)
+        else:
+            if len(category) == 0:
+                searchTask = Task.objects.filter(price__gte=min_price, price__lte=max_price, location__icontains=location)
+            else:
+                searchTask = Task.objects.filter(category__name__in=category, price__gte=min_price, price__lte=max_price, location__icontains=location)
+
+        if sort is None or sort.lower() == "newest":
+            searchTask = searchTask.order_by('create_date')
+
+        if sort is not None:
+            if sort.lower() == 'oldest':
+                searchTask = searchTask.order_by('-create_date')
+            if sort.lower() == 'lowtohigh':
+                searchTask = searchTask.order_by('price')
+            if sort.lower() == 'hightolow':
+                searchTask = searchTask.order_by('-price')
+
+        serializer = TaskSerializer(searchTask, many=True)
+        return Response(serializer.data)
+    else:
+        return Response(status=400)
+
     
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def taskDetail(request, taskId):
@@ -313,24 +379,40 @@ def watchlist(request):
     if request.method == 'POST':
         user = request.data['user']
         task = request.data['task']
+
         try:
-            watchlist = Watchlist.objects.get(task=task, user=user)
-        except Watchlist.DoesNotExist:
-            watchlist = ""
+            userId = User.objects.get(username=user)
+        except User.DoesNotExist:
+            userId = ""
+        
+        if userId != "":
+            try:
+                watchlist = Watchlist.objects.get(task=task, user=userId.id)
+            except Watchlist.DoesNotExist:
+                watchlist = ""
 
-        if watchlist == "":
-            serializer = WatchlistSerializer(data=request.data)
+            if watchlist == "":
 
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+                data = {
+                    'task': request.data['task'],
+                    'user': userId.id
+                }
+
+                serializer = WatchlistSerializer(data=data)
+
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(serializer.errors,status=400)
             else:
-                return Response(serializer.errors,status=400)
+                watchlist.delete()
+                return Response({
+                    "success"
+                }, status=200)
         else:
-           # watchlist.delete()
-            return Response({
-                "success"
-            }, status=200)
+            print("a")
+            return Response("error")
 
 
 @api_view(['GET', 'POST'])
@@ -457,7 +539,7 @@ def mySkillList(request,user):
             # user = User.objects.get(username=user)
             skilllist = UserSkill.objects.all().filter(user=user.id)
             serializer = UserSkillSerializer(skilllist, many=True)
-            return Response(serializer.data)
+            return Response(serializer.data, status=200)
 
         if request.method == 'DELETE':
             userskill=UserSkill.objects.get(user=user.id,skill=request.data.get('skill'))
@@ -489,16 +571,6 @@ def mySkillList(request,user):
                 return Response("skill  not exists")
     else:
         return Response("User cannot be found!")
-
-        
-
-
-
-    
-        
-        
-        
-        return Response(serializer.data)
     
 @api_view(['GET', 'PUT', 'DELETE'])
 def membershipDetail(request, id):
@@ -569,11 +641,303 @@ def mySkillList(request,user):
     else:
         return Response("User cannot be found!")
 
+def getUsername(user):
+    result = ""
+    while True:
+        username = user.lower() + str(randint(100,999))
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            user = ""
         
+        if user == "":
+            result = username
+            break
 
+    return result
+        
+@api_view(['GET','POST'])
+def userLogin(request):
+    if request.method == 'GET':
+        return Response("a")
+    #     user = 'ferry'
+    #     print(user)
 
+    #     if user.is_authenticated:
+    #         return Response({
+    #             'user_info': {
+    #                 'id': user.id,
+    #                 'username': user.username,
+    #                 'email': user.email
+    #             }
+    #         })
+    #     return Response({'error': 'not authenticated'}, status=400)
 
+    if request.method == "POST":
+        if "email" in request.data:
+            user = User.objects.values_list('username', flat=True).filter(email=request.data["email"], email_verified=1)
+            if user.exists():
+                request.data["username"]= user[0]
+            else:
+                return Response({"message", "Not found."}, status=404)
+        
+        serializer = AuthTokenSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            # token = AuthToken.objects.create(user)[1]
+            
+            return Response({'message': 'Success', 'user': str(user)}, status=200)
+        else:
+            return Response(serializer.errors, status=404)
+        # return Response({
+        #     'user_info': {
+        #         'id': user.id,
+        #         'username': user.username,
+        #         'email': user.email
+        #     },
+        #     'token': token
+        # })
+
+@api_view(['POST'])
+def userRegister(request):
+    username = request.data["first_name"][0:3] + request.data["last_name"][0:3]
+    username = getUsername(username)
     
+    try:
+        email = User.objects.get(email = request.data["email"])
+    except:
+        email = ""
+    
+    if email == "":
+        user = {
+            'username': username,
+            'first_name': request.data["first_name"],
+            'last_name': request.data["last_name"],
+            'email': request.data["email"],
+            'password': request.data["password"]
+        }
+
+        serializer = UserSerializer(data=user)
+        if serializer.is_valid():
+            serializer.save()
+
+            html_content = render_to_string("verify_email.html", {'email': encryptString(user['email'])})
+            email = EmailMessage(
+                subject = 'Verify your email',
+                body = html_content,
+                from_email = "Ferry Susanto UOW <ferry.milanisti22@gmail.com>",
+                to = [user['email']]
+            )
+            email.content_subtype = "html"
+            time.sleep(2)
+            email.send()
+
+            return Response("success", status=200)
+        else:
+            return Response(serializer.errors, status=400)
+    else:
+        return Response("Username is not available", status=400)
+    
+    
+    # return Response({
+    #     'userDetail': {
+    #         'id': user.id,
+    #         'username': user.username,
+    #         'email': user.email
+    #     },
+    #     "token": AuthToken.objects.create(user)[1]
+    # }, status=200)
+
+@api_view(['POST'])
+def resendEmailAPI(request):
+    
+    html_content = render_to_string("verify_email.html", request.data)
+    email = EmailMessage(
+        subject = 'Verify your email',
+        body = html_content,
+        from_email = "Ferry Susanto UOW <ferry.milanisti22@gmail.com>",
+        to = ["yohanesfersusanto@gmail.com"]
+    )
+    email.content_subtype = "html"
+    time.sleep(2)
+    email.send()
+    return Response(status=200)
+
+@api_view(['POST'])
+def verifyingEmailAPI(request):
+    try:
+        user = User.objects.get(email=decryptString(request.data['email']))
+    except User.DoesNotExist:
+        user = ""
+
+    if user != "":
+        user.email_verified = True
+        user.save()
+        return Response(status=200)
+    else:
+        return Response({'not found'}, status=400)
+
+
+@api_view(['POST'])
+def ChangePassword(request, id):
+    try:
+        user = User.objects.get(pk=id)
+    except User.DoesNotExist:
+        return Response(status=404)
+    
+
+    serializer = ChangePasswordSerializer(data=request.data)
+    if not user.check_password(request.data["old_password"]):
+        raise serializers.ValidationError({"old_password": "Old password is not correct"})
+    
+    if serializer.is_valid():
+        user.set_password(request.data['password'])
+        user.save()
+        return Response({
+            "message": "Password has succefully changed"
+        })
+    else:
+        return Response(serializer.errors)
+
+def RandomTokenGen():
+    char = string.ascii_letters + string.digits
+    rand_token = ''.join(random.choice(char) for i in range(50))
+
+    return rand_token
+
+@api_view(['POST'])
+def ForgotPassword(request):
+    
+    token = RandomTokenGen()
+    
+    email = request.data["email"]
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        user = ""
+
+    if user != "":
+        data = {
+            'user': user.id,
+            'token': token
+        }
+        serializer = PasswordTokenSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+
+            html_content = render_to_string("forgot_password.html", data)
+            email = EmailMessage(
+                subject = 'Please reset your password',
+                body = html_content,
+                from_email = "Ferry Susanto UOW <ferry.milanisti22@gmail.com>",
+                to = ["yohanesfersusanto@gmail.com"]
+            )
+            email.content_subtype = "html"
+            time.sleep(2)
+            email.send()
+        else:
+            return Response(serializer.errors)
+        return Response(token)
+    
+    return Response({
+        "message": "Email is incorrect!"
+    })
+    
+@api_view(['GET', 'POST'])
+def ResetPassword(request, token):
+    if request.method == "POST":
+        # verify token user
+        tokenVal = PasswordToken.objects.filter(token=token, status=0)
+ 
+        if len(tokenVal) > 0:
+            tokenTime = tokenVal[0].create_date + timedelta(hours=3)
+            
+            # compare tokenTime with datetime now
+            if tokenTime > datetime.now() and tokenVal[0].status == False:
+                try:
+                    user = User.objects.get(pk=tokenVal[0].user_id)
+                except User.DoesNotExist:
+                    return Response(status=404)
+            
+                serializer = ResetPasswordSerializer(data=request.data)
+                
+                if serializer.is_valid():
+                    user.set_password(request.data['password'])
+                    user.save()
+
+                    tokenVal[0].status = True
+                    tokenVal[0].save()
+                    return Response({
+                        "message": "Password has succefully changed"
+                    }, status=200)
+                else:
+                    return Response(serializer.errors, status=400)
+            else:
+                return Response({"error"}, status=400)
+        else:
+            return Response({"mismatch": True}, status=400)
+        
+    
+    if request.method == 'GET':
+        tokenVal = PasswordToken.objects.filter(token=token, status=0)[0]
+
+        # check if token is within 3 hours
+        tokenTime = tokenVal.create_date + timedelta(hours=3)
+        print(tokenTime)
+        # compare tokenTime with datetime now
+        if tokenTime > datetime.now() and tokenVal.status == False:
+            return Response({"success"}, status=200)
+        else:
+            if tokenVal.status == False:
+                tokenVal.status = True
+                tokenVal.save()
+            return Response({"error"}, status=400)
+
+@api_view(['GET','POST','PUT'])
+@csrf_exempt
+def paymentInformation(request,user):
+    try:
+        user = User.objects.get(username=user)
+    except User.DoesNotExist:
+        user = ""
+    if user != "":
+        try:
+            paymentInformation = PaymentInformation.objects.get(user=user.id)
+        except PaymentInformation.DoesNotExist:
+            paymentInformation = ""
+
+        if request.method == "POST":
+
+            data = {
+                "user": user.id,
+                "credit_card": str(encryptString(request.data['credit_card'])),
+                "expiry_date": str(encryptString(request.data['expiry_date'])),
+                'cvv': str(encryptString(request.data['cvv']))  
+            }
+
+            if paymentInformation == "":
+                serializer = PaymentInformationSerializer(data=data)
+            else:
+                serializer = PaymentInformationSerializer(paymentInformation, data=data)
+
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors, status=400)
+            return Response({'message': 'success', 'status': 200 }, status=200)
+        
+        if request.method == 'GET':
+            
+            if paymentInformation !="":
+
+                serializer = PaymentInformationSerializer(paymentInformation, many=False)
+
+                return Response(serializer.data, status=200)
+            else:
+                return Response(serializer.errors, status=400)    
+    else:
+        return Response("User cannot be found!")     
         
         
     
@@ -597,3 +961,4 @@ def mySkillList(request,user):
 #         else:
 #             print(serializer.errors)
 #             return Response(status=404)
+

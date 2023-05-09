@@ -243,6 +243,8 @@ def myTask(request):
         "type": "myTask"
     })
 
+
+
 def myTaskDetail(request, taskId):
     myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
     myTaskDetail = myTaskDetailResp.json()

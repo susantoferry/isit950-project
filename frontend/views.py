@@ -418,6 +418,27 @@ def logout_view(request):
 def cancel_popup_1(request):
     return render(request, "isit950/cancel_popup_1.html")
 
+def cancelbefore(request):
+    return render(request, "isit950/cancelbefore.html")
+
+def  popupafter1(request):
+    return render(request, "isit950/popupafter1.html")
+
+def  cancelbefore1(request):
+    return render(request, "isit950/cancelbefore1.html")
+
+def popupafter(request):
+    return render(request, "isit950/popupafter.html")
+
+def popupafter3(request):
+    return render(request, "isit950/popupafter3.html")
+
+def rating1(request):
+    return render(request, "isit950/rating1.html")
+
+def rating2(request):
+    return render(request, "isit950/rating2.html")
+
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
 

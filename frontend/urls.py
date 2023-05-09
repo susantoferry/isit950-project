@@ -42,6 +42,12 @@ urlpatterns = [
     path("reset-password/<token>", views.resetPass, name="reset_password"),
     path("logout", views.logout_view, name="logout"),
     path("cancel_popup_1", views.cancel_popup_1, name="cancel_popup_1"),
+    path("cancelbefore", views.cancelbefore, name="cancelbefore"),
+    path("popupafter", views.popupafter, name="popupafter"),
+    path("popupafter1", views.popupafter1, name="popupafter1"),
+    path("popupafter3", views.popupafter3, name="popupafter3"),
+    path("rating1", views.rating1, name="rating1"),
+    path("rating2", views.rating2, name="rating2"),
     
     # path("logout", views.logoutView, name="logout"),
     # path("change_password", views.changePassword, name="change_password"),

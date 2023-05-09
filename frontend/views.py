@@ -169,8 +169,7 @@ def createTask(request):
         messages.success(request, "New task has been added successfully")
         return HttpResponseRedirect(reverse("tasks"))
     
-def membershipPlan(request):
-    return render(request, "isit950/account/membership_plan.html")
+
 
 def notification(request):
     notificationResp = requests.get(restServer + "notification/" + str(request.user.id))
@@ -438,6 +437,9 @@ def rating1(request):
 
 def rating2(request):
     return render(request, "isit950/rating2.html")
+
+def membership_plan(request):
+    return render(request, "account/membership_plan.html")
 
 # def selectTasker(request, taskId, userId):
 #     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)

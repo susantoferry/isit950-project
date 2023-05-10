@@ -1,7 +1,10 @@
 {% load parse_date %}
 
-<div class="task-list">
+<div class="task-list flex">
     <div class="list-scroll-effect">
+        <div class= 'tasklist-title-label'>
+            &nbsp&nbsp&nbsp&nbspTask List&nbsp&nbsp&nbsp&nbsp
+        </div>
         {% for task in tasks %}
         <div>
             <div data-task-id="{{ task.task_title_to_url}}"

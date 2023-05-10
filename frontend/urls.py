@@ -19,8 +19,9 @@ urlpatterns = [
 
     path("create-task", views.createTask, name="create_task"),
     path("my-task", views.myTask, name="my_task"),
-    path("my-task/<int:taskId>", views.myTaskDetail, name="my_task"),
+    path("my-task/?name=<slug>", views.myTaskDetail, name="my_task"),
     path("my-task/<int:taskId>", views.myTaskDetail, name="pending_offer"),
+    path("pending-offer", views.myTask, name="pending_offer"),
     path("my-watchlist", views.watchlist, name="my_watchlist"),
     path("select-sp/<taskId>", views.myTaskDetail, name="select_sp"),
     path("tasks/", views.tasks, name="tasks"),

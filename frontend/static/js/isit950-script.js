@@ -155,6 +155,14 @@ $(document).ready(function () {
 
     })
 
+    $('.task-bookmark-mytask').click(function (event) {
+
+
+        var taskId = $(this).attr('data-task-id');
+        showmyTaskDetail(taskId)
+
+    })
+
     $('.return-map').click(function (event) {
         if (!$(".task-detail-wrapper").hasClass("task-blank") && !$(".task-detail-container").hasClass("no-selected")) {
             $(".task-detail-wrapper").addClass("task-blank")
@@ -307,6 +315,21 @@ $(document).ready(function () {
 
         
     })
+
+    // $('#pending-offer').click(function() {
+    //     var condition = $(this).data('condition');
+    //     $.ajax({
+    //       url: '/my-task/',
+    //       data: {
+    //         condition: condition
+    //       },
+    //       dataType: 'json',
+    //       success: function(data) {
+    //         // Code to update the HTML with the filtered data
+    //       }
+    //     });
+    //   });
+
 });
 
 function checkExpiryCCMonth(expiryDate) {
@@ -356,6 +379,25 @@ function showDetail(taskId) {
         })
 }
 
+function showmyTaskDetail(taskId) {
+    if ($(".task-detail-container").hasClass("no-selected")) {
+        $(".task-detail-container").removeClass("no-selected")
+    }
+
+    fetch(`/api/task/${taskId}`)
+    .then(response => response.json())
+    .then(result => {
+        document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
+        document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
+        document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
+        document.querySelector('#task-location').innerHTML = `${result.location}`;
+        document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
+        document.querySelector('#task-price').innerHTML = `${result.price}`;
+        document.querySelector('#task-desc').innerHTML = `${result.description}`;
+        history.pushState(null, null, `/my-task/?name=${taskId}`)
+        document.title = `${taskId} - ISIT950 Group Project`;
+    })
+}
 
 function accept_offer() {
     const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;

@@ -119,6 +119,8 @@ ul {
     align-items: center;
     margin: 5px 0;
     line-height: 30px;
+    padding-bottom: 8px;
+    padding-top: 3px;
 }
 
 .flex-sp-b {
@@ -468,10 +470,41 @@ span.offer-count {
     line-height: 45px;
     text-transform: none;
     color: #101a53;
-    padding-top: 10px;
+    padding-top: 4px;
     padding-bottom: 15px;
 }
 
+.tasklist-title-label {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    text-align: center;
+    color:#a8a8a8;
+    font-size:20px;
+    font-family: var(--bs-body-font-family);
+    font-weight:600 ;
+}
+.tasklist-title-label:before, .tasklist-title-label:after {
+    position: absolute;
+    top: 51%;
+    overflow: hidden;
+    width: 50%;
+    height: 1px;
+    content: '\a0';
+    background-color: #a8a8a8;
+}
+.tasklist-title-label:before {
+    margin-left: -50%;
+    text-align: right;
+}
+
+.taskdetail-title-label {
+    text-align:left;
+    font-size:18px;
+    font-family: var(--bs-body-font-family);
+    padding-top: 10px;
+    color:#101a5361;
+}
 /* .task-detail-col {
     width: 385px;
     float: left;
@@ -537,6 +570,37 @@ span.offer-count {
     letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: 600;
+}
+
+.taskClient-label {
+    font-size: 1.5rem;
+    color: black;
+    font-weight: 600;
+}
+
+.taskClient{
+    font-size: 1rem;
+    font-weight: 500;
+    color: #3e3e3e;
+    line-height: 25px;
+}
+
+.date-container-label {
+    font-size: 12px;
+    color: rgb(160, 160, 160);
+}
+
+.location-container-label {
+    font-size: 12px;
+    color: rgb(160, 160, 160);
+}
+
+.location-container {
+    line-height: 20px;
+}
+
+.date-container {
+    line-height: 20px;
 }
 
 .navbar-section-collapse {

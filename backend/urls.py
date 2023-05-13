@@ -26,8 +26,7 @@ urlpatterns = [
     path("paymentInformation/<str:user>", views.paymentInformation, name="paymentInformation"),
     # path("get_profile", views.getProfile, name="get_profile"),
     # path("get_profile/<profileId>", views.getProfileDetail, name="get_profile_detail")
-    path("update_user/<str:user>", views.updateUserDetail, name="update_user_detail"),
-    path("skill/<str:skillId>", views.skillDetail, name="skill_detail"),
+
     path("profile_api/<str:user>", views.userProfile, name="profile_api"),
 
     path("user_login", views.userLogin, name="user_login"),

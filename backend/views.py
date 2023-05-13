@@ -156,10 +156,10 @@ def question(request, taskId):
 
 @api_view(['GET', 'POST'])
 def offer(request):
-    # if request.method == 'GET':
-    #     offers = Offer.objects.all().order_by("status","-modify_date")
-    #     serializer = OfferSerializer(offers, many=True)
-    #     return Response(serializer.data)
+    if request.method == 'GET':
+        offers = Offer.objects.all().order_by("status","-modify_date")
+        serializer = OfferSerializer(offers, many=True)
+        return Response(serializer.data)
     
     if request.method == 'POST':
         request.data['user'] = User.objects.values_list('id', flat=True).get(username=decryptString(request.data['user']))
@@ -216,8 +216,9 @@ def acceptOffer(request, taskId, userSpId):
     
     if task != "":
         if request.method == 'POST':
-            data = JSONParser().parse(request)
-            serializer = TaskSerializer(task, data=data)
+            #data = JSONParser().parse(request)
+            #serializer = TaskSerializer(task, data=data)
+            serializer = OfferSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(status=200)
@@ -624,7 +625,8 @@ def getUsername(user):
         
 @api_view(['GET','POST'])
 def userLogin(request):
-    # if request.method == 'GET':
+    if request.method == 'GET':
+        return Response("a")
     #     user = 'ferry'
     #     print(user)
 
@@ -669,7 +671,6 @@ def userLogin(request):
 def userRegister(request):
     username = request.data["first_name"][0:3] + request.data["last_name"][0:3]
     username = getUsername(username)
-    
     try:
         email = User.objects.get(email = request.data["email"])
     except:
@@ -776,6 +777,7 @@ def RandomTokenGen():
 def ForgotPassword(request):
     
     token = RandomTokenGen()
+
     
     email = request.data["email"]
     try:

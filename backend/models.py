@@ -67,10 +67,10 @@ class Offer(models.Model):
 # 1, 2, 2,0,1
 
 
-# class Skill(models.Model): 
-#     skill_name = models.CharField(max_length=30)
-#     def __str__(self):
-#         return f"Id: {self.id}, Skill: {self.skill_name}"
+class Skill(models.Model): 
+    skill_name = models.CharField(max_length=30)
+    def __str__(self):
+        return f"Id: {self.id}, Skill: {self.skill_name}"
 
 class Task(models.Model):
     task_title = models.CharField(max_length=150)

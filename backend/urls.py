@@ -15,7 +15,8 @@ urlpatterns = [
     path("task", views.task, name="task"),
     path("task/<slug:taskId>", views.taskDetail, name="task_detail"),
     re_path(r"^search_task/$", views.taskSearch, name="task_search"),
-    path("get_my_task/<int:userId>", views.getMyTask, name="get_my_task"),
+    path("get_my_task/<int:userId>/<condition>", views.getMyTask, name="get_my_task"),
+    
     path("show_my_watchlist/<str:user>", views.myWatchlist, name="show_my_watchlist"),
     path("watchlist", views.watchlist, name="watchlist"),
     path("skill", views.skill, name="skill"),

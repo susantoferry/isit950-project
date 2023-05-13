@@ -435,6 +435,18 @@
         justify-content: space-evenly;
         margin-bottom: 20px;
     }
+
+    .paymentSummary__text {
+        color:black;
+}
+
+    .paymentSummary {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 10px;
+        padding-top: 25px;
+        font-size: 32px;
+}
 </style>
 
 <div class="container-fluid">
@@ -472,7 +484,7 @@
                             </div>
                             <div class="textarea">
                                 <div class="innertextarea">
-                                    <textarea class="task-desc" name="task-desc" placeholder="Give this task a title..."
+                                    <textarea class="task-desc" name="task_title" placeholder="Give this task a title..."
                                         rows="1"></textarea>
                                 </div>
                             </div>
@@ -620,10 +632,46 @@
                                         may see your service request</h5>
                                 </div>
                             </div>
-                            <input type="button" name="BackToHomePage" class="next action-button"
-                                value="Back To Home Page" />
-                            <input type="button" name="GoToMyTask" class="next action-button" value="Go To My Task" />
+
+                            <div class="paymentSummary">Payment Summary</div>
+                            <div>
+                                <div class="rectangletextarea">    
+
+                        <div class="rectangleinnertextarea">
+                        
+                            <div class="paymentSummary__text">Task number</div>
+                            <div class="paymentSummary__text">#00000000</div>
                         </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div class="paymentSummary__text">Task type</div>
+                            <div class="paymentSummary__text">Oven repair</div>
+                        </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div class="paymentSummary__text">Issue date</div>
+                            <div class="paymentSummary__text">19/04/2023</div>
+                        </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div>Task fee</div>
+                            <div>30.00AUD</div>
+                        </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div>Booking fee</div>
+                            <div>2.00AUD</div>
+                        </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div class="paymentSummary__text">Total</div>
+                            <div class="paymentSummary__text">32.00AUD</div>
+                        </div>
+
+
+                        </div>
+                        <input type="button" name="BackToHomePage" class="next action-button" value="Back To Home Page" />
+                        <input type="button" name="GoToMyTask" class="next action-button" value="Go To My Task" />
                     </fieldset>
 
 

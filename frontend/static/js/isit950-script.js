@@ -152,11 +152,11 @@ $(document).ready(function () {
 
         var taskId = $(this).attr('data-task-id');
         showDetail(taskId)
+        
 
     })
 
     $('.task-bookmark-mytask').click(function (event) {
-
 
         var taskId = $(this).attr('data-task-id');
         showmyTaskDetail(taskId)
@@ -317,7 +317,7 @@ $(document).ready(function () {
     })
 
     // $('#pending-offer').click(function() {
-    //     var condition = $(this).data('condition');
+    //     var condition = $(this).data('2');
     //     $.ajax({
     //       url: '/my-task/',
     //       data: {
@@ -394,9 +394,13 @@ function showmyTaskDetail(taskId) {
         document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
         document.querySelector('#task-price').innerHTML = `${result.price}`;
         document.querySelector('#task-desc').innerHTML = `${result.description}`;
+        document.querySelector('#offer-display').innerHTML = `${result.offerDesc} ${offerPrice}`;
         history.pushState(null, null, `/my-task/?name=${taskId}`)
         document.title = `${taskId} - ISIT950 Group Project`;
     })
+
+    fetch(`/api/offer/${taskId}`)
+    .then(response)
 }
 
 function accept_offer() {

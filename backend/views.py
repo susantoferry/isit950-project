@@ -235,8 +235,25 @@ def offerDetail1(request, taskId):
         
 @api_view(['GET'])
 @csrf_protect
-def getMyTask(request, userId):
-    myTasks = Task.objects.filter(user_id=userId).order_by("status","-create_date")
+def getMyTask(request, userId, condition):
+    if condition == 'watchlist':
+        #watchlist
+        taskStatus = 4
+        myTasks = Task.objects.filter(user_id=userId, status=taskStatus).order_by("status","-create_date")
+
+    elif condition == 'pending':
+        #pending
+        taskStatus = 2
+        myTasks = Offer.objects.filter(user_id=userId, task__status=0).order_by("-create_date")
+
+    elif condition == 'assigned':
+        taskStatus = 1
+        myTasks = Task.objects.filter(user_id=userId, status=taskStatus).order_by("status","-create_date")
+
+    else:
+        myTasks = Task.objects.filter(user_id=userId).order_by("status","-create_date")
+
+
     serializer = TaskSerializer(myTasks, many=True)
     return Response(serializer.data)
 
@@ -641,7 +658,7 @@ def userLogin(request):
 
         if serializer.is_valid():
             user = serializer.validated_data['user']
-            # token = AuthToken.objects.create(user)[1]
+            token = AuthToken.objects.create(user)[1]
             
             return Response({'message': 'Success', 'user': str(user)}, status=200)
         else:

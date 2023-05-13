@@ -14,6 +14,7 @@ import requests
 import re
 from urllib.parse import urlparse
 import hashlib
+import time
 
 # Create your views here.
 
@@ -91,7 +92,6 @@ def tasks(request):
 def taskDetail(request, slug):
     
     taskId = slug.rsplit('-', 1)[-1]
-    
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
     
@@ -228,22 +228,32 @@ def wishlist(request):
         "wishlist": wishlist
     })
 
-def myTask(request):
+def myTask(request, condition='all'):
+    start_time= time.time()
     userId = str(request.user.id)
-    myTaskListResp = requests.get(restServer + "get_my_task/" + userId)
-    myTaskList = myTaskListResp.json()
-    
-    firstTaskDetail = myTaskList[0]["id"]
-    taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-    taskDetail = taskDetailResp.json()
-    
-    return render(request, "isit950/my_task.html", {
-        "myTaskList": myTaskList,
-        "taskDetail": taskDetail,
-        "type": "myTask"
-    })
 
+    try:
+        myTaskListResp = requests.get(f"{restServer}get_my_task/{userId}/{condition}")
+        myTaskList = myTaskListResp.json()
 
+    except:
+        return render(request, "isit950/404.html")
+    
+    else:
+        firstTaskDetail = myTaskList[0]["id"]
+        taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
+        taskDetail = taskDetailResp.json()
+
+        end_time= time.time()
+        run_time= end_time - start_time
+        print(f'Runtime: {run_time}')
+
+        return render(request, "isit950/my_task.html", {
+            "myTaskList": myTaskList,
+            "firstTaskDetail": firstTaskDetail,
+            "taskDetail": taskDetail,
+            "type": "myTask"
+        })
 
 def myTaskDetail(request, taskId):
     myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
@@ -251,6 +261,8 @@ def myTaskDetail(request, taskId):
 
     offerResp = requests.get(restServer + "offer/" + str(taskId))
     offers = offerResp.json()
+
+    print(offers)
 
     questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
 

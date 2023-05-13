@@ -93,7 +93,9 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = '__all__'  
 
 class OfferSerializer(serializers.ModelSerializer):
-    user_provider = serializers.CharField(read_only=True, source='user.username')
+    user_provider = serializers.CharField(read_only=True, source='user.username') 
+    task_details = serializers.CharField(read_only=True, source='task')
+    task_title = serializers.CharField(read_only=True, source='task.task_title')
     class Meta:
         model = Offer
         fields = '__all__'

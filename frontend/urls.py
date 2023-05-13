@@ -18,8 +18,10 @@ urlpatterns = [
     path("account/wishlist", views.wishlist, name="my_wishlist"),
 
     path("create-task", views.createTask, name="create_task"),
-    path("my-task", views.myTask, name="my_task"),
-    path("my-task/?name=<slug>", views.myTaskDetail, name="my_task"),
+    path("my-task/", views.myTask, name="my_task"),
+    path("my-task/<condition>", views.myTask, name="my_task"),
+    path("my-task/?name=<slug>", views.myTaskDetail, name="my_tasks"),
+    # re_path(r'^my-task/(?P<name>)', views.taskDetail, name="my_tasks"),
     path("my-task/<int:taskId>", views.myTaskDetail, name="pending_offer"),
     path("pending-offer", views.myTask, name="pending_offer"),
     path("my-watchlist", views.watchlist, name="my_watchlist"),

@@ -31,6 +31,12 @@
     margin: 0 20px;
 }
 
+.btn-membership {
+    width: 230px;
+    font-size: .9rem;
+    letter-spacing: .5px;
+}
+
 .btncancel-outline {
     border: 1px solid #ff3825eb;
     width: 150px;

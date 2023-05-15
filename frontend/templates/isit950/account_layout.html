@@ -30,6 +30,7 @@
         <script src="{% static 'js/isit950-script.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.4/dist/js.cookie.min.js"></script>
         <script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.16/web.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlDYVPr7C2RhX0Kn03rPUQZ8GKz9qqjh4&libraries=places" defer></script>
     </head>
 
     <body>
@@ -44,13 +45,15 @@
                         <div style="position: relative;">
                             <div>
                                 <div>
-                                    <div style="background-color: #cfd0d6;background-size: cover;border-radius: 24px; height: 200px;position: relative;">
-                
-                                    </div>
+                                    <div class="profile-bg-img" style="{% if user.img_background %} background-image: url('../static/{{user.img_background}}'); {% endif %}"></div>
                                 </div>
                             </div>
                             <div class="profile-img">
-                                <img width="120" src="/static/images/profiles/Hansel.png" alt="">
+                                {% if user.img_profile %}
+                                    <img class="img-profile-dash" src="/static/{{user.img_profile}}" alt="">
+                                {% else %}
+                                    <img class="img-profile-dash" src="/static/images/user-default.png" alt="">
+                                {% endif %}
                             </div>
                             <div style="position: absolute; left: 115px; bottom: 90px; z-index: 1; cursor: pointer;">
                                 <svg width="24" height="24" viewBox="0 0 32 32" fill="none"
@@ -150,7 +153,7 @@
             {% endif %}
         </script>
         
-        <script>
+        <!-- <script>
             const accessTokenAddr = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
 
             const script = document.getElementById('search-js');
@@ -160,6 +163,18 @@
                     autofill.accessToken = accessTokenAddr;
                 }
             };
+        </script> -->
+
+        <script>
+            $(document).ready(function() {
+                var autocomplete;
+                var id = 'location';
+
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById(id)), {
+                    types: ['(cities)'],
+                    componentRestrictions: {country: 'au'}
+                })
+            })
         </script>
         
     </body>

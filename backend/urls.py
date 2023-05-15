@@ -20,11 +20,13 @@ urlpatterns = [
     path("watchlist", views.watchlist, name="watchlist"),
     path("skill", views.skill, name="skill"),
     path("skill/<int:id>", views.skillDetail, name="skill_detail"),
-    path("membership", views.membership, name="membership"),
-    path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
+    # path("membership", views.membership, name="membership"),
+    # path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
+    path("membership_transaction", views.membershipTransaction, name="membership_transaction"),
     path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
     path("notification/<user>", views.notification, name="notification"),
-
+    path("update_notification/<notifId>/<user>", views.updateNotifStatus, name="update_notification"),
+    path("get_price/<category>", views.priceCategory, name="get_price"),
     path("profile_api/<str:user>", views.userProfile, name="profile_api"),
     path("paymentInformation/<str:user>", views.paymentInformation, name="paymentInformation"),
 

@@ -1,88 +1,846 @@
 {% extends 'isit950/layout.html' %}
 
 {% block body %}
-<div class="main-card mb-3 card">
-    <div class="card-body">
-        <h5 class="card-title">Create new task </h5>
-        <form method="POST" class="fm-validation" action="{% url 'create_task' %}" novalidate
-            enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="position-relative row form-group">
-                <label for="category" class="col-md-2 col-form-label">Category</label>
-                <div class="col-md-3">
-                    <select name="category" id="category" class="form-control">
-                        <option value="">-- Select Category Type --</option>
-                        {% for cat in categories %}
-                        <option value="{{ cat.id }}"> {{ cat.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="position-relative row form-group">
-                <label for="task_title" class="col-md-2 col-form-label">Name of task</label>
-                <div class="col-md-3">
-                    <input name="task_title" id="task_title" placeholder="e.g. Clean my garden" type="text"
-                        class="form-control" autofocus required>
-                    <div class="invalid-feedback">
-                        Please provide title.
-                    </div>
-                </div>
-            </div>
-            <div class="position-relative row form-group">
-                <label for="task_description" class="col-md-2 col-form-label">Task Description</label>
-                <div class="col-md-6">
-                    <textarea class="form-control editor" id="task_description" name="task_description"
-                        placeholder="Describe your task"></textarea>
-                    <div class="invalid-feedback">
-                        Description cannot be empty.
-                    </div>
-                </div>
-            </div>
-            <div class="position-relative row form-group">
-                <label for="price" class="col-md-2 col-form-label">Price</label>
-                <div class="col-md-4">
-                    <input name="price" id="price" placeholder="Enter task price" type="text" class="form-control">
-                </div>
-            </div>
-            <div class="position-relative row form-group">
-                <label for="location" class="col-md-2 col-form-label">Location</label>
-                <div class="col-md-4">
-                    <!-- <input name="location" id="search-js" placeholder="Enter your location" type="text" class="form-control"> -->
-                    <mapbox-address-autofill>
-                        <input class="input mb12" name="address" autocomplete="test address-line1" placeholder="Address">
-                    </mapbox-address-autofill>
-                    <!-- <input class="input mb12" name="address" autocomplete="test address-line1" placeholder="Address"> -->
 
-                    <input class="input mb12" name="apartment" autocomplete="test address-line2" placeholder="Apartment">
-                    <div class="flex">
-                        <input class="input mb12" name="city" autocomplete="test address-level2" placeholder="City">
-                        <input class="input mb12 ml6" name="state" autocomplete="test address-level1" placeholder="State">
-                        <input class="input mb12 ml6" autocomplete="test postal-code" placeholder="ZIP / Postcode">
-                    </div>
-                </div>
+<style>
+
+    #heading {
+        text-transform: uppercase;
+        color: #6E27A3;
+        ;
+        font-weight: normal
+    }
+
+    #msform {
+        text-align: center;
+        position: relative;
+        margin-top: 20px
+    }
+
+    #msform fieldset {
+        background: white;
+        border: 0 none;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        padding-bottom: 20px;
+        position: relative
+    }
+
+    .form-card {
+        text-align: left;
+
+    }
+
+    #msform fieldset:not(:first-of-type) {
+        display: none
+    }
+
+    #msform input,
+    #msform textarea {
+        padding: 8px 15px 8px 15px;
+        border: 1px solid #ccc;
+        margin-bottom: 25px;
+        margin-top: 2px;
+        width: 100%;
+        box-sizing: border-box;
+        color: #2C3E50;
+        background-color: #F4F1F1;
+        font-size: 16px;
+        letter-spacing: 1px;
+
+    }
+
+    #msform input:focus,
+    #msform textarea:focus {
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border: 1px solid #6E27A3;
+        ;
+        outline-width: 0
+    }
+
+    #msform .action-button {
+        width: 171px;
+        background: #6E27A333;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 10px 10px 5px;
+        float: right;
+    }
+
+    #msform .action-button:hover,
+    #msform .action-button:focus {
+        background-color: #8c56b5;
+    }
+
+    #msform .action-button-previous {
+        width: 170px;
+        background: #616161;
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 5px 10px 0px;
+        float: right;
+    }
+
+    #msform .action-button-previous:hover,
+    #msform .action-button-previous:focus {
+        background-color: #000000
+    }
+
+    .card {
+        z-index: 0;
+        border: none;
+        position: relative
+    }
+
+    .fs-title {
+        font-size: 25px;
+        color: #802DBD;
+        margin-bottom: 15px;
+        font-weight: normal;
+        text-align: left;
+        height: 20%;
+    }
+
+    .purple-text {
+        color: #6E27A3;
+        font-weight: normal
+    }
+
+    .steps {
+        font-size: 25px;
+        color: gray;
+        margin-bottom: 10px;
+        font-weight: normal;
+        text-align: right
+    }
+
+    .fieldlabels {
+        color: gray;
+        text-align: left
+    }
+
+    #progressbar {
+        margin-bottom: 30px;
+        overflow: hidden;
+        color: lightgrey
+    }
+
+    #progressbar .fm-active {
+        color: rgba(110, 39, 163, 0.5);
+        border: none;
+    }
+
+    #progressbar li {
+        list-style-type: none;
+        font-size: 15px;
+        width: 25%;
+        float: left;
+        position: relative;
+        font-weight: 400
+    }
+
+    #progressbar #account:before {
+        font-family: FontAwesome;
+        content: "\f19c"
+    }
+
+    #progressbar #personal:before {
+        font-family: FontAwesome;
+        content: "\f15c"
+    }
+
+    #progressbar #payment:before {
+        font-family: FontAwesome;
+        content: "\f155"
+    }
+
+    #progressbar #confirm:before {
+        font-family: FontAwesome;
+        content: "\f00c"
+    }
+
+    #progressbar li:before {
+        width: 50px;
+        height: 50px;
+        line-height: 45px;
+        display: block;
+        font-size: 20px;
+        color: #ffffff;
+        background: lightgray;
+        border-radius: 50%;
+        margin: 0 auto 10px auto;
+        padding: 2px
+    }
+
+    #progressbar li:after {
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: lightgray;
+        position: absolute;
+        left: 0;
+        top: 25px;
+        z-index: -1
+    }
+
+    #progressbar li.fm-active:before,
+    #progressbar li.fm-active:after {
+        background: #6E27A3
+    }
+
+    .progress {
+        height: 20px
+    }
+
+    .progress-bar {
+        background-color: #6E27A3
+    }
+
+    .fit-image {
+        width: 100px;
+        object-fit: cover;
+        display: flex;
+        justify-content: center;
+
+    }
+
+    .taskPage1 {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        font-size: 12px;
+        padding: 0.5rem 2.5rem;
+        line-height: 1;
+        text-align: center;
+        font-weight: 600;
+        z-index: 1;
+        border: 1px solid transparent;
+        -webkit-border-radius: 30px;
+        border-radius: 30px;
+        overflow: hidden;
+        background: rgba(110, 39, 163, 0.4);
+        width: 180px;
+        padding: 10px 0;
+        display: block;
+    }
+
+    .taskPageS {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        font-size: 12px;
+        padding: 1rem 2.5rem;
+        line-height: 1;
+        text-align: center;
+        font-weight: 600;
+        z-index: 1;
+        border: 1px solid transparent;
+        -webkit-border-radius: 30px;
+        border-radius: 30px;
+        overflow: hidden;
+        background: rgba(110, 39, 163, 0.2);
+        width: 150px;
+        padding: 10px 0;
+        display: block;
+
+    }
+
+    .rectangle {
+
+        width: 270px;
+        height: 4px;
+        background: rgba(110, 39, 163, 0.2);
+        border-radius: 30px;
+        position: relative;
+        top: 15px;
+
+    }
+
+    .rectangle1 {
+        position: absolute;
+        left: 30px;
+
+
+    }
+
+    .rectangle2 {
+        position: relative;
+
+
+    }
+
+    .rectangle3 {
+        position: relative;
+
+    }
+
+    .taskQuestion {
+
+        display: flex;
+        justify-content: left;
+        width: 1095px;
+        height: 81px;
+        left: 60px;
+        top: 272px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 100px;
+        color: #000000;
+
+        margin-top: 2%;
+
+    }
+
+    .dropdown {
+        position: relative;
+        font-size: 14px;
+        color: #333;
+    }
+
+    .dropdown .dropdown-list {
+        padding: 12px;
+        background: #fff;
+        position: absolute;
+        top: 30px;
+        left: 2px;
+        right: 2px;
+        box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.15);
+        transform-origin: 50% 0;
+        transform: scale(1, 0);
+        transition: transform 0.15s ease-in-out 0.15s;
+        max-height: 66vh;
+        overflow-y: scroll;
+    }
+
+    .dropdown .dropdown-option {
+        display: block;
+        padding: 8px 12px;
+        opacity: 0;
+        transition: opacity 0.15s ease-in-out;
+    }
+
+    .dropdown .dropdown-label {
+        display: block;
+        height: 30px;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 6px 12px;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .dropdown .dropdown-label:before {
+        content: "▼";
+        float: right;
+    }
+
+    .dropdown.on .dropdown-list {
+        transform: scale(1, 1);
+        transition-delay: 0s;
+    }
+
+    .dropdown.on .dropdown-list .dropdown-option {
+        opacity: 1;
+        transition-delay: 0.2s;
+    }
+
+    .dropdown.on .dropdown-label:before {
+        content: "▲";
+    }
+
+    .dropdown [type=checkbox] {
+        position: relative;
+        top: -1px;
+        margin-right: 4px;
+    }
+
+    .calculation__bottom-note {
+
+        color: #E61761;
+        margin-left: 18%;
+        display: flex;
+        margin-top: 64%;
+
+    }
+
+
+    .redText2 {
+        color: #E61761;
+        margin-left: 46%;
+    }
+
+    .rectangle {
+        width: 100%;
+        margin-bottom: 5%;
+    }
+
+    .rectangletextarea {
+        margin-bottom: 5%;
+        width: 100%;
+        border-radius: 10px;
+        background: #6E27A387;
+        padding: 40px;
+        overflow: hidden;
+    }
+
+    .rectangleinnertextarea {
+        margin-bottom: 5%;
+        font-weight: 400;
+        width: 100%;
+        resize: none;
+        border: none;
+        background: transparent;
+        color: rgba(242, 240, 240, 0.8);
+        display: flex;
+        justify-content: space-between;
+        text-align: justify;
+
+    }
+
+    .rectangleinnertextarea__total-amount {
+        color: black;
+    }
+
+    .paymentSummary__text {
+        color: black;
+    }
+
+    .paymentSummary {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                <h2 id="heading">Submit your Task Request</h2>
+                <p>Fill all form field to go to next step</p>
+                <form id="msform" action="{% url 'test_page2' %}" method="POST">
+                    {% csrf_token %}
+                    <!-- progressbar -->
+                    <ul id="progressbar">
+                        <li class="fm-active" id="account"><strong>Task & Time & Location</strong></li>
+                        <li id="personal"><strong>Details</strong></li>
+                        <li id="payment"><strong>Price calculation & Pay</strong></li>
+                        <li id="confirm"><strong>Deal!</strong></li>
+                    </ul>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-valuemin="0" aria-valuemax="100"></div>
+                    </div> <br> <!-- fieldsets -->
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h2 class="fs-title">Type of Task:</h2>
+                                </div>
+                                <div class="col-5">
+                                    <h2 class="steps">Step 1 - 4</h2>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="taskName">What kind of help do you need?</label>
+                                <input type="text" name="taskName" class="form-control" placeholder="Give this task a title...">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="taskType">Select job type</label>
+                                <select class="form-select form-control" id="taskCategory" name="taskCategory" aria-label="Default select example">
+                                    <option selected>Select job</option>
+                                    <option value="1">Carpenter</option>
+                                    <option value="2">Electrician</option>
+                                    <option value="3">Fence Installation</option>
+                                    <option value="3">Fly Screen Repairs</option>
+                                    <option value="3">Gardening</option>
+                                    <option value="3">House Cleaning</option>
+                                    <option value="3">Oven Repairs</option>
+                                    <option value="3">Painter</option>
+                                    <option value="3">Pest Control</option>
+                                    <option value="3">Plumber</option>
+                                    <option value="3">Roof Cleaning</option>
+                                    <option value="3">Tree Removal</option>
+                                </select>
+                            </div>
+
+                            <input type="hidden" id="taskPrice" name="taskPrice">
+                            <input type="hidden" id="taskBookingPrice" name="taskBookingPrice">
+                            <input type="hidden" id="taskTotalPrice" name="taskTotalPrice">
+
+                            <div class="mb-3">
+                                <label for="taskDate">When do you need this done?</label>
+                                <input type="date" id="date-input" name="taskDate" class="form-control" />
+                                <input type="time" id="time-input" name="taskTime" class="form-control" />
+                            </div>
+                            
+
+                            <!-- <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
+                            <label class="btn btn-secondary" for="option1">Set this date as deadline</label>
+
+                            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                            <label class="btn btn-secondary" for="option2">Job done at specific date</label> -->
+                            <div class="mb-3">
+                                <label for="taskLocation">Where is your location?</label>
+                                <input type="text" name="taskLocation"id="location" class="form-control" placeholder="Enter your location">
+                            </div>
+                        </div>
+                        <input type="button" name="next" class="next action-button button btnprimary btnnavtop" value="Next"/>
+                    </fieldset>
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h2 class="fs-title">Task Details:</h2>
+                                </div>
+                                <div class="col-5">
+                                    <h2 class="steps">Step 2 - 4</h2>
+                                </div>
+                            </div>
+                            <label class="fieldlabels">Anything you want to let the professionals know?</label>
+                            <textarea name="taskDesc" cols="30" rows="5" placeholder="Write some details here"></textarea>
+                        </div> 
+                        
+                        <input type="button" name="next" class="next action-button button btnprimary btnnavtop" value="Next"/>
+                        <input type="button" name="previous" class="previous action-button-previous button btnprimary btnnavtop" value="Previous"/>
+                        
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h2 class="fs-title">Become a member to post task for free!</h2>
+                                </div>
+                                <div class="col-5">
+                                    <h2 class="steps">Step 3 - 4</h2>
+                                </div>
+                            </div>
+
+
+                            <div class="rectangle">
+                                <div class="rectangletextarea">
+                                    <div class="rectangleinnertextarea">
+                                        <div>Task Fee:</div>
+                                        <div id="taskFee">AUD</div>
+                                    </div>
+
+                                    <div class="rectangleinnertextarea">
+                                        <div>Booking Fee:</div>
+                                        <div id="taskBookingFee">AUD</div>
+                                    </div>
+
+                                    <div class="rectangleinnertextarea">
+                                        <div class="rectangleinnertextarea__total-amount">Total:</div>
+                                        <div class="rectangleinnertextarea__total-amount" id="taskPaymentTotal">AUD</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="calculation__bottom-note">Please note that the price may be subject to
+                                    change once the professionals have reviewed the details. </div>
+                            </div>
+
+                        </div>    
+                        <input type="submit" name="next" class="next action-button button btnprimary btnnavtop" value="Submit"/>
+                        <input type="button" name="previous" class="previous action-button-previous button btnprimary btnnavtop" value="Previous"/>
+                    </fieldset>
+
+                    <fieldset>
+                        <div class="form-card">
+                            <div class="row">
+                                <div class="col-7">
+                                    <h2 class="fs-title">Deal:</h2>
+                                </div>
+                                <div class="col-5">
+                                    <h2 class="steps">Step 4 - 4</h2>
+                                </div>
+                            </div> <br><br>
+                            <h2 class="purple-text text-center"><strong>SUCCESS !</strong></h2> <br>
+                            <div class="row justify-content-center">
+                                <div class="col-3"> <img src="https://i.imgur.com/GwStPmg.png" class="fit-image"> </div>
+                            </div> <br><br>
+                            <div class="row justify-content-center">
+                                <div class="col-7 text-center">
+                                    <h5 class="purple-text text-center">
+                                        Congratulations! Now our partner professionals may see your service request
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="paymentSummary">Payment Summary</div>
+                            <div>
+                                <div class="rectangletextarea">
+                                    <div class="rectangleinnertextarea">
+
+                                        <div class="paymentSummary__text">Task number</div>
+                                        <div class="paymentSummary__text">#00000000</div>
+                                    </div>
+
+                                    <div class="rectangleinnertextarea">
+                                        <div class="paymentSummary__text">Task type</div>
+                                        <div class="paymentSummary__text">Oven repair</div>
+                                    </div>
+
+                                    <div class="rectangleinnertextarea">
+                                        <div class="paymentSummary__text">Issue date</div>
+                                        <div class="paymentSummary__text">19/04/2023</div>
+                                    </div>
+
+                                    <div class="rectangleinnertextarea">
+                                        <div>Task fee</div>
+                                        <div id="taskFee">AUD</div>
+                                    </div>
+
+                                    <div class="rectangleinnertextarea">
+                                        <div>Booking fee</div>
+                                        <div id="taskBookingFee">AUD</div>
+                                    </div>
+
+                                    <div class="rectangleinnertextarea">
+                                        <div class="paymentSummary__text">Total</div>
+                                        <div class="paymentSummary__text" id="taskPaymentTotal">AUD</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                </form>
             </div>
-            
-            <div class="position-relative row form-group">
-                <label for="location_url" class="col-md-2 col-form-label">Location Link</label>
-                <div class="col-md-4">
-                    <input name="location_url" id="location_url" placeholder="Enter your location url" type="text"
-                        class="form-control">
-                </div>
-            </div>
-            <div class="position-relative row form-group">
-                <label for="completed_on" class="col-md-2 col-form-label">Completed on</label>
-                <div class="col-md-4">
-                    <input name="completed_on" id="completed_on" placeholder="dd/mm/yyyy" type="text"
-                        class="form-control">
-                </div>
-            </div>
-            <div class="position-relative row form-check">
-                <div class="col-md-10 mt-5 offset-md-2">
-                    <button class="btn btn-primary" type="submit"> Save </button>
-                    <a class="btn btn-outline-danger" href="javascript:void(0);" onclick="history.go(-1);">Cancel</a>
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $("#taskCategory").change(function() {
+            const selectedOptionValue = $(this).val();
+            fetch(`/api/get_price/${selectedOptionValue}`)
+            .then(response => response.json())
+            .then(result => {
+                $bookingPrice = (result.price * 15) / 100
+                $totalPrice = parseInt(result.price) + $bookingPrice
+                document.getElementById('taskPrice').value = result.price
+                document.getElementById('taskBookingPrice').value = $bookingPrice
+                document.getElementById('taskTotalPrice').value = $totalPrice
+                document.getElementById('taskFee').innerText = result.price
+                document.getElementById('taskBookingFee').innerText = $bookingPrice
+                document.getElementById('taskPaymentTotal').innerText = $totalPrice
+
+                console.log(result.price)
+                console.log($bookingPrice)
+                console.log($totalPrice)
+            })
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        var current_fs, next_fs, previous_fs; //fieldsets
+        var opacity;
+        var current = 1;
+        var steps = $("fieldset").length;
+
+        setProgressBar(current);
+
+        $(".next").click(function () {
+
+            current_fs = $(this).parent();
+            next_fs = $(this).parent().next();
+
+            //Add Class Active
+            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("fm-active");
+
+            //show the next fieldset
+            next_fs.show();
+            //hide the current fieldset with style
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now) {
+                    // for making fielset appear animation
+                    opacity = 1 - now;
+
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    next_fs.css({ 'opacity': opacity });
+                },
+                duration: 500
+            });
+            setProgressBar(++current);
+        });
+
+        $(".previous").click(function () {
+
+            current_fs = $(this).parent();
+            previous_fs = $(this).parent().prev();
+
+            //Remove class active
+            $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("fm-active");
+
+            //show the previous fieldset
+            previous_fs.show();
+
+            //hide the current fieldset with style
+            current_fs.animate({ opacity: 0 }, {
+                step: function (now) {
+                    // for making fielset appear animation
+                    opacity = 1 - now;
+
+                    current_fs.css({
+                        'display': 'none',
+                        'position': 'relative'
+                    });
+                    previous_fs.css({ 'opacity': opacity });
+                },
+                duration: 500
+            });
+            setProgressBar(--current);
+        });
+
+        function setProgressBar(curStep) {
+            var percent = parseFloat(100 / steps) * curStep;
+            percent = percent.toFixed();
+            $(".progress-bar")
+                .css("width", percent + "%")
+        }
+
+        $(".submit").click(function () {
+            return false;
+        })
+
+    });
+
+    // start of drop down menu script
+    (function ($) {
+        var CheckboxDropdown = function (el) {
+            var _this = this;
+            this.isOpen = false;
+            this.areAllChecked = false;
+            this.$el = $(el);
+            this.$label = this.$el.find('.dropdown-label');
+            this.$checkAll = this.$el.find('[data-toggle="check-all"]').first();
+            this.$inputs = this.$el.find('[type="checkbox"]');
+
+            this.onCheckBox();
+
+            this.$label.on('click', function (e) {
+                e.preventDefault();
+                _this.toggleOpen();
+            });
+
+            this.$checkAll.on('click', function (e) {
+                e.preventDefault();
+                _this.onCheckAll();
+            });
+
+            this.$inputs.on('change', function (e) {
+                _this.onCheckBox();
+            });
+        };
+
+        CheckboxDropdown.prototype.onCheckBox = function () {
+            this.updateStatus();
+        };
+
+        CheckboxDropdown.prototype.updateStatus = function () {
+            var checked = this.$el.find(':checked');
+
+            // this.areAllChecked = false;
+            // this.$checkAll.html('Check All');
+
+            if (checked.length <= 0) {
+                this.$label.html('Select Job');
+            }
+            else if (checked.length === 1) {
+                this.$label.html(checked.parent('label').text());
+            }
+            else if (checked.length === this.$inputs.length) {
+                this.$label.html('All Selected');
+                this.areAllChecked = true;
+                this.$checkAll.html('Uncheck All');
+            }
+            else {
+                this.$label.html(checked.length + ' Selected');
+            }
+        };
+
+        CheckboxDropdown.prototype.onCheckAll = function (checkAll) {
+            if (!this.areAllChecked || checkAll) {
+                this.areAllChecked = true;
+                this.$checkAll.html('Uncheck All');
+                this.$inputs.prop('checked', true);
+            }
+            else {
+                this.areAllChecked = false;
+                this.$checkAll.html('Check All');
+                this.$inputs.prop('checked', false);
+            }
+
+            this.updateStatus();
+        };
+
+        CheckboxDropdown.prototype.toggleOpen = function (forceOpen) {
+            var _this = this;
+
+            if (!this.isOpen || forceOpen) {
+                this.isOpen = true;
+                this.$el.addClass('on');
+                $(document).on('click', function (e) {
+                    if (!$(e.target).closest('[data-control]').length) {
+                        _this.toggleOpen();
+                    }
+                });
+            }
+            else {
+                this.isOpen = false;
+                this.$el.removeClass('on');
+                $(document).off('click');
+            }
+        };
+
+        var checkboxesDropdowns = document.querySelectorAll('[data-control="checkbox-dropdown"]');
+        for (var i = 0, length = checkboxesDropdowns.length; i < length; i++) {
+            new CheckboxDropdown(checkboxesDropdowns[i]);
+        }
+    })(jQuery);
+
+    // the selector will match all input controls of type :checkbox
+    // and attach a click event handler 
+    $("input:checkbox").on('click', function () {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        if ($box.is(":checked")) {
+            // the name of the box is retrieved using the .attr() method
+            // as it is assumed and expected to be immutable
+            var group = "input:checkbox[name='" + $box.attr("name") + "']";
+            // the checked state of the group/box on the other hand will change
+            // and the current value is retrieved using .prop() method
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+        } else {
+            $box.prop("checked", false);
+        }
+    });
+
+// end of drop down menu script
+
+
+</script>
+
+<!-- Modified code from: https://codepen.io/monbrielle/pen/dyYRgPm -->
+
 {% endblock %}

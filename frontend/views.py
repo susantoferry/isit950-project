@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.urls import reverse
 from django.db.models import Count
 from backend.models import *
+from backend.views import make_thumbnail, delete_image
 from .constant import *
 from urllib.parse import urlencode
 from django.conf import settings
@@ -21,7 +22,16 @@ def index(request):
     return redirect("tasks")
 
 def profile(request):
-    return render(request, "isit950/account/profile/dashboard-profile.html")
+
+    user = User.objects.get(username=request.user)
+    
+    skillResp = requests.get(restServer + "my_skilllist/" + str(request.user))
+    skills = skillResp.json()
+
+    return render(request, "isit950/account/profile/dashboard-profile.html", {
+        "user": user,
+        "skills": skills
+    })
 
 def createProfile(request):
     return render(request, "isit950/account/profile/create_profile.html")
@@ -42,23 +52,77 @@ def editProfile(request):
             return render(request, "isit950/404.html")
 
     if request.method == 'POST':
-        profileData = {
-            'description': request.POST["description"],
-            'address': request.POST["address-search"],
-            'unit': request.POST["unit"],
-            'city': request.POST["city"],
-            'state': request.POST["state"],
-            'zip': request.POST["zip"]
-        }
+        try:
+            profile = User.objects.get(pk=request.user.id)
+        except User.DoesNotExist:
+            profile = ""
+        
+        if profile != "":
+            oldImgProfile = profile.img_profile
+            oldImgBg = profile.img_background
+            imgProfile = request.FILES.get("imgProfile", "")
+            imgBg = request.FILES.get("imgBg", "")
 
-        profileResp = requests.put(f"{restServer}profile_api/{request.user.username}", json=profileData)
+            if imgProfile != "":
+                profile.img_profile = make_thumbnail(request.FILES["imgProfile"], (100,100), "profiles")
+                delete_image(oldImgProfile)
+            if imgBg != "":
+                profile.img_background = make_thumbnail(request.FILES["imgBg"], (1020,200), "profiles_bg")
+                delete_image(oldImgBg)
 
-        if profileResp.status_code == 200:
-            messages.success(request, "Profile has been updated successfully")
+            profile.description = request.POST["description"]
+            profile.address = request.POST["location"]
+            profile.save()
+
+            messages.info(request, "Your profile has been updated")
             return HttpResponseRedirect(reverse("edit_profile"))
         else:
-            messages.error(request, "There is an error when updating")
+            messages.error(request, "Profile is not found")
             return HttpResponseRedirect(reverse("edit_profile"))
+    #     oldImg = 
+    #     img_res = Setting.objects.get(pk=3)
+    #     ab_img_res = Setting.objects.get(pk=6)
+    #     chk_img = request.FILES.get("img_file", "")
+    #     con_id = request.POST['con_type'].split('-')
+    #     img = ""
+    #     if chk_img != "":
+    #         if con_id[0] == "1":
+    #             img = make_thumbnail(request.FILES["img_file"], (int(ab_img_res.value), int(ab_img_res.value2)), 'content')
+    #         else:
+    #             img = make_thumbnail(request.FILES["img_file"], (int(img_res.value), int(img_res.value2)), 'content')
+
+    #     if con_id[0] == "3":
+    #         content = ""
+    #     else:
+    #         content = request.POST["content"]
+
+    #     content = Content(
+    #         title = request.POST["title"].lstrip(),
+    #         sml_txt = request.POST["sml_text"].lstrip(),
+    #         content = content,
+    #         img_url = img,
+    #         video_url = request.POST["vid_url"].lstrip(),
+    #         content_type_id = con_id[0],
+    #         con_cat = "content",
+    #         create_date = datetime.now(),
+    #         modify_date = datetime.now()
+    #     )
+    #     content.save()
+    #     messages.success(request, "New content has been added successfully")
+    #     return HttpResponseRedirect(reverse("add_content"))
+    # else:
+    #     con_type = ContentType.objects.filter(cat='content')
+    #     return render(request, "admin_piano/content/create.html", {
+    #         "content_types": con_type
+    #     })
+
+
+        # if profileResp.status_code == 200:
+        #     messages.success(request, "Profile has been updated successfully")
+        #     return HttpResponseRedirect(reverse("edit_profile"))
+        # else:
+        #     messages.error(request, "There is an error when updating")
+        #     return HttpResponseRedirect(reverse("edit_profile"))
 
 def tasks(request):
     taskResp = requests.get(restServer + "task")
@@ -177,6 +241,17 @@ def notification(request):
         "notifications": notifications
     })
 
+def readNotification(request, taskId, taskTitle, notifId):
+    newTaskTitle = taskTitle.replace(" ", "-")
+    newTaskTitle = newTaskTitle + "-" + taskId
+
+    updateNotifResp = requests.post(f"{restServer}update_notification/{notifId}/{request.user.id}", json={'is_read':1}) 
+
+    if updateNotifResp.status_code == 200:
+        return HttpResponseRedirect('/tasks/?name='+newTaskTitle)
+    else:
+        return HttpResponseRedirect(reverse('notification'))
+
 def paymentMethod(request):
     userPaymentMethodResp = requests.get(restServer + "paymentInformation/" + request.user.username)
     if userPaymentMethodResp.status_code == 200:
@@ -227,6 +302,24 @@ def wishlist(request):
     return render(request, "isit950/account/wishlist.html", {
         "wishlist": wishlist
     })
+
+def membership(request):
+    if request.method == 'GET':
+        return render(request, "isit950/membership.html")
+    
+    if request.method == 'POST':
+        membershipData = {
+            'membership': request.POST['member_package'],
+            'user': request.user.id,
+            'credit_card':  request.POST['credit_card']
+        }
+
+        membershipRequest = requests.post(restServer + "membership_transaction", json=membershipData) 
+        
+        if membershipRequest.status_code == 200:
+            return HttpResponseRedirect(reverse("membership"))
+        else:
+            return HttpResponseRedirect(reverse("membership"))
 
 def myTask(request):
     userId = str(request.user.id)
@@ -283,7 +376,41 @@ def postTask(request):
     return render(request, "isit950/postTask.html")
 
 def test2HTML(request):
-    return render(request, "isit950/test2.html")
+    if request.method == 'GET':
+        return render(request, "isit950/test2.html")
+    
+    if request.method == 'POST':
+        # taskData = {
+        #     'task_title': request.POST["taskName"],
+        #     'category': request.POST["taskCategory"],
+        #     # 'completed_on': request.POST["taskDate"] + request.POST["taskTime"]
+        #     'completed_on': '2023-05-02',
+        #     'location': request.POST["taskLocation"],
+        #     'user': request.user
+        # }
+        
+        # taskRequest = requests.post(restServer + "task" , json=taskData)
+        taskData = {
+            'task_title': request.POST["taskName"],
+            'category': request.POST["taskCategory"],
+            'completed_on': '2023-05-20',
+            'description': request.POST["taskDesc"],
+            'location': request.POST["taskLocation"],
+            'price': request.POST["taskPrice"],
+            'booking_price': request.POST["taskBookingPrice"],
+            'total_price': request.POST["taskTotalPrice"],
+            'user': request.user.id,
+            'content': 1
+        }
+        
+        print(taskData)
+        taskRequest = requests.post(restServer + "task" , json=taskData)
+        
+        if taskRequest.status_code == 200:
+            return HttpResponseRedirect(reverse("test_page2"))
+        else:
+            return render(request, "isit950/test2.html")
+        
 
 def test3HTML(request):
     return render(request, "isit950/test3.html")

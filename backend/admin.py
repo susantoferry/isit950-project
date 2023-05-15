@@ -9,3 +9,4 @@ from .models import *
 # admin.site.register(Question)
 # admin.site.register(Task)
 # admin.site.register(Address)
+admin.site.register(Price)

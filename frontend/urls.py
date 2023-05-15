@@ -10,6 +10,7 @@ urlpatterns = [
     path("", views.index, name="index"),
 
     path("account/notification", views.notification, name="notification"),
+    path("account/read_notification/<taskId>/<taskTitle>/<notifId>", views.readNotification, name="read_notification"),
     path("account/payment-method", views.paymentMethod, name="payment_method"),
     path("account/payment-history", views.paymentHistory, name="payment_history"),
     path("account/profile", views.profile, name="profile"),
@@ -18,6 +19,7 @@ urlpatterns = [
     path("account/wishlist", views.wishlist, name="my_wishlist"),
 
     path("create-task", views.createTask, name="create_task"),
+    path("membership", views.membership, name="membership"),
     path("my-task", views.myTask, name="my_task"),
     path("my-task/<int:taskId>", views.myTaskDetail, name="my_task"),
     path("my-watchlist", views.watchlist, name="my_watchlist"),
@@ -33,7 +35,7 @@ urlpatterns = [
     path("resend_email/<email>", views.resendEmail, name="resend_email"),
 
     path("postTask", views.postTask, name="postTask"),
-    path("test2", views.test2HTML, name="test_page"),
+    path("test2", views.test2HTML, name="test_page2"),
     path("test3", views.test3HTML, name="test_page"),
     path("login", views.loginView, name="login"),
     path("register", views.registerView, name="register"),

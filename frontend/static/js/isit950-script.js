@@ -209,27 +209,27 @@ $(document).ready(function () {
                 'user': Cookies.get('usid')
             })
         })
-            .then(response => response.json())
-            .then(res => {
-                console.log(res.status)
-                if (res.status == 200) {
-                    $('#offerModal').modal('toggle');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Your offer has been saved successfully'
-                    }).then((result) => {
-                        location.reload();
-                    })
-                    // success_mail();
-                    // location.reload();
-                } else {
-                    alert("Cannot save");
-                }
-            })
-            .catch(err => {
-                alert(err)
-            })
+        .then(response => response.json())
+        .then(res => {
+            console.log(res.status)
+            if (res.status == 200) {
+                $('#offerModal').modal('toggle');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Your offer has been saved successfully'
+                }).then((result) => {
+                    location.reload();
+                })
+                // success_mail();
+                // location.reload();
+            } else {
+                alert("Cannot save");
+            }
+        })
+        .catch(err => {
+            alert(err)
+        })
     })
 
     const creditCardInput = document.getElementById('cardNo');
@@ -304,9 +304,10 @@ $(document).ready(function () {
         } else {
             console.log(false)
         }
-
-        
     })
+
+
+    
 });
 
 function checkExpiryCCMonth(expiryDate) {

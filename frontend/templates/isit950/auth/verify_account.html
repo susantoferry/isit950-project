@@ -1,0 +1,26 @@
+{% extends 'isit950/auth_layout.html' %}
+
+{% block body %}
+
+<div style="text-align: center; padding: 0 20px">
+    <div>
+        <img class="logo" src="/static/images/inbox.png" alt="logo" width="150"/>
+    </div>
+    <div style="font-size: 1.3rem; font-weight: 600; margin-bottom: .8rem;">
+        Check your email to verify your account
+    </div>
+    <div style="margin-bottom: 1.5rem;">
+        {{ email }}
+    </div> 
+    <div style="display: flex; flex-direction: column; gap: 10px 0px;">
+        <div style="font-weight: 600; color: #0155db;">
+            <a href="{% url 'resend_email' code %}" >Resend email</a>
+        </div>
+        <div>
+            <a href="{% url 'login' %}" style="width: 100%; background: #6E27A3; border: 1px solid #7E7373; border-radius: 50px; 
+                        margin: 0 auto; display: block; margin-top: 10px; color: #fff; padding: 8px 0;">Back to login</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

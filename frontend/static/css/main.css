@@ -22,6 +22,31 @@
     display: block;
 }
 
+.btnsave-primary {
+    background: #0a65fc;
+    width: 150px;
+    padding: 15px 0;
+    display: block;
+    color: #fff;
+    margin: 0 20px;
+}
+
+.btn-membership {
+    width: 230px;
+    font-size: .9rem;
+    letter-spacing: .5px;
+}
+
+.btncancel-outline {
+    border: 1px solid #ff3825eb;
+    width: 150px;
+    padding: 15px 0;
+    display: block;
+    color: #ff3825eb;
+    margin: 0 20px;
+    background: transparent;
+}
+
 .menu-bar-task {
     display: inline-block;
     background: transparent;
@@ -66,6 +91,15 @@
 .btnprimary:hover, .btnprimary:focus{
     background: #6e27a357;
     border: 1px solid #6e27a357;
+}
+
+.btnsave-primary:hover {
+    background: #4084f4;
+}
+
+.btncancel-outline:hover {
+    background: #f44040;
+    color: #fff;
 }
 
 .btnsecondary.disabled, .btnsecondary:disabled {

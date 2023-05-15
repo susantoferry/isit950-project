@@ -11,7 +11,7 @@
                     <div class="navbar-section">
                         <div class="flex-col nav-left nav-item ml20">
                             <div>
-                                <a href="{% url 'create_task' %}" class="button btnprimary btnnavtop">View Task</a>
+                                <a href="{% url 'index' %}" class="button btnprimary btnnavtop">View Task</a>
                             </div>
                             {% if request.user.is_authenticated %}
                             <div>
@@ -123,8 +123,8 @@
                                     </div>
                                     <a href="{% url 'profile' %}" class="dropdown-item">Personal Profile</a>
                                     <a href="{% url 'profile' %}" class="dropdown-item">My Tasks</a>
-                                    <a href="{% url 'profile' %}" class="dropdown-item">Chat</a>
-                                    <a href="{% url 'profile' %}" class="dropdown-item">Notifications</a>
+                                    <a href="{% url 'membership' %}" class="dropdown-item">Membership</a>
+                                    <a href="{% url 'notification' %}" class="dropdown-item">Notifications</a>
                                     <a href="{% url 'profile' %}" class="dropdown-item">Payment History</a>
                                     <a href="{% url 'create_task' %}" class="dropdown-item">
                                         <span>Settings</span>
@@ -141,10 +141,10 @@
                     <div
                         style="display: flex;justify-content: center;align-items: center;background: #E9E7E7;border-radius: 60px;height: 35px; margin-right:5px;">
                         <div>
-                            <a href="{% url 'create_task' %}" class="button btnsecondary">Sign Up</a>
+                            <a href="{% url 'register' %}" class="button btnsecondary">Sign Up</a>
                         </div>
                         <div>
-                            <a href="{% url 'create_task' %}" class="button btnsecondary">Login</a>
+                            <a href="{% url 'login' %}" class="button btnsecondary">Login</a>
                         </div>
                     </div>
 
@@ -180,13 +180,18 @@
     <div class="second-navbar">
         <div class="overlay-navbar">
             <div class="navbar-container" style="overflow-x: auto;overflow-y: hidden;">
-                <div class="pos-rel">
-                    <input type="text" class="search-input{% if type == 'myTask' %} my-task{% endif %}"
-                        placeholder="Search for job">
-                    <button class="btn-search-nav">
-                        <img src="../../static/images/search-icon.png" alt="search-icon">
-                    </button>
+                <div class="pos-rel search-overlay">
+                    <div class="input-overlay">
+                        <form action="{% url 'task_state' %}" method="get">
+                            <input type="text" class="search-input {% if type == 'myTask' %} my-task{% endif %}" name="search_keyword" placeholder="Search for job">
+                            <button class="btn-search-nav">
+                                <img src="../../static/images/search-icon.png" alt="search-icon">
+                            </button>
+                        </form>
+                    </div>
+                    <button class="btn-input-close"></button>
                 </div>
+                
                 <div style="display: block; margin: 0 auto">
                     <div class="navbar-section">
                         {% if type != 'myTask' %}
@@ -194,7 +199,7 @@
                             <span>Category</span>
                             <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
                         </button>
-                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                        <button type="button" class="button btnprimary ml20 btn-nav-sort">
                             <div class="btn-icon-overlay">
                                 <i class="fa-solid fa-sliders"></i>
                                 <span class="ml10">Location</span>
@@ -202,14 +207,14 @@
                             </div>
 
                         </button>
-                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                        <button type="button" class="button btnprimary ml20 btn-nav-sort">
                             <div class="btn-icon-overlay">
                                 <i class="fa-solid fa-sliders"></i>
                                 <span class="ml10">Price</span>
                                 <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
                             </div>
                         </button>
-                        <button type="button" class="button btnprimary ml30 btn-nav-sort">
+                        <button type="button" class="button btnprimary ml20 btn-nav-sort">
                             <div class="btn-icon-overlay">
                                 <i class="fa-solid fa-sliders"></i>
                                 <span class="ml10">Sort</span>

@@ -28,6 +28,7 @@
                     {% for offer in offers %}
                     <div class="card mb-3">
                         <div class="card-body">
+                            {{offer}}
                             <h5 class="card-title">{{offer.user_provider}}</h5>
                             <span>{{offer.price}}</span>
                             <span>{{offer.description}}</span>

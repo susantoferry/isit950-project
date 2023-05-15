@@ -511,3 +511,19 @@ function bookmark(getButton, taskId) {
 
 // }
 
+function redirectToURL(location) {
+
+    if (location == 'Home'){
+        location.href = "{% url 'task' %}";
+    }
+    if (location == 'MyTask'){
+        location.href = "{% url 'myTask' 'all' %}";
+    }
+    if (location == 'Membership'){
+        location.href = "{% url 'edit_profile' %}"
+    }
+    else{
+        location.href = "{% url '404' %}"
+    }
+
+}

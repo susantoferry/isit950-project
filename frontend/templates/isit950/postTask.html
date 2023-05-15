@@ -1,5 +1,5 @@
 {% extends 'isit950/layout.html' %}
-
+{% csrf_token %}
 {% block body %}
 
 <style>
@@ -455,7 +455,8 @@
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2 id="heading">Submit your Task Request</h2>
                 <p>Fill all form field to go to next step</p>
-                <form id="msform">
+                <form id="msform" method="post" action="{% url 'create_task' %}" novalidate>
+                    {% csrf_token %}
                     <!-- progressbar -->
                     <ul id="progressbar">
                         <li class="fm-active" id="account"><strong>Task & Time & Location</strong></li>
@@ -484,13 +485,14 @@
                             </div>
                             <div class="textarea">
                                 <div class="innertextarea">
-                                    <textarea class="task-desc" name="task_title" placeholder="Give this task a title..."
-                                        rows="1"></textarea>
+                                    <input type="text" name="task_title" placeholder="Give this task a title..." />
+<!--                                     <textarea class="task-desc" name="task_title" placeholder="Give this task a title..."
+                                        rows="1"></textarea> -->
                                 </div>
                             </div>
                             <div class="taskQuestion">Select job type</div>
 
-                            <select class="form-select" aria-label="Default select example">
+                            <select class="form-select" aria-label="Default select example" name="category">
                                 <option selected>Select job</option>
                                 <option value="1">Carpenter</option>
                                 <option value="2">Electrician</option>
@@ -521,15 +523,15 @@
 
                             <div class="j-input">
                                 <div>
-                                    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off"
+                                    <input type="radio" class="btn-check" name="dateType" id="deadline" autocomplete="off"
                                         checked>
-                                    <label class="btn btn-secondary" for="option1">Set this date as deadline</label>
+                                    <label class="btn btn-secondary" for="deadline">Set this date as deadline</label>
                                 </div>
 
                                 <div style="margin-left: 10px;">
-                                    <input type="radio" class="btn-check" name="options" id="option2"
+                                    <input type="radio" class="btn-check" name="dateType" id="specificDate"
                                         autocomplete="off">
-                                    <label class="btn btn-secondary" for="option2">Job done at specific date</label>
+                                    <label class="btn btn-secondary" for="specificDate">Job done at specific date</label>
                                 </div>
 
                             </div>
@@ -544,7 +546,8 @@
                             </div>
                             <div class="textarea">
                                 <div class="innertextarea">
-                                    <textarea class="task-desc" rows="1"></textarea>
+                                    <input type="text" name="location" placeholder="Where is the request located at?" />
+                                    <!-- <textarea name="location" class="task-desc" rows="1"></textarea> -->
                                 </div>
                             </div>
                             <!-- #endregion -->
@@ -566,7 +569,7 @@
                                     <h2 class="steps">Step 2 - 4</h2>
                                 </div>
                             </div> <label class="fieldlabels taskQuestion">Anything you want to let the professionals know?</label>
-                            <input type="text" name="fname" placeholder="Write some details here" />
+                            <input type="text" name="task_description" placeholder="Write some details here" />
                         </div> <input type="button" name="next" class="next action-button" value="Next" /> <input
                             type="button" name="previous" class="previous action-button-previous" value="Previous" />
                     </fieldset>
@@ -607,9 +610,9 @@
                             </div>
 
                         </div>
-                        <input type="button" name="next" class="next action-button" value="Pay" /> <input type="button"
+                        <button type="submit" name="next" class="next action-button">Post Task Request</button> <input type="button"
                             name="previous" class="previous action-button-previous" value="Previous" /><input
-                            type="button" name="GetMembership" class="next action-button" value="Get Membership" />
+                            type="button" name="GetMembership" class="next action-button" value="Get Membership" onclick="redirectToURL(Membership)"/>
                     </fieldset>
 
                     <fieldset>
@@ -670,8 +673,8 @@
 
 
                         </div>
-                        <input type="button" name="BackToHomePage" class="next action-button" value="Back To Home Page" />
-                        <input type="button" name="GoToMyTask" class="next action-button" value="Go To My Task" />
+                        <input type="button" name="BackToHomePage" class="next action-button" value="Back To Home" onclick="redirectToURL(Home)"/>
+                        <input type="button" name="GoToMyTask" class="next action-button" value="See My Task" onclick="redirectToURL(MyTask)"/>
                     </fieldset>
 
 

@@ -8,6 +8,8 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path("home", views.index, name="index"),
+    path("error", views.errorPage, name="error"),
 
     path("account/notification", views.notification, name="notification"),
     path("account/payment-method", views.paymentMethod, name="payment_method"),

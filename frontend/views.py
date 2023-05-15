@@ -21,6 +21,9 @@ import time
 def index(request):
     return redirect("tasks")
 
+def errorPage(request):
+    return render(request, "404.html")
+
 def profile(request):
     return render(request, "isit950/account/profile/dashboard-profile.html")
 

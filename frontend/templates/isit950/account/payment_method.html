@@ -17,6 +17,7 @@
     </div>
     <div>
         <div style="display: flex; padding: 25px;">
+            {% if userPaymentMethod %}
             <div>
                 <svg width="59" height="46" viewBox="0 0 59 46" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="58.6074" height="46" rx="4" fill="black"/>
@@ -27,16 +28,73 @@
             </div>
             <div style="display: inherit; flex-direction: column; margin-left: 20px;">
                 <span>MasterCard</span>
-                <spa style="font-size: 12px;">Expires 05/24</span>
+                <spa style="font-size: 12px;">Expires {{ userPaymentMethod.expiry_date|slice:":2" }}/{{ userPaymentMethod.expiry_date|slice:"-2:" }}</span>
             </div>
             <div style="display: inherit; flex-direction: column; margin-left: 20px;">
-                <span>**** 9716</span>
+                <span>**** {{ userPaymentMethod.credit_card }}</span>
                 <a href="" style="font-size: 12px;
                 text-align: center;
                 color: purple;
-                cursor: pointer;">Update</a>
+                cursor: pointer;" data-bs-toggle="modal" data-bs-target="#paymentMethodModal">Update</a>
             </div>
+            {% else %}
+            <div>
+                <div class="mb-3">
+                    <span>You have no payment method. Add your credit card/ debit card.</span>
+                </div>
                 
+                <button class="button btnsave-primary" data-bs-toggle="modal" data-bs-target="#paymentMethodModal" style="font-size: 1rem; width:100%; font-weight: 400;">
+                    Add payment method
+                </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="paymentMethodModal" tabindex="-1" role="dialog" aria-labelledby="paymentMethodModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                {% csrf_token %}
+                <div class="text-center mb-2" style="font-size: 1.25rem; font-weight: 500;">Update your credit or debit card</div>
+                <div>
+                    <div class="mb-4">
+                        <label for="cardNo" class="form-label handy-f-14">Card Number</label>
+                        <input type="text" class="form-control handy-f-14" id="cardNo" placeholder="1234 1234 1234 1234" style="padding: 10px 10px;" maxlength="19">
+                    </div>
+                    <div class="form-row mb-3">
+                        <div class="col-md-6" style="padding-left: 0">
+                            <div class="position-relative form-group">
+                                <label for="expiryDate" class="handy-f-14">Expiry Date</label>
+                                <input id="expiryDate" name="expiryDate" placeholder="MM/YY" type="text" class="form-control handy-f-14" maxlength="5">
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding: 0">
+                            <div class="position-relative form-group">
+                                <label for="cvc" class="handy-f-14">CVC</label>
+                                <input id="cvc" name="cvc"placeholder="CVC" type="text" class="form-control handy-f-14" maxlength="3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="padding-top: 20px; display: flex; gap: 0 10px;">
+                    <button class="button btncancel-outline" data-bs-dismiss="modal" aria-label="Close" style="font-size: 1rem; width: 100%; margin: 0; font-weight: 400;">Cancel</button>
+                    <button class="button btnsave-primary cc-func" style="font-size: 1rem; width: 100%; margin: 0; font-weight: 400;">
+                        {% if userPaymentMethod %}
+                        <span>Update payment</span>
+                        {% else %}
+                        <span>Add payment</span>
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

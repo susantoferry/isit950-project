@@ -1,27 +1,28 @@
 {% load parse_date %}
 {% csrf_token %}
-<div class="task-detail-container">
+<div class="task-detail-container no-selected">
     <div class="task-detail-overlay">
         <div class="task-constraint">
-            <div style="display: flex; justify-content: space-between;">
+            <div class="task-detail-left">
                 <div>
+                    <div class="return-map">
+                        <i class="bx bxs-chevron-left arrow"></i>
+                        <span>Return to map</span>
+                    </div>
                     <div>
-                        <h1 class="task-detail-header">
-                            {{ taskDetail.task_title }}
-                        </h1>
+                        <h1 id="task-detail-header" class="task-detail-header"></h1>
                     </div>
                     <div>
                         <div class="task-detail-col">
                             <div class="flex-col task-stat-overlay">
                                 <div class="task-stat">
-                                    <span class="task-active-lg open">Open</span>
+                                    <span id="task-active-lg" class="task-active-lg open">Open</span>
                                 </div>
                             </div>
                             <div>
                                 <div>
                                     <div class="flexcc">
                                         <div class="tasker-profile-left">
-                                            <!-- <img width="45" class="tasker-profile" src="/static/{{taskDetail.img_profile}}" alt=""> -->
                                             {% if taskDetail.img_profile %}
                                             <img width="45" class="tasker-profile" src="/static/{{ taskDetail.img_profile }}" alt="">    
                                             {% else %}
@@ -35,7 +36,7 @@
                                                         <span>Requested by</span>
                                                     </div>
                                                     <div>
-                                                        <span>{{ taskDetail.first_name | title }} {{ taskDetail.last_name |title }} </span>
+                                                        <span id="tasker-client">{{ taskDetail.first_name | title }} {{ taskDetail.last_name |title }} </span>
                                                     </div>
                                                     
                                                 </div>
@@ -48,18 +49,14 @@
                                         <div class="tasker-profile-left">
                                             <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#6a7197" stroke="none"><path d="M114 311 c-12 -5 -31 -22 -44 -38 -40 -51 -14 -144 71 -253 l19 -25 19 25 c50 63 84 133 89 179 4 42 1 52 -24 80 -31 35 -90 49 -130 32z m105 -37 c47 -39 43 -90 -11 -177 -24 -37 -45 -67 -48 -67 -3 0 -24 30 -48 67 -54 87 -58 138 -11 177 39 33 79 33 118 0z"/><path d="M115 236 c-30 -45 13 -98 66 -81 55 18 38 105 -21 105 -20 0 -35 -8 -45 -24z m76 -12 c17 -21 0 -49 -31 -49 -31 0 -48 28 -31 49 8 9 21 16 31 16 10 0 23 -7 31 -16z"/> </g></svg>
                                         </div>
-                                        <div id="taskLocation">
-                                            {{ taskDetail.location }}
-                                        </div>
+                                        <div id="task-location"></div>
                                     </div>
                                     <div class="flexcc">
                                         <div class="tasker-profile-left">
                                             <!-- Must be finished on -->
                                             <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet"><g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#6a7197" stroke="none"><path d="M70 286 c0 -19 4 -37 9 -41 13 -7 24 30 16 55 -10 32 -25 23 -25 -14z"/><path d="M232 284 c2 -22 8 -38 13 -36 15 3 12 65 -3 70 -10 3 -13 -6 -10 -34z"/><path d="M7 283 c-4 -3 -7 -66 -7 -139 0 -111 2 -133 16 -138 23 -9 277 -7 292 2 9 7 12 42 10 143 -3 130 -4 134 -25 137 -17 3 -23 -2 -23 -15 0 -11 -5 -24 -11 -30 -17 -17 -39 -4 -39 23 0 22 -4 24 -53 24 -49 0 -53 -2 -64 -30 -13 -36 -43 -32 -43 6 0 18 -5 24 -23 24 -13 0 -27 -3 -30 -7z m293 -168 l0 -95 -140 0 -140 0 0 95 0 95 140 0 140 0 0 -95z"/><path d="M170 165 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M230 165 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M50 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M110 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M170 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M230 115 c0 -8 9 -15 20 -15 11 0 20 7 20 15 0 8 -9 15 -20 15 -11 0 -20 -7 -20 -15z"/><path d="M50 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M110 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M170 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/><path d="M230 60 c0 -13 7 -20 20 -20 13 0 20 7 20 20 0 13 -7 20 -20 20 -13 0 -20 -7 -20 -20z"/></g></svg>
                                         </div>
-                                        <div>
-                                            {{ taskDetail.completed_on }}
-                                        </div>
+                                        <div id="task-completed-on"></div>
                                     </div>
                                     <div style="color: #84878c; font-size: 13px; position: relative; left: 10px; font-size: 11px; margin-top: 10px;">
                                         <script>
@@ -79,10 +76,10 @@
                                 <span style="padding-top: 15px; position: relative; display: block;">Budget</span>
                             </div>
                             <div style="padding: 10px 0;">
-                                <h1 id="taskPrice">${{ taskDetail.price }}</h1>
+                                <h1 id="task-price"></h1>
                             </div>
                             <div style="padding-bottom: 10px;">
-                               <button class="button btnprimary" 
+                               <button class="button btnprimary" id="offer-btn"
                                 style="display: block;margin: 0 auto; background: #9162b42b;"
                                 data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>
                             </div>
@@ -96,12 +93,10 @@
                     <span>Description</span>
                 </div>
                 <div>
-                    <span id="taskDesc" style="margin-bottom: 30px;display: block;">
-                        {{ taskDetail.description | safe | linebreaks }}
-                    </span>
+                    <span id="task-desc" style="margin-bottom: 30px;display: block;"></span>
                 </div>
             </div>
-            <div style="padding-top: 10px;">
+            <div style="padding-top: 10px; height: 100vh;">
                 <div class="flex comment-form dg-border p15">
 
                     <div class="rev-usr-img-wrap">
@@ -292,14 +287,14 @@
                         </div>
                         <div>
                             <span>-$</span>
-                            <span id="admin-fee">10</span>
+                            <span id="admin-fee"></span>
                         </div>
                     </div>
                     <div class="flex" style="justify-content: space-between; font-weight: 700; color: #793079;">
                         <div>Total you'll earn</div>
                         <div>
                             <span>$</span>
-                            <span id="total-earn">140</span>
+                            <span id="total-earn"></span>
                         </div>
                         
                     </div>

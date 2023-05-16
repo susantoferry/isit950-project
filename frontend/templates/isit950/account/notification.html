@@ -1,0 +1,54 @@
+{% extends 'isit950/account_layout.html' %}
+{% load parse_date %}
+{% block body %}
+<div style="width: 100%; overflow: hidden; position: relative; top: -100px;">
+    <div style="border: 1px solid #e3e3e3; border-radius: 10px;">
+        <div
+            style="padding: 10px 20px; border-bottom: 1px solid #e3e3e3; font-size: 1.2rem; font-weight: 700">
+            <span style="margin-right: 10px;">Notification</span>
+        </div>
+        <div style="display: flex; padding: 20px 30px; height: auto; flex-direction: column;">
+            <div>
+                <div style="width: 100%; border-radius: 10px;">
+                {% if notifications %}
+                    {% for notif in notifications %}
+                        <div>
+                            <a href="{% url 'read_notification' notif.task notif.tasks.task_title notif.id %}" class="notif-block">
+                                <div style="display: flex; padding: 10px;">
+                                    <div>
+                                        <img width="55" src="/static/images/profiles/Hansel.png" alt="">
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; position:relative; 
+                                    margin-left: 20px; width: 100%; align-items: center;">
+                                        <div style="width: 100%;">
+                                            <span>Ferry S. leave a comments on your posted task <span>{{ notif.tasks.task_title }}</span></span>
+                                            <div style="font-size: 13px; color: #920092; font-weight: 500;">
+                                                18 mins ago
+                                            </div>
+                                        </div>
+                                        {% if notif.is_read == False %}
+                                        <div style="padding-left: 10px;">
+                                            <div style="width: 20px; height: 40px; display: flex; align-items: center; justify-content: right;">
+                                                <span style="background: #cb2ecb; height: 10px; display: block;
+                                                width: 10px; border-radius: 50px;"></span>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div>
+                        <div style="text-align: center;">You have no notifications</div>
+                    </div>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        
+
+{% endblock %}

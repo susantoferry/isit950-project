@@ -1,0 +1,44 @@
+{% extends 'isit950/auth_layout.html' %}
+
+{% block body %}
+
+<div style="padding: 0 20px;">
+    <div style="text-align: center;">
+        <span style="display: block; color: #6E27A3; font-weight: 700; font-size: 1.5rem;">Welcome Back</span>
+        <span>Welcome back, please enter your details</span>
+    </div>
+    <div style="padding-top: 30px;" style="color: #473d3d">
+        <form method="post" action="{% url 'login' %}" novalidate>
+            {% csrf_token %}
+            <div class="mb-3" style="color: #473d3d">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" placeholder="Enter your email address" style="height: 50px;" required>
+                <div class="invalid-feedback">
+                    Please choose a username.
+                  </div>
+            </div>
+            <div class="mb-3" style="color: #473d3d">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" placeholder="Enter your password" style="height: 50px;">
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <div style="margin-bottom: 10px;">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1" style="color: #473d3d">Remember me</label>
+                </div>
+                <div style="font-weight: 600; font-size: .85rem;">
+                    <a href="{% url 'forgot_password' %}" class="forgotPass" style="color: #6E27A3">Forgot Password</a>
+                </div>
+            </div>
+            <button type="submit" style="width: 100%; background: #6E27A3; border: 1px solid #7E7373; border-radius: 50px; 
+                        margin: 0 auto; display: block; margin-top: 10px; height: 40px; color: #fff;">Submit</button>
+        </form>
+    
+        <div style="display: flex; justify-content: center; margin-top: 10px;font-size: 15px; font-weight: 700;">
+            <div class="noAccount" style="color: #6e6767;">Don't have an account?</div>
+            <a href="{% url 'register' %}" style="margin-left:10px; color: #6E27A3; font-weight: 700;">Sign Up</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

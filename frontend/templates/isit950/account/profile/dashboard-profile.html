@@ -14,12 +14,18 @@
                     </div>
                     <div style="padding: 10px 20px; height: 150px;">
                         <div class="skill-layout">
-                            <div class="skill-capsule">
-                                <span class="skill-title">Primary</span>
-                            </div>
-                            <div class="skill-capsule">
-                                <span class="skill-title">Django</span>
-                            </div>
+                            {% if skills %}
+                                {% for skill in skills %}
+                                <div class="skill-capsule">
+                                    <span class="skill-title">{{ skill.skill }}</span>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div style="margin: 0 auto; padding-top: 20px;">
+                                    You have no skills list. 
+                                    <a href="{% url 'edit_profile' %}" style="color: #974dba; text-decoration: underline;"> Click here to add skills.</a>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

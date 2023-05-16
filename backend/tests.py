@@ -2,7 +2,7 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from django.contrib.staticfiles.testing import LiveServerTestCase
+from django.contrib.staticfiles.testing import LiveServerClient, TestCase
 
 
 class TestCaseLogin(LiveServerTestCase):
@@ -16,6 +16,7 @@ class TestCaseLogin(LiveServerTestCase):
         from multiprocessing import Process
         from time import sleep
         
+from .models import *
         def start_server():
             call_command('runserver')
 

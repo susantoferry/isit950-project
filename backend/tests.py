@@ -47,6 +47,7 @@ from django.test import Client, TestCase
 import randomimport random
 from .models import *
 from random import randint
+import json
 
 <<<<<<< HEAD
 from random import randint
@@ -84,8 +85,10 @@ class FunctionsTestCase(TestCase):
         response = c.get(f"/api/category/{a1.id}")
         self.assertEqual(response.status_code, 200)
         # Check for the value
-        self.assertEqual(response.content.decode('utf-8'), '{"name": "category1"}')
-        print(response.content)
+        json_data = json.loads(response.content.decode('utf-8'))
+        data_to_check = {"name": json_data[0]["name"]}
+        data_to_compare = {"name": "category1"}
+        self.assertEqual(data_to_check, data_to_compare)
     
     def test_get_category2(self):
         a1 = Category.objects.get(name="category3")
@@ -93,8 +96,11 @@ class FunctionsTestCase(TestCase):
         response = c.get(f"/api/category/{a1.id}")
         self.assertEqual(response.status_code, 200)
         # Check for the value
-        self.assertEqual(response.content.decode('utf-8'), '{"name": "category3"}')
-        print(response.content)
+        json_data = json.loads(response.content.decode('utf-8'))
+        data_to_check = {"name": json_data[0]["name"]}
+        data_to_compare = {"name": "category3"}
+        self.assertEqual(data_to_check, data_to_compare)
+
 # #----PostCategory----------------------------    
 #     def test_post_category(self):
 #         data={"name":"category2", "slug":"category2"}

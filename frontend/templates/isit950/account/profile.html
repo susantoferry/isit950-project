@@ -1,0 +1,156 @@
+{% extends 'isit950/account_layout.html' %}
+
+{% block body %}
+<div style="width: 100%; overflow: hidden; position: relative; top: -100px;">
+    <div style="border: 1px solid #e3e3e3; border-radius: 10px;">
+        <div
+            style="padding: 10px 20px; border-bottom: 1px solid #e3e3e3; font-size: 1.2rem; font-weight: 700">
+            <span>Skills</span>
+        </div>
+        <div style="padding: 10px 20px; height: 150px;">
+            <div class="skill-layout">
+                <div class="kdDMzH">
+                    <span class="zJlDv">Primary</span>
+                    <button class="dTKxLf">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                            <path
+                                d="M2.00065 9.16634L5.00065 6.16634L8.00065 9.16634L9.16732 7.99968L6.16732 4.99967L9.16732 1.99967L8.00065 0.833008L5.00065 3.83301L2.00065 0.833008L0.833984 1.99967L3.83398 4.99967L0.833984 7.99968L2.00065 9.16634Z"
+                                fill="#061257"></path>
+                        </svg>
+                    </button>
+                    <!-- <span class="badge d-flex align-items-center p-1 pe-2 text-primary-emphasis bg-primary-subtle border border-primary-subtle rounded-pill">
+                        <span> Primary</span>
+                        <span class="vr mx-2"></span>
+                        <a href="#"><svg class="bi" width="16" height="16"><use xlink:href="#x-circle-fill"></use></svg></a>
+                    </span> -->
+
+                </div>
+                <div class="kdDMzH">
+                    <span class="zJlDv">Django</span>
+                    <button class="dTKxLf">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                            <path
+                                d="M2.00065 9.16634L5.00065 6.16634L8.00065 9.16634L9.16732 7.99968L6.16732 4.99967L9.16732 1.99967L8.00065 0.833008L5.00065 3.83301L2.00065 0.833008L0.833984 1.99967L3.83398 4.99967L0.833984 7.99968L2.00065 9.16634Z"
+                                fill="#061257"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div style="border: 1px solid #e3e3e3; margin-top:30px; border-radius: 10px;">
+        <div
+            style="padding: 10px 20px; border-bottom: 1px solid #e3e3e3; font-size: 1.2rem; font-weight: 700">
+            <span>Reviews</span>
+        </div>
+        <div style="padding: 15px 20px; height: auto;">
+            <div style="display: flex;gap: 40px;flex-wrap: wrap;position: relative;">
+                <div>
+                    <a href="/create_task" class="button btnprimary-outline btnnavtop">As a client</a>
+                </div>
+                <div>
+                    <a href="/create_task" class="button btnprimary btnnavtop">As a tasker</a>
+                </div>
+            </div>
+            <div>
+                <div
+                    style="display: flex; align-items: center; width: 100%; margin-top: 10px; margin-left: 5px;">
+                    <span
+                        style="font-weight: 600; font-size: 1.5rem; color: #FEA500; margin-right: 15px;">
+                        4.5
+                    </span>
+                    <i class="star-rev fas fa-star fa-lg"></i>
+                </div>
+                <div class="rev-comment-container mt20">
+                    <div class="flex-rev">
+                        <div class="rev-usr-img-container">
+                            <div class="rev-usr-img-wrap">
+                                <img src="/static/images/profiles/Conan.png"
+                                    alt="Logo Moonlight Grosir Store"
+                                    style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rev-row">
+                        <div class="rev-col">
+                            <div class="flex-col ml10" style="gap:0 60px">
+                                <a href="profile.html">
+                                    <span style="font-size: 14px;">@username</span>
+                                </a>
+                                <div style="font-size: 14px;">
+                                    <span>review from client</span>
+                                </div>
+
+                                <div class="rev-date-col">
+                                    <span class="ml10"
+                                        style="font-size: 10px;letter-spacing: .5px;">1 week
+                                        ago</span>
+                                </div>
+                            </div>
+                            <div class="ml10 mt10">
+                                <div style="display: flex; align-items: center; width: 100%;">
+                                    <span
+                                        style="font-weight: 600; font-size: 1rem; color: #FEA500; margin-right: 15px; letter-spacing: 2px;">
+                                        4.8
+                                    </span>
+                                    <i class="star-rev fas fa-star"></i>
+                                </div>
+                                <div>
+                                    <div class="task-comm-txt">
+                                        1234
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rev-comment-container mt20">
+                    <div class="flex-rev">
+                        <div class="rev-usr-img-container">
+                            <div class="rev-usr-img-wrap">
+                                <img src="/static/images/profiles/Hannah.png"
+                                    alt="Logo Moonlight Grosir Store"
+                                    style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="rev-row">
+                        <div class="rev-col">
+                            <div class="flex-col ml10" style="gap:0 60px">
+                                <a href="profile.html">
+                                    <span style="font-size: 14px;">@username</span>
+                                </a>
+                                <div style="font-size: 14px;">
+                                    <span>review from client</span>
+                                </div>
+
+                                <div class="rev-date-col">
+                                    <span class="ml10"
+                                        style="font-size: 10px;letter-spacing: .5px;">1 week
+                                        ago</span>
+                                </div>
+                            </div>
+                            <div class="ml10 mt10">
+                                <div style="display: flex; align-items: center; width: 100%;">
+                                    <span
+                                        style="font-weight: 600; font-size: 1rem; color: #FEA500; margin-right: 15px; letter-spacing: 2px;">
+                                        5.0
+                                    </span>
+                                    <i class="star-rev fas fa-star"></i>
+                                </div>
+                                <div>
+                                    <div class="task-comm-txt">
+                                        Highly recomment
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

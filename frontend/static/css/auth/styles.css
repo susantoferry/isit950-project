@@ -1,0 +1,496 @@
+* { 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+	padding: 0;
+	margin: 0;
+	overflow-x: hidden !important;
+	overflow-y: auto !important;
+	overscroll-behavior: none;
+	font-family: 'Inter';
+	font-style: normal;
+}
+
+a {
+	text-decoration: none;
+}
+
+/*for website design */
+h1{
+
+
+position: relative;
+width: 100%;
+height: auto;
+left: 0;
+margin-bottom: 15px;
+font-weight: 700;
+font-size: 30px;
+line-height: 36px;
+text-align: center;
+color: #6E27A3;
+transition:all .5s ease;
+}
+
+.fm-forget-pass {
+	padding: 25px;
+	width: 400px;
+	margin: 0 auto;
+	
+}
+
+
+.confirmPass {
+
+ position: absolute;
+width: 200.87px;
+height: 32.16px;
+left: calc(50% - 366px/2 + 85px );
+top: calc(50% - 32.16px/2 + 120px); 
+font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+text-align: left;
+color: #786E6E;
+
+}
+.reset {
+  color: white;
+  position: absolute;
+width: 366px;
+height: 49px;
+left: calc(50% - 366px/2 + 58px);
+top: calc(50% - 49px/2 + 206.5px);
+background: #6E27A3;
+border: 1px solid #7E7373;
+border-radius: 6px;
+}
+
+
+.proceeding {
+border: none;
+background-color: transparent;
+position: absolute;
+width: 536px;
+height: 26px;
+left: calc(50% - 528px/2 + 1px);
+top: calc(50% - 49px/2 + 286.5px);
+font-family: 'Inter';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 15px;
+text-align: center;
+color: #000000;
+}
+
+br.responsive {
+  display: none;
+}
+
+.agreement {
+border: none;
+background-color: transparent;
+}
+
+/* End of css website design */
+
+/* Start css for mobile responsive */
+@media (max-width: 1440px) {
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
+   
+}
+
+@media (max-width: 1024px) {
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+  
+ 
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
+}
+
+@media (max-width: 425px) {
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
+
+}
+
+@media (max-width: 375px) {
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
+}
+
+@media only screen and (max-width: 320px) {
+
+  h1{
+    top: 10px;
+    position: relative;
+		width: 100%;
+		height: auto;
+		left: 0;
+		margin-bottom: 15px;
+		font-size: 25px;
+		transition:all 1s ease;
+    color: #6E27A3;
+  }
+  
+  
+
+
+  
+  .confirmPass {
+  
+  	position: relative;
+		width: 100%;
+		height: 32.16px;
+		left: 0;
+		text-align: left;
+		color: #786E6E;
+		margin-bottom: 10px;
+
+	}
+  
+  
+  .reset {
+    color: white;
+		position: relative;
+		width: 100%;
+		height: 49px;
+		left: 0;
+		background: #6E27A3;
+		border: 1px solid #7E7373;
+		border-radius: 6px;
+		margin: 0 auto;
+		display: block;
+		top: 10px;
+    	margin-top: 20px;
+	}
+  
+  .proceeding {
+    position: absolute;
+		width: 100%;
+		height: auto;
+		left: 0;
+		bottom: 30px;
+	}
+
+  
+  br.responsive {
+    display: inline;
+  }
+  
+  .agreement {
+    line-break: auto;
+  border: none;
+  background-color: transparent;
+  }
+
+}
+/* End of mobile responsive*/ 

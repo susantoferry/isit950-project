@@ -44,8 +44,10 @@
 
 
 from django.test import Client, TestCase
-import random
+import randomimport random
 from .models import *
+from random import randint
+
 from random import randint
 
 # Create your tests here.
@@ -185,7 +187,65 @@ class FunctionsTestCase(TestCase):
         print(response.content)
     #CREATE_TASK-----------------------------------------------------------
     def test_create_task(self):
+        print(response.content)
+    #LOGIN-use wrong  password--404---------------------------------------------------------
+    def test_login_fail(self):
         
+        data = {'username': 'ferry', 'password': 'passwordx'}
+        c = Client()
+        response = c.post('/api/user_login', data=data)
+        
+        # Check that the response status code is 200
+        self.assertEqual(response.status_code, 404)
+        print(response.content)
+    #CREATE_TASK-----------------------------------------------------------
+    def test_create_task(self):
+        
+        data = {"task_title": "Kids bike service1",
+        "description": "I have 3 kids bike I want serviced to make sure they’re good to ride (Trek 12 inch, Cannondale 16 inch and Liv Adore 16 inch)",
+        "price": 150.00,
+        "location": "Wollongong NSW, Australia",
+        "location_link": "https://goo.gl/maps/CV7LYozNvraBYJBQ8",
+        "lat": -34.424394,
+        "long": 150.89385,
+        "completed_on": "2023-04-29",
+        "status": 0,
+        "user":User.objects.get(username="ferry").id,
+        "category":Category.objects.get(name="category1").id,
+        }
+        c = Client()
+        response = c.post('/api/task', data=data)
+        self.assertEqual(response.status_code, 200)
+        print(response.content)
+     #GET_TASKDETAIL-----------------------------------------------------------
+    def test_get_taskdetail(self):
+        task=Task.objects.get(task_title="Kids bike service1")
+        c = Client()
+        response = c.get(f'/api/task/{task.id}')
+        self.assertEqual(response.status_code, 200)
+        print(response.content)
+#---POSTOFFER-----------------------------------------------------------------------
+
+#     def test_post_offer(self):
+#         data = {"price": 150.0,
+#         "admin_fee": 15.00,
+#         "total_price": 165.00,
+#         "description": "I am confident to provide with high quality result you are looking for",
+#          "task":Task.objects.get(task_title = "Kids bike service1").id,
+#          "user":User.objects.get(username="ferry").id
+#         }
+#         c = Client()
+#         response = c.post('/api/my-task/accept-offer/'+str(data['task'])+'/'+str(data['user']), data=data)
+#         self.assertEqual(response.status_code, 200)
+#----------------------getOfferDetailForTask----------------
+    def test_get_offerDetail(self):
+        task=Task.objects.get(task_title = "Kids bike service1")
+        c = Client()
+        response = c.get(f"/api/offer/{task.id}")
+        self.assertEqual(response.status_code, 200)
+        print(response.content)
+
+
         data = {"task_title": "Kids bike service1",
         "description": "I have 3 kids bike I want serviced to make sure they’re good to ride (Trek 12 inch, Cannondale 16 inch and Liv Adore 16 inch)",
         "price": 150.00,

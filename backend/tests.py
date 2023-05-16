@@ -226,17 +226,17 @@ class FunctionsTestCase(TestCase):
         print(response.content)
 #---POSTOFFER-----------------------------------------------------------------------
 
-#     def test_post_offer(self):
-#         data = {"price": 150.0,
-#         "admin_fee": 15.00,
-#         "total_price": 165.00,
-#         "description": "I am confident to provide with high quality result you are looking for",
-#          "task":Task.objects.get(task_title = "Kids bike service1").id,
-#          "user":User.objects.get(username="ferry").id
-#         }
-#         c = Client()
-#         response = c.post('/api/my-task/accept-offer/'+str(data['task'])+'/'+str(data['user']), data=data)
-#         self.assertEqual(response.status_code, 200)
+    def test_post_offer(self):
+        data = {"price": 150.0,
+        "admin_fee": 15.00,
+        "total_price": 165.00,
+        "description": "I am confident to provide with high quality result you are looking for",
+         "task":Task.objects.get(task_title = "Kids bike service1").id,
+         "user":User.objects.get(username="ferry").id
+        }
+        c = Client()
+        response = c.post('/api/my-task/accept-offer/'+str(data['task'])+'/'+str(data['user']), data=data)
+        self.assertEqual(response.status_code, 200)
 #----------------------getOfferDetailForTask----------------
     def test_get_offerDetail(self):
         task=Task.objects.get(task_title = "Kids bike service1")

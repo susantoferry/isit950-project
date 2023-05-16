@@ -37,11 +37,11 @@
                     </div>
                     <div class="task-status">
                         {% if task.status == 0 %}
-                        <div class="task-active open">Open</div>
+                            <div class="task-active open">Open</div>
                         {% elif task.status == 1 %}
-                        <div class="task-active assigned">Assigned</div>
+                            <div class="task-active assigned">Assigned</div>
                         {% else %}
-                        <div class="task-active completed">Completed</div>
+                            <div class="task-active completed">Completed</div>
                         {% endif %}
                     </div>
                 </div>
@@ -51,20 +51,21 @@
                             <span>${{ task.price }}</span>
                         </div>
                         <div class="task-bookmark" data-id="{{task.id}}">
-                            {% if user.id in task.my_bookmark %}
-                            <span class="bookmark">
-                                <i class="fa fa-heart bookmarked"></i>
-                            </span>
-                            {% else %}
-                            <span class="bookmark">
-                                <i class="fa-regular fa-heart unbookmark"></i>
-                            </span>
+                            {% if task.user != request.user.id %}
+                                {% if user.id in task.my_bookmark %}
+                                <span class="bookmark">
+                                    <i class="fa fa-heart bookmarked"></i>
+                                </span>
+                                {% else %}
+                                <span class="bookmark">
+                                    <i class="fa-regular fa-heart unbookmark"></i>
+                                </span>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>
                     
                     <div>
-                        
                         <!-- <img class="tasker-profile pos-abs" src="https://eu7cmie.cloudimg.io/v7/https://assets-airtasker-com.s3.amazonaws.com/uploads/user/avatar/3411484/image-ab53f784dc250dc55658f54b97629dad.jpg?width=80&amp;height=80"> -->
                         {% if task.img_profile %}
                         <img width="60" class="tasker-profile pos-abs" src="/static/{{ task.img_profile }}" alt="">

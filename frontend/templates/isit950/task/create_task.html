@@ -426,7 +426,7 @@
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2 id="heading">Submit your Task Request</h2>
                 <p>Fill all form field to go to next step</p>
-                <form id="msform" action="{% url 'test_page2' %}" method="POST">
+                <form id="msform" action="{% url 'create_task' %}" method="POST">
                     {% csrf_token %}
                     <!-- progressbar -->
                     <ul id="progressbar">

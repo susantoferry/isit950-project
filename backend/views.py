@@ -209,8 +209,8 @@ def updateNotifStatus(request, notifId, user):
             if getNotif.is_read == data['is_read']:
                 return Response("Nothing changes", status=200)
             else:
-                serializer = NotificationSerializer(getNotif, data=data)
-                print(data['is_read'])
+                serializer = ReadNotificationSerializer(getNotif, data=data)
+
                 if serializer.is_valid():
                     serializer.save()
                     return Response(status=200)
@@ -224,6 +224,7 @@ def updateNotifStatus(request, notifId, user):
 
 @api_view(['GET'])
 def offerDetail(request, taskId):
+    taskId = taskId.rsplit('-', 1)[-1]
     offers = Offer.objects.filter(task_id = taskId)
     serializer = OfferSerializer(offers, many=True)
     return Response(serializer.data)
@@ -286,8 +287,6 @@ def task(request):
         return Response(serializer.data)
     
     if request.method == 'POST':
-        # Get price by category
-        # pric
         
         serializer = TaskSerializer(data=request.data)
 
@@ -300,25 +299,33 @@ def task(request):
         return Response(serializer.data)
     
 @api_view(['GET', 'PUT', 'DELETE'])
+@csrf_exempt
 def taskDetail(request, taskId):
 
     taskId = taskId.rsplit('-', 1)[-1]
-    
-    try:
-        task = Task.objects.get(id=taskId)
-    except Task.DoesNotExist:
-        return Response(status=404)
-    
+
     if request.method == 'GET':
+        try:
+            task = Task.objects.get(id=taskId)
+        except Task.DoesNotExist:
+            return Response(status=404)
+        
         serializer = TaskSerializer(task, many=False)
         return Response(serializer.data)
     
     if request.method == 'PUT':
         data = JSONParser().parse(request)
         
+        try:
+            task = Task.objects.get(id=taskId, user=data["user"])
+        except Task.DoesNotExist:
+            return Response("You are not authorise to edit this task",status=404)
+
         serializer = TaskSerializer(task, data=data)
+        
         if serializer.is_valid():
             serializer.save()
+            sendTaskNotification(taskId, data["content"], data["location"], data["user"])
             return Response(status=200)
         else:
             print(serializer.errors)
@@ -329,16 +336,16 @@ def membershipTransaction(request):
     if request.method == 'POST':
 
         price = {
-            1: 80,
-            2: 50,
-            3: 120
+            '1': 80,
+            '2': 50,
+            '3': 120
         }
 
         try:
             membership = MembershipTransaction.objects.filter(user = request.data['user']).order_by("-create_date").first()
         except MembershipTransaction.DoesNotExist:
             membership = ""
-
+        
         # Check if user has membership
         if membership:
             # if the current membership is same with request data then return response
@@ -353,9 +360,10 @@ def membershipTransaction(request):
                 request.data['trans_type'] = 'U'
                 
                 # Change price if the package is either 1 or 2 change to 3
-                if request.data["membership"] > membership.membership:
+                if int(request.data["membership"]) == 3:
                     request.data["price"] = price[request.data['membership']] - membership.price
                 else:
+                    print(price[request.data["membership"]])
                     request.data["price"] = price[request.data["membership"]]
         else:
             request.data['trans_type'] = 'A'
@@ -372,20 +380,40 @@ def membershipTransaction(request):
             return Response(serializer.data, status=200)
         else:
             return Response(serializer.errors, status=404)
-        
+
 def sendTaskNotification(taskId, content, location, clientId):
     # Get all users who have membership as SP or Full Package
     userMemberships = MembershipTransaction.objects.filter(user__address=location, membership__in= [1,3]).exclude(user=clientId)
-    
-    for user in userMemberships:
-        
+
+    for member in userMemberships:
         notification = {
             'content_notif': content,
             'task': taskId,
-            'user': user.user.id
+            'user': member.user.id
         }
 
         serializer = NotificationSerializer(data=notification)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors)
+
+    return Response("a")
+
+@api_view(['GET'])
+def sendTaskNotification1(request, taskId, content, location, clientId):
+    # Get all users who have membership as SP or Full Package
+    userMemberships = MembershipTransaction.objects.filter(user__address=location, membership__in= [1,3]).exclude(user=clientId)
+    print(userMemberships)
+    for member in userMemberships:
+        notification = {
+            'content_notif': content,
+            'task': taskId,
+            'user': member.user.id
+        }
+
+        serializer = NotificationSerializer(data=notification)
+        print(serializer.is_valid())
         if serializer.is_valid():
             serializer.save()
         else:

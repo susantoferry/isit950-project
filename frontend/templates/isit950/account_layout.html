@@ -68,10 +68,10 @@
                             </div>
                             <div style="display: flex; flex-direction: column; align-items: flex-start; margin-top: 65px;">
                                 <div style="font-weight: bold; font-size: 16px;">
-                                    <span>Ferry Susanto</span>
+                                    <span>{{ user.first_name }} {{ user.last_name }}</span>
                                 </div>
                                 <div>
-                                    <span>@ferry</span>
+                                    <span>@{{ user.username }}</span>
                                 </div>
                                 <div style="display: flex; flex-direction: row; margin-top: 15px;">
                                     <div style="margin-right: 10px;">
@@ -86,8 +86,8 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <div>
-                                        Sydney, NSW
+                                    <div style="position: relative; top: 2px;">
+                                        {{ user.address }}
                                     </div>
                                 </div>
                             </div>

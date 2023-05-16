@@ -79,43 +79,6 @@ def editProfile(request):
         else:
             messages.error(request, "Profile is not found")
             return HttpResponseRedirect(reverse("edit_profile"))
-    #     oldImg = 
-    #     img_res = Setting.objects.get(pk=3)
-    #     ab_img_res = Setting.objects.get(pk=6)
-    #     chk_img = request.FILES.get("img_file", "")
-    #     con_id = request.POST['con_type'].split('-')
-    #     img = ""
-    #     if chk_img != "":
-    #         if con_id[0] == "1":
-    #             img = make_thumbnail(request.FILES["img_file"], (int(ab_img_res.value), int(ab_img_res.value2)), 'content')
-    #         else:
-    #             img = make_thumbnail(request.FILES["img_file"], (int(img_res.value), int(img_res.value2)), 'content')
-
-    #     if con_id[0] == "3":
-    #         content = ""
-    #     else:
-    #         content = request.POST["content"]
-
-    #     content = Content(
-    #         title = request.POST["title"].lstrip(),
-    #         sml_txt = request.POST["sml_text"].lstrip(),
-    #         content = content,
-    #         img_url = img,
-    #         video_url = request.POST["vid_url"].lstrip(),
-    #         content_type_id = con_id[0],
-    #         con_cat = "content",
-    #         create_date = datetime.now(),
-    #         modify_date = datetime.now()
-    #     )
-    #     content.save()
-    #     messages.success(request, "New content has been added successfully")
-    #     return HttpResponseRedirect(reverse("add_content"))
-    # else:
-    #     con_type = ContentType.objects.filter(cat='content')
-    #     return render(request, "admin_piano/content/create.html", {
-    #         "content_types": con_type
-    #     })
-
 
         # if profileResp.status_code == 200:
         #     messages.success(request, "Profile has been updated successfully")
@@ -200,39 +163,84 @@ def createTask(request):
         catResp = requests.get(restServer + "category")
         categories = catResp.json()
 
-        return render(request, "isit950/create_task.html", {
+        return render(request, "isit950/task/create_task.html", {
             "categories": categories    
         })
 
-
     if request.method == 'POST':
-        task = Task(
-            task_title = request.POST["task_title"].lstrip(),
-            category_id = request.POST["category"].lstrip(),
-            description = request.POST["task_description"],
-            price = request.POST["price"],
-            location = request.POST["location"].lstrip(),
-            location_link = request.POST["location_url"].lstrip(),
-            completed_on = request.POST["completed_on"].lstrip(),
-            user_id = 1
-        )
-        task.save()
-        # task = {
-        #     "task_title" : request.POST["task_title"].lstrip(),
-        #     "category" : request.POST["category"].lstrip(),
-        #     "description" : request.POST["task_description"],
-        #     "price" : request.POST["price"],
-        #     "location" : request.POST["location"].lstrip(),
-        #     "location_link" : request.POST["location_url"].lstrip(),
-        #     "completed_on" : request.POST["completed_on"].lstrip(),
-        #     "user": 1
-        # }
-        # requests.post(restServer, data=task)
+        taskData = {
+            'task_title': request.POST["taskName"],
+            'category': request.POST["taskCategory"],
+            'completed_on': '2023-05-20',
+            'description': request.POST["taskDesc"],
+            'location': request.POST["taskLocation"],
+            'price': request.POST["taskPrice"],
+            'booking_price': request.POST["taskBookingPrice"],
+            'total_price': request.POST["taskTotalPrice"],
+            'user': request.user.id,
+            'content': 1
+        }
+
+        taskRequest = requests.post(restServer + "task" , json=taskData)
+        
+        if taskRequest.status_code == 200:
+            messages.success(request, "New task has been added successfully")
+            return HttpResponseRedirect(reverse("tasks"))
+        else:
+            return HttpResponseRedirect(reverse("create_task"))
+
+        # task = Task(
+        #     task_title = request.POST["task_title"].lstrip(),
+        #     category_id = request.POST["category"].lstrip(),
+        #     description = request.POST["task_description"],
+        #     price = request.POST["price"],
+        #     location = request.POST["location"].lstrip(),
+        #     location_link = request.POST["location_url"].lstrip(),
+        #     completed_on = request.POST["completed_on"].lstrip(),
+        #     user_id = 1
+        # )
+        # task.save()
 
         
-        messages.success(request, "New task has been added successfully")
-        return HttpResponseRedirect(reverse("tasks"))
     
+def editTask(request, taskId):
+
+    if request.method == 'GET':
+        catResp = requests.get(restServer + "category")
+        categories = catResp.json()
+
+        taskResp = requests.get(restServer + "task/" + taskId)
+        task = taskResp.json()
+
+        return render(request, "isit950/task/edit_task.html", {
+            "categories": categories,
+            "task": task
+        })
+
+    if request.method == 'POST':
+        taskData = {
+            'task_title': request.POST["taskName"],
+            'category': request.POST["taskCategory"],
+            'completed_on': '2023-05-22',
+            'description': request.POST["taskDesc"],
+            'location': request.POST["taskLocation"],
+            'price': request.POST["taskPrice"],
+            'booking_price': request.POST["taskBookingPrice"],
+            'total_price': request.POST["taskTotalPrice"],
+            'user': request.user.id,
+            'content': 2
+        }
+        
+        # return HttpResponseRedirect(reverse('edit_task', args=[taskId]))
+        taskRequest = requests.put(f"{restServer}task/{taskId}", json=taskData)
+
+        if taskRequest.status_code == 200:
+            messages.success(request, "New task has been added successfully")
+            return HttpResponseRedirect(reverse('edit_task', args=[taskId]))
+        else:
+            messages.success(request, "New task has been added successfully")
+            return HttpResponseRedirect(reverse('edit_task', args=[taskId]))
+
 def notification(request):
     notificationResp = requests.get(restServer + "notification/" + str(request.user.id))
     notifications = notificationResp.json()
@@ -336,19 +344,20 @@ def myTask(request):
         "type": "myTask"
     })
 
-def myTaskDetail(request, taskId):
+def taskOffer(request, taskId):
+
     myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
     myTaskDetail = myTaskDetailResp.json()
 
     offerResp = requests.get(restServer + "offer/" + str(taskId))
     offers = offerResp.json()
 
-    questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
+    # questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
 
-    return render(request, "isit950/my_task_detail.html", {
+    return render(request, "isit950/task_offer.html", {
         "myTaskDetail": myTaskDetail,
         "offers": offers,
-        "questions": questionCount
+        # "questions": questionCount
     })
 
 def resendEmail(request, email):

@@ -39,15 +39,22 @@ class FunctionsTestCase(TestCase):
         self.assertEqual(data_to_check, data_to_compare)
     
     def test_get_category2(self):
-        a1 = Category.objects.get(name="category3")
+        try:
+            a1 = Category.objects.get(name="category3")
+        except Category.DoesNotExist:
+            a1 = ""
+        
         c = Client()
-        response = c.get(f"/api/category/{a1.id}")
-        self.assertEqual(response.status_code, 200)
-        # Check for the value
-        json_data = json.loads(response.content.decode('utf-8'))
-        data_to_check = {"name": json_data[0]["name"]}
-        data_to_compare = {"name": "category3"}
-        self.assertEqual(data_to_check, data_to_compare)
+        if a1:
+            response = c.get(f"/api/category/{a1.id}")
+            self.assertEqual(response.status_code, 200)
+            # Check for the value
+            json_data = json.loads(response.content.decode('utf-8'))
+            data_to_check = {"name": json_data[0]["name"]}
+            data_to_compare = {"name": "category3"}
+            self.assertEqual(data_to_check, data_to_compare)
+        else:
+            self.assertRaises()
 
 # #----PostCategory----------------------------    
 #     def test_post_category(self):

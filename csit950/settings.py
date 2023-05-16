@@ -114,6 +114,9 @@ DATABASES = {
         'PORT': '3306',
         'OPTIONS': {
             'sql_mode': 'traditional',
+        },
+        'TEST': {
+            'NAME': 'CI_test_isit950',
         }
     }
 }
@@ -200,4 +203,5 @@ EMAIL_HOST_PASSWORD = 'zrendwnblmljiqwv'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
 

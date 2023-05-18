@@ -37,7 +37,7 @@ def editProfile(request):
         if profileResp.status_code == 200 and skillsResp.status_code == 200:
             profile = profileResp.json()
             skills = skillsResp.json()
-            
+
             return render(request, "isit950/account/profile/edit_profile.html", {
                 "profile": profile,
                 "skills": skills
@@ -67,17 +67,17 @@ def editProfile(request):
 def tasks(request):
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
-    
+
     # firstTaskDetail = tasks[0]["id"]
     # taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
     # taskDetail = taskDetailResp.json()
 
     # commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     # comments = commentResp.json()
-    
+
     # parentQuestion = Question.objects.filter(task_id=firstTaskDetail, parent_id=None).order_by("-create_date")
     # childQuestion = Question.objects.filter(task_id=firstTaskDetail).exclude(parent_id=None)
-    
+
     response =  render(request, "isit950/index.html", {
         "tasks": tasks,
         # "taskDetail": taskDetail,
@@ -86,18 +86,18 @@ def tasks(request):
         # "parentQuestion": parentQuestion,
         # "childQuestion": childQuestion
     })
-    
+
     if request.user.is_authenticated and not request.COOKIES.get('usid'):
         response.set_cookie(key='usid', value=request.user.username, max_age=settings.SESSION_COOKIE_AGE)
-        
+
     return response
 
 def taskDetail(request, slug):
-    
+
     taskId = slug.rsplit('-', 1)[-1]
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
-    
+
     taskDetailResp = requests.get(restServer + 'task/' + str(taskId))
     taskDetail = taskDetailResp.json()
 
@@ -118,29 +118,29 @@ def taskDetail(request, slug):
 def searchTask(request):
     params = {
                 'search_keyword': request.GET.get('search_keyword', None),
-                'category': request.GET.getlist('category', None), 
+                'category': request.GET.getlist('category', None),
                 'min_price': request.GET.get('min_price', 0),
                 'max_price': request.GET.get('max_price', 9999),
                 'location': request.GET.get('location', None),
-                'sort_type': request.GET.get('sort_type', None)      
+                'sort_type': request.GET.get('sort_type', None)
             }
-    
+
     searchTaskResp = requests.get(restServer + "search_task", params=params)
     searchTask = searchTaskResp.json()
 
     return render(request, "isit950/index.html", {
-        "tasks": searchTask    
+        "tasks": searchTask
     })
 
 def createTask(request):
     if request.method == 'GET':
         # print(decryptString(request.COOKIES.get('usid')))
-        
+
         catResp = requests.get(restServer + "category")
         categories = catResp.json()
 
         return render(request, "isit950/create_task.html", {
-            "categories": categories    
+            "categories": categories
         })
 
 
@@ -168,10 +168,10 @@ def createTask(request):
         # }
         # requests.post(restServer, data=task)
 
-        
+
         messages.success(request, "New task has been added successfully")
         return HttpResponseRedirect(reverse("tasks"))
-    
+
 def notification(request):
     notificationResp = requests.get(restServer + "notification/" + str(request.user.id))
     notifications = notificationResp.json()
@@ -188,24 +188,24 @@ def paymentMethod(request):
         userPaymentMethod["expiry_date"] = decryptString(userPaymentMethod["expiry_date"])
     else:
         userPaymentMethod = ""
-    
+
     return render(request, "isit950/account/payment_method.html", {
         "userPaymentMethod": userPaymentMethod
     })
 
 def paymentHistory(request):
     return render(request, "isit950/account/payment_history.html")
-    
+
 def testRead(request):
     if request.method == 'POST':
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-        
+
         name = request.POST['text-content']
         for i in name.split():
             i = i.lstrip()
             if(re.fullmatch(regex, i)) or (re.fullmatch('[6-9][0-9]{9}',i)):
                 print("contain number")
-        
+
             else:
                 print("no number")
 
@@ -241,11 +241,11 @@ def myTask(request, condition='all'):
 
     except:
         return render(request, "isit950/404.html")
-    
+
     else:
-        firstTaskDetail = myTaskList[0]["id"]
-        taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-        taskDetail = taskDetailResp.json()
+        # firstTaskDetail = myTaskList[0]["id"]
+        # taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
+        # taskDetail = taskDetailResp.json()
 
         end_time= time.time()
         run_time= end_time - start_time
@@ -253,7 +253,7 @@ def myTask(request, condition='all'):
 
         return render(request, "isit950/my_task.html", {
             "myTaskList": myTaskList,
-            "firstTaskDetail": firstTaskDetail,
+            # "firstTaskDetail": firstTaskDetail,
             "taskDetail": taskDetail,
             "type": "myTask"
         })
@@ -282,7 +282,7 @@ def resendEmail(request, email):
     return HttpResponseRedirect(reverse("verify_email", args=[email]))
 
 def verifyEmail(request, email):
-    
+
     return render(request, "isit950/auth/verify_account.html", {
         "email": decryptString(email),
         "code": email
@@ -309,25 +309,25 @@ def loginView1(request):
     return render(request, "isit950/auth/login1.html")
 
 def loginView(request):
-    
+
     if request.method == 'GET':
-        
+
         return render(request, "isit950/auth/login.html")
-    
+
     if request.method == 'POST':
         userData = {
             'email': request.POST["email"],
             'password': request.POST["password"]
         }
-        
+
         userRequest = requests.post(restServer + "user_login" , json=userData)
-        
+
         if userRequest.status_code == 200:
             username = userRequest.json()['user']
             print(username)
             print(request.POST["password"])
             user = authenticate(request, username=username, password=request.POST["password"])
-            
+
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
@@ -335,7 +335,7 @@ def loginView(request):
                 "message": "Invalid username and/or password.",
                 "status": "danger"
             })
-        
+
 def registerView(request):
     if request.method == 'GET':
         return render(request, "isit950/auth/register.html")
@@ -388,7 +388,7 @@ def resetPass(request, token):
             'password': request.POST["password"],
             'password2': request.POST["confPassword"]
         }
-        
+
         resetPassRequest = requests.post(f"{restServer}reset_password_api/{token}", json=data)
         if resetPassRequest.status_code == 200:
             return HttpResponseRedirect(reverse("index"))

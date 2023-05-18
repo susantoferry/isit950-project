@@ -243,11 +243,14 @@ def getMyTask(request, userId, condition):
 
     elif condition == 'pending':
         #pending
-        taskStatus = 2
-        myTasks = Offer.objects.filter(user_id=userId, task__status=0).order_by("-create_date")
+        myOffers = Offer.objects.filter(user_id=userId, task__status=0).order_by("-create_date")
 
     elif condition == 'assigned':
         taskStatus = 1
+        myTasks = Task.objects.filter(user_provider_id=userId, status=taskStatus).order_by("status","-create_date")
+
+    elif condition == 'completed':
+        taskStatus = 2
         myTasks = Task.objects.filter(user_id=userId, status=taskStatus).order_by("status","-create_date")
 
     else:

@@ -226,11 +226,11 @@
                             Posted Tasks</a>
                         <a href="{% url 'my_task' 'pending' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/pending' %} active {%endif%}" id="pending-offer">
                             Pending offers</a>
-                        <a href="{% url 'my_task' 'assigned' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/pending' %} active {%endif%}" id="pending-offer">
+                        <a href="{% url 'my_task' 'assigned' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/assigned' %} active {%endif%}" id="pending-offer">
                             Tasks assigned</a>
-                        <a href="{% url 'my_task' 'completed' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/pending' %} active {%endif%}" id="pending-offer">
+                        <a href="{% url 'my_task' 'completed' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/completed' %} active {%endif%}" id="pending-offer">
                             Tasks completed</a>
-                        <a href="{% url 'my_task' 'watchlist' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/pending' %} active {%endif%}" id="pending-offer">
+                        <a href="{% url 'my_task' 'watchlist' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/watchlist' %} active {%endif%}" id="pending-offer">
                             Watchlist</a>
                         {% endif %}
                     </div>

@@ -6,81 +6,174 @@
             <div class= 'tasklist-title-label'>
                 &nbsp&nbsp&nbsp&nbspTask List&nbsp&nbsp&nbsp&nbsp
             </div>
+            
             {% for task in myTaskList %}
             
-            <div>
-                
-                <div data-task-id="{{ task.task_title_to_url}}"
-                    class="task-card flex-row task-left-card task-bookmark-mytask {% if task.task_title_to_url in request.resolver_match.kwargs.slug %} active {% endif %}">
-                    <div class="task-l-content" style="width: 210px;">
-                        <div class="task-header mb10">
-                            <span>{{ task.task_title }}</span>
-                        </div>
-                        <div class="task-flex-align task-location">
-                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px"
-                                viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet">
-                                <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#000"
-                                    stroke="none">
-                                    <path
-                                        d="M114 311 c-12 -5 -31 -22 -44 -38 -40 -51 -14 -144 71 -253 l19 -25 19 25 c50 63 84 133 89 179 4 42 1 52 -24 80 -31 35 -90 49 -130 32z m105 -37 c47 -39 43 -90 -11 -177 -24 -37 -45 -67 -48 -67 -3 0 -24 30 -48 67 -54 87 -58 138 -11 177 39 33 79 33 118 0z" />
-                                    <path
-                                        d="M115 236 c-30 -45 13 -98 66 -81 55 18 38 105 -21 105 -20 0 -35 -8 -45 -24z m76 -12 c17 -21 0 -49 -31 -49 -31 0 -48 28 -31 49 8 9 21 16 31 16 10 0 23 -7 31 -16z" />
-                                </g>
-                            </svg>
+                {% if request.path == '/my-task/watchlist' %}
 
-                        </div>
-                        <div class="task-flex-align task-duetime">
-                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px"
-                                viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet">
-                                <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#000"
-                                    stroke="none">
-                                    <path
-                                        d="M88 289 c-43 -22 -78 -81 -78 -129 0 -76 74 -150 150 -150 76 0 150 74 150 150 0 50 -35 107 -80 130 -49 25 -94 25 -142 -1z m65 -11 c4 -10 7 -10 14 0 12 16 73 -4 73 -24 0 -8 6 -14 14 -14 20 0 40 -61 24 -72 -11 -6 -11 -10 0 -16 16 -11 -4 -72 -24 -72 -8 0 -14 -6 -14 -14 0 -20 -61 -40 -72 -24 -6 11 -10 11 -16 0 -11 -16 -72 4 -72 24 0 8 -6 14 -14 14 -20 0 -40 61 -24 72 11 6 11 10 0 16 -16 11 4 72 24 72 8 0 14 6 14 14 0 8 12 19 28 24 37 14 40 14 45 0z" />
-                                    <path
-                                        d="M150 192 c0 -28 7 -45 25 -62 31 -29 46 -18 17 13 -13 14 -22 36 -22 55 0 18 -4 32 -10 32 -5 0 -10 -17 -10 -38z" />
-                                </g>
-                            </svg>
-                            <span>{{ task.completed_on|parse_short_date|date:'d M Y' }}</span>
-                        </div>
-                        <div class="task-status">
-                            {% if task.status == 0 %}
-                            <div class="task-active open">Open</div>
-                            {% elif task.status == 1 %}
-                            <div class="task-active assigned">Assigned</div>
-                            {% else %}
-                            <div class="task-active completed">Completed</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="task-r-content">
-                        <div style="display: flex; position: absolute; right: 15px;">
-                            <div class="task-price">
-                                <span>${{ task.price }}</span>
+                <div>
+                
+                    <div data-task-id="{{ task.tasks.task_title_to_url}}"
+                        class="task-card flex-row task-left-card task-bookmark-mytask {% if task.task_title_to_url in request.resolver_match.kwargs.slug %} active {% endif %}">
+                        <div class="task-l-content" style="width: 210px;">
+                            <div class="task-header mb10">
+                                <span>{{ task.tasks.task_title }}</span>
                             </div>
-                            <div class="task-bookmark" data-id="{{task.id}}">
-                                {% if user.id in task.my_bookmark %}
-                                <span class="bookmark">
-                                    <i class="fa fa-heart bookmarked"></i>
-                                </span>
+                            <div class="task-flex-align task-location">
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px"
+                                    viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#000"
+                                        stroke="none">
+                                        <path
+                                            d="M114 311 c-12 -5 -31 -22 -44 -38 -40 -51 -14 -144 71 -253 l19 -25 19 25 c50 63 84 133 89 179 4 42 1 52 -24 80 -31 35 -90 49 -130 32z m105 -37 c47 -39 43 -90 -11 -177 -24 -37 -45 -67 -48 -67 -3 0 -24 30 -48 67 -54 87 -58 138 -11 177 39 33 79 33 118 0z" />
+                                        <path
+                                            d="M115 236 c-30 -45 13 -98 66 -81 55 18 38 105 -21 105 -20 0 -35 -8 -45 -24z m76 -12 c17 -21 0 -49 -31 -49 -31 0 -48 28 -31 49 8 9 21 16 31 16 10 0 23 -7 31 -16z" />
+                                    </g>
+                                </svg>
+    
+                            </div>
+                            <div class="task-flex-align task-duetime">
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px"
+                                    viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#000"
+                                        stroke="none">
+                                        <path
+                                            d="M88 289 c-43 -22 -78 -81 -78 -129 0 -76 74 -150 150 -150 76 0 150 74 150 150 0 50 -35 107 -80 130 -49 25 -94 25 -142 -1z m65 -11 c4 -10 7 -10 14 0 12 16 73 -4 73 -24 0 -8 6 -14 14 -14 20 0 40 -61 24 -72 -11 -6 -11 -10 0 -16 16 -11 -4 -72 -24 -72 -8 0 -14 -6 -14 -14 0 -20 -61 -40 -72 -24 -6 11 -10 11 -16 0 -11 -16 -72 4 -72 24 0 8 -6 14 -14 14 -20 0 -40 61 -24 72 11 6 11 10 0 16 -16 11 4 72 24 72 8 0 14 6 14 14 0 8 12 19 28 24 37 14 40 14 45 0z" />
+                                        <path
+                                            d="M150 192 c0 -28 7 -45 25 -62 31 -29 46 -18 17 13 -13 14 -22 36 -22 55 0 18 -4 32 -10 32 -5 0 -10 -17 -10 -38z" />
+                                    </g>
+                                </svg>
+                                <span>{{ task.tasks.completed_on|parse_short_date|date:'d M Y' }}</span>
+                            </div>
+                            <div class="task-status">
+                                {% if task.tasks.status == 0 %}
+                                <div class="task-active open">Open</div>
+                                {% elif task.tasks.status == 1 %}
+                                <div class="task-active assigned">Assigned</div>
                                 {% else %}
-                                <span class="bookmark">
-                                    <i class="fa-regular fa-heart unbookmark"></i>
-                                </span>
+                                <div class="task-active completed">Completed</div>
                                 {% endif %}
                             </div>
                         </div>
-
-                        <div>
-
-                            <!-- <img class="tasker-profile pos-abs" src="https://eu7cmie.cloudimg.io/v7/https://assets-airtasker-com.s3.amazonaws.com/uploads/user/avatar/3411484/image-ab53f784dc250dc55658f54b97629dad.jpg?width=80&amp;height=80"> -->
-                            {% if task.img_profile %}
-                            <img width="60" class="tasker-profile pos-abs" src="/static/{{ task.img_profile }}" alt="">
-                            {% else %}
-                            <img width="60" class="tasker-profile pos-abs" src="/static/images/anonymous_user.png"
-                                alt="">
-                            {% endif %}
+                        <div class="task-r-content">
+                            <div style="display: flex; position: absolute; right: 15px;">
+                                <div class="task-price">
+                                    <span>${{ task.tasks.price }}</span>
+                                </div>
+                                <div class="task-bookmark" data-id="{{task.id}}">
+                                    {% if user.id in task.tasks.my_bookmark %}
+                                    <span class="bookmark">
+                                        <i class="fa fa-heart bookmarked"></i>
+                                    </span>
+                                    {% else %}
+                                    <span class="bookmark">
+                                        <i class="fa-regular fa-heart unbookmark"></i>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+    
+                            <div>
+    
+                                <!-- <img class="tasker-profile pos-abs" src="https://eu7cmie.cloudimg.io/v7/https://assets-airtasker-com.s3.amazonaws.com/uploads/user/avatar/3411484/image-ab53f784dc250dc55658f54b97629dad.jpg?width=80&amp;height=80"> -->
+                                {% if task.tasks.img_profile %}
+                                <img width="60" class="tasker-profile pos-abs" src="/static/{{ task.img_profile }}" alt="">
+                                {% else %}
+                                <img width="60" class="tasker-profile pos-abs" src="/static/images/anonymous_user.png"
+                                    alt="">
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                {%else%}
+
+                <div>
+                
+                    <div data-task-id="{{ task.task_title_to_url}}"
+                        class="task-card flex-row task-left-card task-bookmark-mytask {% if task.task_title_to_url in request.resolver_match.kwargs.slug %} active {% endif %}">
+                        <div class="task-l-content" style="width: 210px;">
+                            <div class="task-header mb10">
+                                <span>{{ task.task_title }}</span>
+                            </div>
+                            <div class="task-flex-align task-location">
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px"
+                                    viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#000"
+                                        stroke="none">
+                                        <path
+                                            d="M114 311 c-12 -5 -31 -22 -44 -38 -40 -51 -14 -144 71 -253 l19 -25 19 25 c50 63 84 133 89 179 4 42 1 52 -24 80 -31 35 -90 49 -130 32z m105 -37 c47 -39 43 -90 -11 -177 -24 -37 -45 -67 -48 -67 -3 0 -24 30 -48 67 -54 87 -58 138 -11 177 39 33 79 33 118 0z" />
+                                        <path
+                                            d="M115 236 c-30 -45 13 -98 66 -81 55 18 38 105 -21 105 -20 0 -35 -8 -45 -24z m76 -12 c17 -21 0 -49 -31 -49 -31 0 -48 28 -31 49 8 9 21 16 31 16 10 0 23 -7 31 -16z" />
+                                    </g>
+                                </svg>
+    
+                            </div>
+                            <div class="task-flex-align task-duetime">
+                                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px"
+                                    viewBox="0 0 32.000000 32.000000" preserveAspectRatio="xMidYMid meet">
+                                    <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)" fill="#000"
+                                        stroke="none">
+                                        <path
+                                            d="M88 289 c-43 -22 -78 -81 -78 -129 0 -76 74 -150 150 -150 76 0 150 74 150 150 0 50 -35 107 -80 130 -49 25 -94 25 -142 -1z m65 -11 c4 -10 7 -10 14 0 12 16 73 -4 73 -24 0 -8 6 -14 14 -14 20 0 40 -61 24 -72 -11 -6 -11 -10 0 -16 16 -11 -4 -72 -24 -72 -8 0 -14 -6 -14 -14 0 -20 -61 -40 -72 -24 -6 11 -10 11 -16 0 -11 -16 -72 4 -72 24 0 8 -6 14 -14 14 -20 0 -40 61 -24 72 11 6 11 10 0 16 -16 11 4 72 24 72 8 0 14 6 14 14 0 8 12 19 28 24 37 14 40 14 45 0z" />
+                                        <path
+                                            d="M150 192 c0 -28 7 -45 25 -62 31 -29 46 -18 17 13 -13 14 -22 36 -22 55 0 18 -4 32 -10 32 -5 0 -10 -17 -10 -38z" />
+                                    </g>
+                                </svg>
+                                <span>{{ task.completed_on|parse_short_date|date:'d M Y' }}</span>
+                            </div>
+                            <div class="task-status">
+                                {% if task.status == 0 %}
+                                <div class="task-active open">Open</div>
+                                {% elif task.status == 1 %}
+                                <div class="task-active assigned">Assigned</div>
+                                {% else %}
+                                <div class="task-active completed">Completed</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="task-r-content">
+                            <div style="display: flex; position: absolute; right: 15px;">
+                                <div class="task-price">
+                                    <span>${{ task.price }}</span>
+                                </div>
+                                <div class="task-bookmark" data-id="{{task.id}}">
+                                    {% if user.id in task.my_bookmark %}
+                                    <span class="bookmark">
+                                        <i class="fa fa-heart bookmarked"></i>
+                                    </span>
+                                    {% else %}
+                                    <span class="bookmark">
+                                        <i class="fa-regular fa-heart unbookmark"></i>
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+    
+                            <div>
+    
+                                <!-- <img class="tasker-profile pos-abs" src="https://eu7cmie.cloudimg.io/v7/https://assets-airtasker-com.s3.amazonaws.com/uploads/user/avatar/3411484/image-ab53f784dc250dc55658f54b97629dad.jpg?width=80&amp;height=80"> -->
+                                {% if task.img_profile %}
+                                <img width="60" class="tasker-profile pos-abs" src="/static/{{ task.img_profile }}" alt="">
+                                {% else %}
+                                <img width="60" class="tasker-profile pos-abs" src="/static/images/anonymous_user.png"
+                                    alt="">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {%endif%}
+
+
+            {%empty%}
+            <div class="task-card flex-row task-left-card">
+                <div class="task-l-content" style="text-align: center; vertical-align: middle;">
+                <div class="task-header mb10"  style="position:relative ;top: 30%;">
+                    <span >You have no {%if request.path == '/my-task/watchlist' %}watchlisted {%elif request.path == '/my-task/completed' %}completed {%elif request.path == '/my-task/pending' %}pending {%elif request.path == '/my-task/assigned' %}asssigned {%endif%}task at the moment</span>
+                </div>
                 </div>
             </div>
 

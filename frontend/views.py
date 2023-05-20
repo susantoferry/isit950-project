@@ -332,8 +332,10 @@ def membership(request):
         else:
             return HttpResponseRedirect(reverse("membership"))
 
-def myTask(request):
+def myTask(request, condition):
     userId = str(request.user.id)
+
+    
 
     try:
         myTaskListResp = requests.get(f"{restServer}get_my_task/{userId}/{condition}")
@@ -346,10 +348,6 @@ def myTask(request):
         # firstTaskDetail = myTaskList[0]["id"]
         # taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
         # taskDetail = taskDetailResp.json()
-
-        end_time= time.time()
-        run_time= end_time - start_time
-        print(f'Runtime: {run_time}')
 
         return render(request, "isit950/my_task.html", {
             "myTaskList": myTaskList,

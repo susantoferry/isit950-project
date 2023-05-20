@@ -254,29 +254,33 @@ def offerDetail1(request, taskId):
 @api_view(['GET'])
 @csrf_protect
 def getMyTask(request, userId, condition):
-    if condition == 'watchlist':
-        #watchlist
-        taskStatus = 4
-        myTasks = Task.objects.filter(user_id=userId, status=taskStatus).order_by("status","-create_date")
+    if request.method=='GET':
+        if condition == 'watchlist':
+            #watchlist
+            watchlist = Watchlist.objects.all().filter(user=userId)
+            serializer = WatchlistSerializer(watchlist, many=True)
+            return Response(serializer.data)
 
-    elif condition == 'pending':
-        #pending
-        myOffers = Offer.objects.filter(user_id=userId, task__status=0).order_by("-create_date")
+        elif condition == 'pending':
+            #pending
+            myOffers = Offer.objects.filter(user_id=userId, task__status=0).order_by("-create_date")
 
-    elif condition == 'assigned':
-        taskStatus = 1
-        myTasks = Task.objects.filter(user_provider_id=userId, status=taskStatus).order_by("status","-create_date")
+        elif condition == 'assigned':
+            #assigned
+            taskStatus = 1
+            myTasks = Task.objects.filter(user_provider_id=userId, status=taskStatus).order_by("status","-create_date")
 
-    elif condition == 'completed':
-        taskStatus = 2
-        myTasks = Task.objects.filter(user_id=userId, status=taskStatus).order_by("status","-create_date")
+        elif condition == 'completed':
+            #assigned
+            taskStatus = 2
+            myTasks = Task.objects.filter(user_id=userId, status=taskStatus).order_by("status","-create_date")
 
-    else:
-        myTasks = Task.objects.filter(user_id=userId).order_by("status","-create_date")
+        else:
+            myTasks = Task.objects.filter(user_id=userId).order_by("status","-create_date")
 
 
-    serializer = TaskSerializer(myTasks, many=True)
-    return Response(serializer.data)
+        serializer = TaskSerializer(myTasks, many=True)
+        return Response(serializer.data)
 
 @api_view(['POST'])
 def acceptOffer(request, taskId, userSpId):

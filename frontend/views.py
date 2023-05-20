@@ -374,6 +374,23 @@ def taskOffer(request, taskId):
         # "questions": questionCount
     })
 
+def myTaskDetail(request, taskId):
+    myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
+    myTaskDetail = myTaskDetailResp.json()
+
+    offerResp = requests.get(restServer + "offer/" + str(taskId))
+    offers = offerResp.json()
+
+    print(offers)
+
+    questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
+
+    return render(request, "isit950/my_task_detail.html", {
+        "myTaskDetail": myTaskDetail,
+        "offers": offers,
+        "questions": questionCount
+    })
+
 def resendEmail(request, email):
 
     resendResp = requests.post(restServer + 'resend_email_api', json={'email': email})

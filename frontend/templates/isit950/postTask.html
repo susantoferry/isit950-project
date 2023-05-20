@@ -448,7 +448,7 @@
         font-size: 32px;
 }
 </style>
-
+{% if request.user.is_authenticated %}
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
@@ -672,8 +672,9 @@
 
 
                         </div>
-                        <input type="button" name="BackToHomePage" class="next action-button" value="Back To Home" onclick="redirectToURL(Home)"/>
-                        <input type="button" name="GoToMyTask" class="next action-button" value="See My Task" onclick="redirectToURL(MyTask)"/>
+                        <a href="{% url 'index' %}" class="btn action-button">Back To Home</a>
+                        <a href="{% url 'my_task' 'all' %}" class="btn action-button">See My Task</a>
+                        
                     </fieldset>
 
 
@@ -759,6 +760,8 @@
         $(".submit").click(function () {
             return false;
         })
+
+        $(".redirect").click(redirectToURL())
 
     });
 
@@ -878,7 +881,7 @@
 
 
 </script>
-
+{%endif%}
 <!-- Modified code from: https://codepen.io/monbrielle/pen/dyYRgPm -->
 
 {% endblock %}

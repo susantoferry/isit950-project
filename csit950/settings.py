@@ -105,12 +105,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'isit950',
-        'USER': 'admin',
-        'PASSWORD': 'password',
-        'HOST': 'awsdbisit950.cmoar4du3hp3.ap-southeast-2.rds.amazonaws.com',
-        # 'USER': 'root',
-        # 'PASSWORD': '',
-        # 'HOST': '127.0.0.1',
+        # 'USER': 'admin',
+        # 'PASSWORD': 'password',
+        # 'HOST': 'awsdbisit950.cmoar4du3hp3.ap-southeast-2.rds.amazonaws.com',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
             'sql_mode': 'traditional',

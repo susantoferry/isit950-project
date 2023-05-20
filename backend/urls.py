@@ -16,6 +16,7 @@ urlpatterns = [
     path("task/<slug:taskId>", views.taskDetail, name="task_detail"),
     re_path(r"^search_task/$", views.taskSearch, name="task_search"),
     path("get_my_task/<int:userId>", views.getMyTask, name="get_my_task"),
+    path("update_task_status/<slug:taskId>", views.updateTaskStatus, name="update_task_status"),
     path("show_my_watchlist/<str:user>", views.myWatchlist, name="show_my_watchlist"),
     path("watchlist", views.watchlist, name="watchlist"),
     path("skill", views.skill, name="skill"),
@@ -29,6 +30,8 @@ urlpatterns = [
     path("get_price/<category>", views.priceCategory, name="get_price"),
     path("profile_api/<str:user>", views.userProfile, name="profile_api"),
     path("paymentInformation/<str:user>", views.paymentInformation, name="paymentInformation"),
+    path("review", views.review, name="review"),
+    path("review_type/<type>/<user>", views.reviewType, name="review_type"),
 
     path("user_login", views.userLogin, name="user_login"),
     path('register_api', views.userRegister, name="register_api"),

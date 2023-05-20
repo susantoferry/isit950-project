@@ -19,15 +19,6 @@ for (var i = 0; i < arrow.length; i++) {
     });
 }
 
-// document.getElementById("comment-text").addEventListener("focus", function () {
-//     $(".comment-form").addClass("comment-onfocus");
-// });
-
-// document.getElementById("comment-text").addEventListener("focusout", function () {
-//     $(".comment-form").removeClass("comment-onfocus");
-// });
-
-
 function checkPostValue() {
     postValue = document.getElementById('comment-text').value;
     if (postValue == "") {
@@ -148,11 +139,8 @@ $(document).ready(function () {
     })
 
     $('.task-bookmark123').click(function (event) {
-
-
         var taskId = $(this).attr('data-task-id');
         showDetail(taskId)
-
     })
 
     $('.return-map').click(function (event) {
@@ -164,7 +152,7 @@ $(document).ready(function () {
         document.title = 'ISIT950 Group Project';
     })
 
-    $('#offer-btn').click(function ($e) {
+    $(document).on('click', '#offer-btn', function(event) {
         taskPrice = parseFloat(document.getElementById("task-price").innerHTML).toFixed(0)
 
         offerPrice = taskPrice;
@@ -359,9 +347,8 @@ function showDetail(taskId) {
     fetch(`/api/task/${taskId}`)
         .then(response => response.json())
         .then(result => {
-            console.log(result)
             document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
-            document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
+            // document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
             document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
             document.querySelector('#task-location').innerHTML = `${result.location}`;
             document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
@@ -371,122 +358,101 @@ function showDetail(taskId) {
             // Determine apply button or cancel button if status is 0/open
             document.querySelector('.taskButtonEditApply').innerHTML = "";
 
-            var buttonApplyCancel = document.createElement("div")
-            console.log(result.user_client_id)
-            console.log(getCookieValue('usid'))
-            if (result.user_client_id !== getCookieValue('usid')) {
-                buttonApplyCancel.innerHTML = `<button class="button btnprimary" id="offer-btn"
-                    style="display: block;margin: 0 auto; background: #9162b42b;"
-                    data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`    
+            var versatileBtn = document.createElement("div")
+                if (result.status == 0) {
+                    if (result.user_client_id !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `<button class="button btnprimary btnapply" id="offer-btn"
+                            data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`    
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <a href="/edit_task/${result.task_title_to_url}" class="button btnprimary btnapply">Edit task</a>`
+                    }
+                }
+
+                if (result.status == 1) {
+                    if (result.user_provider_name !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `<a href="#" class="button btn-capsule btn-progress">Task in progress</a>`
+                    } else {
+                        console.log(result)
+                        versatileBtn.innerHTML = `
+                            <a href="/update_completion/${result.task_title_to_url}/${result.user}" class="button btn-capsule btn-notify-completion">
+                                Notify Completion
+                            </a>`
+                    }
+                }
+
+                if (result.status == 2 && result.is_paid == false) {
+                    if (result.user_client_id !== getCookieValue('usid')) {
+                        if (result.user_provider_name !== getCookieValue('usid')) {
+                            versatileBtn.innerHTML = `
+                                <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                        } else {
+                            versatileBtn.innerHTML = `
+                            <div id="task-active-lg" class="task-active-lg completed">Waiting payment</div>`
+                        }
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <a href="#" class="button btn-capsule btnsave-primary">Complete Payment</a>`
+                    }
+                }
+                if (result.status == 2 && result.is_paid == true ) {
+                    versatileBtn.innerHTML = `
+                    <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                }
+            // }
+            document.querySelector('.taskButtonEditApply').appendChild(versatileBtn)
+            
+            // Determine task status button
+            document.querySelector('.task-stat').innerHTML = "";
+
+            var taskStatusCapsule = document.createElement("div")
+            taskStatusCapsule.id = "task-active-lg"
+            
+            if (result.status == 0) {
+                taskStatusCapsule.className = "task-active-lg open"
+                taskStatusCapsule.innerHTML = 'Open'
+            } else if (result.status == 1) {
+                taskStatusCapsule.className = "task-active-lg assigned"
+                taskStatusCapsule.innerHTML = 'Assigned'
             } else {
-                buttonApplyCancel.innerHTML = `<a href="/edit_task/${result.task_title_to_url}" class="button btnprimary" 
-                    style="display: block;margin: 0 auto; background: #f0675866;">
-                    Edit task</a>`
+                taskStatusCapsule.className = "task-active-lg completed"
+                taskStatusCapsule.innerHTML = 'completed'
             }
 
-            document.querySelector('.taskButtonEditApply').appendChild(buttonApplyCancel)
-            // buttonApplyCancel = `<button class="button btnprimary" id="offer-btn"
-            // style="display: block;margin: 0 auto; background: #9162b42b;"
-            // data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`
+            document.querySelector('.task-stat').appendChild(taskStatusCapsule)
 
+            if (result.status == 2 && result.is_paid == true) {
+                if (result.user_client_id === getCookieValue('usid')) {
+                    document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                    var leaveRevBtn = document.createElement("div")
+                    leaveRevBtn.innerHTML = ` <a href="" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review</a>`
+                    
+                    var myForm = document.getElementById("formLeaveReview");
+                    myForm.action = `/leave_review/${result.id}`;
+                    
+                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+                    
+                    document.querySelector('.userProvider').value = result.user_provider
+                }
+
+                if (result.user_provider_name === getCookieValue('usid')) {
+                    document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                    var leaveRevBtn = document.createElement("div")
+                    leaveRevBtn.innerHTML = ` <a href="#" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review to client</a>`
+                    
+                    var myForm = document.getElementById("formLeaveReview");
+                    myForm.action = `/leave_review/${result.id}`;
+
+                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+
+                    document.querySelector('.userClient').value = result.user
+                }
+                
+            }
+            
             history.pushState(null, null, `/tasks/?name=${taskId}`)
             document.title = `${taskId} - ISIT950 Group Project`;
         })
-}
-
-
-function accept_offer() {
-    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-    // const fname = document.querySelector('#first_name').value;
-
-    Swal.fire({
-        icon: 'success',
-        title: 'Thank you',
-        text: 'We have got your enquiry'
-    }).then((result) => {
-        location.reload();
-    })
-
-    // fetch('/api/accept-offer/', {
-    //     method: "POST",
-    //     credentials: 'same-origin',
-    //     headers: {
-    //         "X-CSRFToken": token,
-    //         "Content-Type": 'application/json'
-    //     },
-    //     body: JSON.stringify({fname, lname, email, phone, msg})
-    // })
-    // .then(response => response.json())
-    // .then(res => {
-    //     if (res.error) {
-    //         alert("Cannot save");
-    //     } else {
-    //         Swal.fire({
-    //             icon: 'success',
-    //             title: 'Thank you',
-    //             text: 'We have got your enquiry'
-    //         }).then((result) => {
-    //             location.reload();
-    //         })
-    //     }
-    // })
-    // .catch(err => {
-    //     alert(err)
-    // })
-}
-
-// $('.task-left-card').click(function () {
-//     var taskId = $(this).attr('data-id');
-
-//     // location.href = "/tasks/" + taskId;
-//     $("#mydiv").load("#mydiv");
-//     console.log("a")
-// })
-
-// document.addEventListener("DOMContentLoaded", function() {
-//     document.querySelectorAll('.task-left-card').forEach(a => {
-//         a.onclick = function(e) {
-//             e.preventDefault()
-//             // console.log(this.dataset.taskId);
-
-//             fetch(`/tasks/${this.dataset.taskId}`)
-//             .then(response => response.text())
-//             .then(res => {
-//                 const obj = JSON.parse(res)
-//                 console.log(obj.taskDetail.id)
-//                 // history.pushState(null, '', `/tasks/${this.dataset.taskId}`)
-
-//             });
-
-
-//         }
-//     })
-// });
-
-// $( "#btn-bookmark" ).click(function() {
-//     alert( "Handler for .click() called." );
-// });
-
-function bookmark(getButton, taskId) {
-
-    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-
-    alert(id)
-    // fetch(`/api/bookmark/${taskId}`, {
-    //     method: 'POST',
-    //     credentials: 'same-origin',
-    //     headers: {
-    //         "X-CSRFToken": token,
-    //         "Content-Type": 'application/json'
-    //     }
-    // })
-    // .then(response => response.json())
-    // .then(result => {
-    //     if (getButton.classList.contains("fa-heart")) {
-    //         document.getElementById("bookmarkImg").src = "../static/images/reply.png";
-
-    //     } else {
-    //         document.getElementById("bookmarkImg").src = "../static/images/saved.png";
-    //     }
-    // })
 }

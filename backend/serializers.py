@@ -81,6 +81,7 @@ class PriceSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(read_only=True, source='category.name')
     user_client_id = serializers.CharField(read_only=True, source='user.username')
+    user_provider_name = serializers.CharField(read_only=True)
     img_profile = serializers.CharField(read_only=True, source='user.img_profile')
     rating = serializers.FloatField(read_only=True, source='user.rating')
     first_name = serializers.CharField(read_only=True, source='user.first_name')
@@ -108,9 +109,16 @@ class ReadNotificationSerializer(serializers.ModelSerializer):
 class OfferSerializer(serializers.ModelSerializer):
     user_provider = serializers.CharField(read_only=True, source='user.username')
     task_title = serializers.CharField(read_only=True, source='task')
+    task_title_to_url = serializers.CharField(read_only=True)
     class Meta:
         model = Offer
         fields = '__all__'
+
+class UpdateTaskStatusSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Task
+        fields = ('status', 'location', 'user', 'user_provider')
 
 class WatchlistSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(read_only=True, source="task")
@@ -138,6 +146,12 @@ class MembershipTransactionSerializer(serializers.ModelSerializer):
 class PaymentInformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentInformation
+        fields = '__all__'
+
+class ReviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Review
         fields = '__all__'
 
 class UserSkillSerializer(serializers.ModelSerializer):

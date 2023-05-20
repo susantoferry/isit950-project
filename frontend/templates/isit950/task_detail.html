@@ -16,7 +16,7 @@
                         <div class="task-detail-col">
                             <div class="flex-col task-stat-overlay">
                                 <div class="task-stat">
-                                    <span id="task-active-lg" class="task-active-lg open">Open</span>
+                                    <!-- <span id="task-active-lg" class="task-active-lg open">Open</span> -->
                                 </div>
                             </div>
                             <div>
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div style="display: flex; flex-direction: column;">
                     <div class="task-detail-col-price-overlay" style="padding-top: 20px;">
                         <div class="task-detail-col-price">
                         
@@ -79,13 +79,15 @@
                                 <h1 id="task-price"></h1>
                             </div>
                             <div id="testData"></div>
-                            <div class="taskButtonEditApply" style="padding-bottom: 10px;">
-                                
-                               
-                            </div>
+                            <div class="taskButtonEditApply" style="padding-bottom: 10px;"> </div>
+                        </div>
+                    </div>
+                    <div style="margin: 0 auto; padding-top: 15px;">
+                        <div class="leaveRevBtn">
                         </div>
                     </div>
                 </div>
+                
                 
             </div>
             <div style="background: #f3f4f5; border-radius: 44px; width: 100%; padding: 10px 35px; margin: 25px 0;">
@@ -272,7 +274,7 @@
                                 <span>$</span>
                             </div>
                             <div>
-                                <input type="text" name="offer-price" id="offer-price" value="150" inputmode="numeric" style="width: 150px;
+                                <input type="text" name="offer-price" id="offer-price" value="" inputmode="numeric" style="width: 150px;
                                 padding: 10px 10px 10px 40px;
                                 text-align: center;">
                             </div>
@@ -308,6 +310,48 @@
                 <div style="padding-top: 20px;">
                     <button type="submit" class="comm-btn"> Submit </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body p-4 p-md-5">
+                <form method="post" id="formLeaveReview">
+                    {% csrf_token %}
+                    <div class="text-center mb-2" style="font-size: 1.5rem; font-weight: 600;">Leave Review</div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                <label for="rate" class="">Rate</label>
+                                <input name="rate" type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="position-relative form-group">
+                                <label for="firstName" class="">Leave your review</label>
+                                <div class="review-form pp-border p15" style="margin-top: 10px;">
+                                    <textarea class="review-text" name="reviewDesc" id="reviewDesc" rows="5" placeholder="Leave your review regarding this task" style="width: 100%;"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="text" name="userClient" class="userClient">
+                    <input type="text" name="userProvider" class="userProvider">
+                    <div style="padding-top: 20px;">
+                        <button type="submit" class="leave-btn"> Submit Review</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

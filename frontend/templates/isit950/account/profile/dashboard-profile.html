@@ -37,108 +37,16 @@
                     <div style="padding: 15px 20px; height: auto;">
                         <div style="display: flex;gap: 40px;flex-wrap: wrap;position: relative;">
                             <div>
-                                <a href="/create_task" class="button btnprimary-outline btnnavtop">As a
-                                    client</a>
+                               <div id="asClient" class="button btnprimary-outline btnnavtop">As a client</div>
                             </div>
                             <div>
-                                <a href="/create_task" class="button btnprimary btnnavtop">As a tasker</a>
+                                <div id="asProvider" class="button btnprimary btnnavtop">As a provider</div>
                             </div>
                         </div>
                         <div>
-                            <div
-                                style="display: flex; align-items: center; width: 100%; margin-top: 10px; margin-left: 5px;">
-                                <span
-                                    style="font-weight: 600; font-size: 1.5rem; color: #FEA500; margin-right: 15px;">
-                                    4.5
-                                </span>
-                                <i class="star-rev fas fa-star fa-lg"></i>
-                            </div>
-                            <div class="rev-comment-container mt20">
-                                <div class="flex-rev">
-                                    <div class="rev-usr-img-container">
-                                        <div class="rev-usr-img-wrap">
-                                            <img src="/static/images/profiles/Conan.png"
-                                                alt="Logo Moonlight Grosir Store"
-                                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="rev-row">
-                                    <div class="rev-col">
-                                        <div class="flex-col ml10" style="gap:0 60px">
-                                            <a href="profile.html">
-                                                <span style="font-size: 14px;">@username</span>
-                                            </a>
-                                            <div style="font-size: 14px;">
-                                                <span>review from client</span>
-                                            </div>
-
-                                            <div class="rev-date-col">
-                                                <span class="ml10"
-                                                    style="font-size: 10px;letter-spacing: .5px;">1 week
-                                                    ago</span>
-                                            </div>
-                                        </div>
-                                        <div class="ml10 mt10">
-                                            <div style="display: flex; align-items: center; width: 100%;">
-                                                <span
-                                                    style="font-weight: 600; font-size: 1rem; color: #FEA500; margin-right: 15px; letter-spacing: 2px;">
-                                                    4.8
-                                                </span>
-                                                <i class="star-rev fas fa-star"></i>
-                                            </div>
-                                            <div>
-                                                <div class="task-comm-txt">
-                                                    1234
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rev-comment-container mt20">
-                                <div class="flex-rev">
-                                    <div class="rev-usr-img-container">
-                                        <div class="rev-usr-img-wrap">
-                                            <img src="/static/images/profiles/Hannah.png"
-                                                alt="Logo Moonlight Grosir Store"
-                                                style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="rev-row">
-                                    <div class="rev-col">
-                                        <div class="flex-col ml10" style="gap:0 60px">
-                                            <a href="profile.html">
-                                                <span style="font-size: 14px;">@username</span>
-                                            </a>
-                                            <div style="font-size: 14px;">
-                                                <span>review from client</span>
-                                            </div>
-
-                                            <div class="rev-date-col">
-                                                <span class="ml10"
-                                                    style="font-size: 10px;letter-spacing: .5px;">1 week
-                                                    ago</span>
-                                            </div>
-                                        </div>
-                                        <div class="ml10 mt10">
-                                            <div style="display: flex; align-items: center; width: 100%;">
-                                                <span
-                                                    style="font-weight: 600; font-size: 1rem; color: #FEA500; margin-right: 15px; letter-spacing: 2px;">
-                                                    5.0
-                                                </span>
-                                                <i class="star-rev fas fa-star"></i>
-                                            </div>
-                                            <div>
-                                                <div class="task-comm-txt">
-                                                    Highly recomment
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="review-star-container mb-3"> </div>
+                            
+                            <div class="rev-comment-overlay"> </div>
                         </div>
                     </div>
 
@@ -149,5 +57,121 @@
     </div>
 </div>
 
+
+<script>
+    $(document).ready(function () {
+        getReview('client', `{{request.user.id}}`)
+    })
+
+    $(document).on('click', '#asClient', function(event) {
+
+        document.getElementById('asClient').classList.add("btnprimary-outline");
+        document.getElementById('asClient').classList.remove("btnprimary");
+        document.getElementById('asProvider').classList.add("btnprimary");
+        document.getElementById('asProvider').classList.remove("btnprimary-outline");
+        
+        getReview('client', `{{request.user.id}}`)
+    })
+
+    $(document).on('click', '#asProvider', function(event) {
+
+        document.getElementById('asClient').classList.remove("btnprimary-outline");
+        document.getElementById('asClient').classList.add("btnprimary");
+        document.getElementById('asProvider').classList.remove("btnprimary");
+        document.getElementById('asProvider').classList.add("btnprimary-outline");
+
+        getReview('sp',`{{request.user.id}}`)
+    })
+
+    function getReview(type, user) {
+        fetch(`/api/review_type/${type}/${user}`)
+        .then(response => response.json())
+        .then(result => {
+            document.querySelector(".review-star-container").innerHTML = ''
+            document.querySelector(".rev-comment-overlay").innerHTML = ''
+            templateReview(result, type)
+        })
+    }
+
+    function templateReview(result, type) {
+
+        if (result.length > 0) {
+            totalReview = result.length
+            total = 0;
+            starReview = 0
+
+            while (total < totalReview) {
+                starReview += parseFloat(result[total]["rating_"+type])
+                total++
+            }
+
+            starReview = (starReview / totalReview).toFixed(1)
+
+            revStarDiv = document.querySelector('.review-star-container');
+            revStarDiv.innerHTML = `
+                <span class="review-star"> ${starReview} </span>
+                <i class="star-rev fas fa-star fa-lg"></i>`;
+
+            if (type == 'client') {
+                revFrom = 'service provider'
+            } else {
+                revFrom = 'client'
+            }
+
+            for (let res of result) {
+                var revCommentContainer = document.createElement('div');
+                revCommentContainer.className = 'rev-comment-container';
+                
+                revCommentContainer.innerHTML = `
+                    <div class="flex-rev">
+                        <div class="rev-usr-img-container">
+                            <div class="rev-usr-img-wrap">
+                                <img src="/static/images/profiles/Conan.png" class="review-user-img">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rev-row">
+                        <div class="rev-col">
+                            <div class="flex-col ml10" style="gap:0 40px">
+                                <a href="profile.html">
+                                    <span style="font-size: 14px;">@username</span>
+                                </a>
+                                <div style="font-size: 14px;">
+                                    <span>Review from ${revFrom}</span>
+                                </div>
+
+                                <div class="rev-date-col">
+                                    <span class="ml10"
+                                        style="font-size: 10px;letter-spacing: .5px;">1 week ago</span>
+                                </div>
+                            </div>
+                            <div class="ml10 mt10">
+                                <div style="display: flex; align-items: center; width: 100%;">
+                                    <span style="font-weight: 600; font-size: 1rem; color: #FEA500; margin-right: 15px; letter-spacing: 2px;">
+                                        ${parseFloat(res["rating_"+type]).toFixed(1)}
+                                    </span>
+                                    <i class="star-rev fas fa-star"></i>
+                                </div>
+                                <div>
+                                    <div class="task-comm-txt">
+                                        ${res["comment_"+type]}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> `;
+
+                document.querySelector(".rev-comment-overlay").appendChild(revCommentContainer); 
+            }
+        } else {
+            document.querySelector(".rev-comment-overlay").innerHTML = `
+            <span style="display: block; text-align: center; color: #be0000;">You have no review from client</span>
+            `
+        }
+        
+
+    }
+</script>
 
 {% endblock %}

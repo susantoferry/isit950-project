@@ -123,13 +123,11 @@ def userProfile(request, user):
             return Response(status=400)
 
     if request.method == 'PUT':
-        print("aaaaaa")
         try:
             user = User.objects.get(username=user)
         except User.DoesNotExist:
             return Response(status=404)
         
-        print(user)
         saveUser = {}
         if user != "":
             for i in request.data:
@@ -186,6 +184,35 @@ def offer(request):
             return Response({"status": 200, "message": "Saved successfully"})
         else:
             return Response(serializer.errors,status=400)
+        
+
+@api_view(['GET'])
+def offerDetail(request, taskId):
+    taskId = taskId.rsplit('-', 1)[-1]
+    offers = Offer.objects.filter(task_id = taskId)
+    serializer = OfferSerializer(offers, many=True)
+    return Response(serializer.data)
+        
+@api_view(['GET', 'PUT', 'DELETE'])
+def offerDetail1(request, taskId):
+    try:
+        task = Task.objects.get(id=taskId)
+    except Task.DoesNotExist:
+        return Response(status=404)
+    
+    if request.method == 'GET':
+        serializer = TaskSerializer(task, many=False)
+        return Response(serializer.data)
+    
+    if request.method == 'PUT':
+        data = JSONParser().parse(request)
+        serializer = TaskSerializer(task, data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=200)
+        else:
+            print(serializer.errors)
+            return Response(status=404)
    
     
 @api_view(['GET'])
@@ -220,35 +247,7 @@ def updateNotifStatus(request, notifId, user):
         else:
             print("aaa")
             return Response("Data cannot be found",status=404)
-        
 
-@api_view(['GET'])
-def offerDetail(request, taskId):
-    taskId = taskId.rsplit('-', 1)[-1]
-    offers = Offer.objects.filter(task_id = taskId)
-    serializer = OfferSerializer(offers, many=True)
-    return Response(serializer.data)
-    
-@api_view(['GET', 'PUT', 'DELETE'])
-def offerDetail1(request, taskId):
-    try:
-        task = Task.objects.get(id=taskId)
-    except Task.DoesNotExist:
-        return Response(status=404)
-    
-    if request.method == 'GET':
-        serializer = TaskSerializer(task, many=False)
-        return Response(serializer.data)
-    
-    if request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = TaskSerializer(task, data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=200)
-        else:
-            print(serializer.errors)
-            return Response(status=404)
         
 @api_view(['GET'])
 @csrf_protect
@@ -331,6 +330,105 @@ def taskDetail(request, taskId):
             print(serializer.errors)
             return Response(status=404)
         
+@api_view(['PUT'])
+def updateTaskStatus(request, taskId):
+    
+    taskId = taskId.rsplit('-', 1)[-1]
+
+    if request.method == 'PUT':
+        is_provider = ""
+        data = JSONParser().parse(request)
+        
+        try:
+            task = Task.objects.get(id=taskId, user=data["user"])
+        except Task.DoesNotExist:
+            return Response("You are not authorise to edit this task", status=404)
+        
+        serializer = UpdateTaskStatusSerializer(task, data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            if "user_provider" in data:
+                is_provider = data["user_provider"]    
+            
+            sendTaskNotification(taskId, data["content"], task.location, data["user"], is_provider)
+            
+            return Response(status=200)
+        else:
+            print(serializer.errors)
+            return Response(status=404)
+        
+def sendTaskNotification(taskId, content, location, clientId, userProvider):
+   
+    if content < 5:
+        # Get all users who have membership as SP or Full Package
+        userMemberships = MembershipTransaction.objects.filter(user__address=location, membership__in= [1,3]).exclude(user=clientId)
+        
+        for member in userMemberships:
+            
+            notification = {
+                'content_notif': content,
+                'task': taskId,
+                'user': member.user.id
+            }
+            serializer = NotificationSerializer(data=notification)
+            
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors)
+    else:
+        if content > 5:
+            user = [clientId, userProvider]
+            for u in range(len(user)):
+                notification = {
+                    'content_notif': content,
+                    'task': taskId,
+                    'user': user[u]
+                }
+                
+                serializer = NotificationSerializer(data=notification)
+                
+                if serializer.is_valid():
+                    serializer.save()
+                else:
+                    return Response(serializer.errors)
+        else:
+            notification = {
+                'content_notif': content,
+                'task': taskId,
+                'user': userProvider
+            }
+            serializer = NotificationSerializer(data=notification)
+            
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response(serializer.errors)
+
+    return Response("success", status=200)
+
+@api_view(['GET'])
+def sendTaskNotification1(request, taskId, content, location, clientId):
+    # Get all users who have membership as SP or Full Package
+    userMemberships = MembershipTransaction.objects.filter(user__address=location, membership__in= [1,3]).exclude(user=clientId)
+    
+    for member in userMemberships:
+        notification = {
+            'content_notif': content,
+            'task': taskId,
+            'user': member.user.id
+        }
+
+        serializer = NotificationSerializer(data=notification)
+        print(serializer.is_valid())
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors)
+
+    return Response("a")
+        
 @api_view(['GET','POST'])
 def membershipTransaction(request):
     if request.method == 'POST':
@@ -380,46 +478,6 @@ def membershipTransaction(request):
             return Response(serializer.data, status=200)
         else:
             return Response(serializer.errors, status=404)
-
-def sendTaskNotification(taskId, content, location, clientId):
-    # Get all users who have membership as SP or Full Package
-    userMemberships = MembershipTransaction.objects.filter(user__address=location, membership__in= [1,3]).exclude(user=clientId)
-
-    for member in userMemberships:
-        notification = {
-            'content_notif': content,
-            'task': taskId,
-            'user': member.user.id
-        }
-
-        serializer = NotificationSerializer(data=notification)
-        if serializer.is_valid():
-            serializer.save()
-        else:
-            return Response(serializer.errors)
-
-    return Response("a")
-
-@api_view(['GET'])
-def sendTaskNotification1(request, taskId, content, location, clientId):
-    # Get all users who have membership as SP or Full Package
-    userMemberships = MembershipTransaction.objects.filter(user__address=location, membership__in= [1,3]).exclude(user=clientId)
-    print(userMemberships)
-    for member in userMemberships:
-        notification = {
-            'content_notif': content,
-            'task': taskId,
-            'user': member.user.id
-        }
-
-        serializer = NotificationSerializer(data=notification)
-        print(serializer.is_valid())
-        if serializer.is_valid():
-            serializer.save()
-        else:
-            return Response(serializer.errors)
-
-    return Response("a")
         
 @api_view(['GET'])
 def taskSearch(request):
@@ -563,7 +621,45 @@ def watchlist(request):
         else:
             print("a")
             return Response("error")
+        
+@api_view(['GET'])
+def reviewType(request, type, user):    
+    if type == 'client':
+        review = Review.objects.filter(user_client = user)
 
+    if type == 'sp':
+        review = Review.objects.filter(user_sp = user)
+
+    serializer = ReviewSerializer(review, many=True)
+    return Response(serializer.data)
+    # return Response(serializer.errors)
+
+@api_view(['POST'])
+def review(request):
+    if request.method == "POST":
+        
+        try:
+            review = Review.objects.get(task=request.data['task'])
+        except Review.DoesNotExist:
+            review = ""
+
+        if review == "":
+            serializer = ReviewSerializer(data=request.data)
+            
+            if serializer.is_valid():
+                serializer.save()
+                return Response("success", status=200)
+            else:
+                return Response(serializer.errors, status=400)
+        else:
+            serializer = ReviewSerializer(review, data=request.data)
+            
+            if serializer.is_valid():
+                serializer.save()
+                return Response("success", status=200)
+            else:
+                return Response(serializer.errors, status=400)
+        
 
 @api_view(['GET', 'POST'])
 def skill(request):

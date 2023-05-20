@@ -44,28 +44,13 @@ class Offer(models.Model):
     create_date = models.DateTimeField(null=True)
     modify_date = models.DateTimeField(null=True)
 
+    @property
+    def task_title_to_url(self):
+        task_title = self.task.task_title + " " + str(self.task.id)
+        return task_title.replace(' ', '-')
+
     def __str__(self):
         return f"Id: {self.id}, Task ID: {self.task}, User Provider: {self.user}, price: {self.price}"
-    
-# class Profile(models.Model):
-#     first_name = models.CharField(max_length=30)
-#     last_name = models.CharField(max_length=30)
-#     gender = models.IntegerField(default=0)
-#     address = models.TextField()
-#     rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True)
-#     img_profile = models.CharField(max_length=100, blank=True, null=True)
-#     membership = models.ForeignKey(Membership, on_delete=models.CASCADE, related_name="membership_id", blank=True, null=True)
-#     user_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_profile_id")
-#     create_date = models.DateTimeField(blank=True, null=True)
-#     modify_date = models.DateTimeField(blank=True, null=True)
-
-#     def __str__(self):
-#         return f"Id: {self.id}, User: {self.user_profile}, Name: {self.first_name}"
-
-
-# notif id, user id, task id, is_read, notif_type
-# 1, 2, 2,0,1
-
 
 class Skill(models.Model): 
     skill_name = models.CharField(max_length=30)
@@ -114,12 +99,15 @@ class Task(models.Model):
     def task_title_to_url(self):
         task_title = self.task_title + " " + str(self.id)
         return task_title.replace(' ', '-')
+    
+    @property
+    def user_provider_name(self):
+        user_provider = self.user_provider.username
+        return user_provider
 
     def __str__(self):
         return f"Id: {self.id}, User: {self.user}, Category: {self.category}, Task: {self.task_title}, Paid: {self.is_paid}, User: {self.user}"
     
-
-
 class Question(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="question_task_id")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="question_user_id")
@@ -137,20 +125,6 @@ class Watchlist(models.Model):
 
     def __str__(self):
         return f"Id: {self.id}, Task: {self.task.id}, User: {self.user}"
-
-
-
-# class Address(models.Model):
-#     address = models.TextField()
-#     lat = models.FloatField(blank=True, null=True)
-#     long = models.FloatField(blank=True, null=True)
-
-#     def save(self, *args, **kwargs):
-#         g = geocoder.mapbox(self.address, key=mapbox_token)
-#         g = g.latlng
-#         self.lat = g[0]
-#         self.long = g[1]
-#         return super(Address, self).save(*args, **kwargs)
 
 class UserSkill(models.Model):
     skill = models.CharField(max_length=50)
@@ -215,7 +189,7 @@ class Review(models.Model):
     modify_date = models.DateTimeField(null=True)
     
     def __str__(self):
-        return f"Id: {self.id}, User: {self.user}, Rating: {self.rating}"
+        return f"Id: {self.id}, Task: {self.task}"
     
 class Transaction(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_trans")

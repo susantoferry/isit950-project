@@ -65,10 +65,12 @@ def editProfile(request):
 
             if imgProfile != "":
                 profile.img_profile = make_thumbnail(request.FILES["imgProfile"], (100,100), "profiles")
-                delete_image(oldImgProfile)
+                if oldImgProfile:
+                    delete_image(oldImgProfile)
             if imgBg != "":
                 profile.img_background = make_thumbnail(request.FILES["imgBg"], (1020,200), "profiles_bg")
-                delete_image(oldImgBg)
+                if oldImgBg:
+                    delete_image(oldImgBg)
 
             profile.description = request.POST["description"]
             profile.address = request.POST["location"]
@@ -231,7 +233,6 @@ def editTask(request, taskId):
             'content': 2
         }
         
-        # return HttpResponseRedirect(reverse('edit_task', args=[taskId]))
         taskRequest = requests.put(f"{restServer}task/{taskId}", json=taskData)
 
         if taskRequest.status_code == 200:
@@ -244,6 +245,12 @@ def editTask(request, taskId):
 def notification(request):
     notificationResp = requests.get(restServer + "notification/" + str(request.user.id))
     notifications = notificationResp.json()
+    
+    if notifications:
+        print("a")
+    else:
+        # Query notfication table by user_sp
+        print("empty")
 
     return render(request, "isit950/account/notification.html", {
         "notifications": notifications
@@ -349,7 +356,7 @@ def taskOffer(request, taskId):
     myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
     myTaskDetail = myTaskDetailResp.json()
 
-    offerResp = requests.get(restServer + "offer/" + str(taskId))
+    offerResp = requests.get(restServer + "offer/" + taskId)
     offers = offerResp.json()
 
     # questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
@@ -359,6 +366,67 @@ def taskOffer(request, taskId):
         "offers": offers,
         # "questions": questionCount
     })
+
+def selectTasker(request, taskId, user_sp):
+    taskData = {
+            'status': 1,
+            'user': request.user.id,
+            'user_provider': user_sp,
+            'content': 5
+        }
+    
+    taskRequest = requests.put(f"{restServer}update_task_status/{taskId}", json=taskData)
+
+    if taskRequest.status_code == 200:
+        messages.success(request, "You have selected the service provider to do your task")
+        return HttpResponseRedirect(reverse('task_offer', args=[taskId]))
+    else:
+        messages.error(request, "Error when selecting the service provider")
+        return HttpResponseRedirect(reverse('task_offer', args=[taskId]))
+    
+def updateCompletion(request, taskId, clientId):
+    taskStatus = {
+            'status': 2,
+            'user': clientId,
+            'user_provider': request.user.id,
+            'content': 7
+        }
+
+    statusRequest = requests.put(f"{restServer}update_task_status/{taskId}", json=taskStatus)
+
+    if statusRequest.status_code == 200:
+        messages.success(request, "You have completed task. The payment will be proceeeded soon.")
+        return HttpResponseRedirect('/tasks/?name='+taskId)
+    else:
+        messages.error(request, "Error when completing task")
+        return HttpResponseRedirect('/tasks/?name='+taskId)
+
+def leaveReview(request, taskId):
+
+    if request.POST["userProvider"] == "":
+        review = {
+            'task': taskId,
+            'comment_sp': request.POST["reviewDesc"],
+            'rating_sp': request.POST["rate"],
+            'user_sp': request.POST["userClient"]
+        }
+
+    if request.POST["userClient"] == "":
+        review = {
+            'task': taskId,
+            'comment_client': request.POST["reviewDesc"],
+            'rating_client': request.POST["rate"],
+            'user_client': request.POST["userProvider"]
+        }
+    
+    postReview = requests.post(f"{restServer}review", data=review)
+
+    if postReview.status_code == 200:
+        messages.success(request, "Your review has been saved")
+        return HttpResponseRedirect('/tasks/?name='+taskId)
+    else:
+        messages.error(request, "Error when leave a review")
+        return HttpResponseRedirect('/tasks/?name='+taskId)
 
 def resendEmail(request, email):
 
@@ -412,7 +480,6 @@ def test2HTML(request):
             'content': 1
         }
         
-        print(taskData)
         taskRequest = requests.post(restServer + "task" , json=taskData)
         
         if taskRequest.status_code == 200:
@@ -443,8 +510,6 @@ def loginView(request):
         
         if userRequest.status_code == 200:
             username = userRequest.json()['user']
-            print(username)
-            print(request.POST["password"])
             user = authenticate(request, username=username, password=request.POST["password"])
             
             login(request, user)
@@ -544,11 +609,6 @@ def logout_view(request):
     response = HttpResponseRedirect(reverse("index"))
     response.delete_cookie('usid')
     return response
-
-# def selectTasker(request, taskId, userId):
-#     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
-
-#     return redirect('my_task', taskId)
 
 # def login_view(request):
 #     if request.method == "POST":

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {% extends 'isit950/layout.html' %}
 {% csrf_token %}
 {% block body %}
@@ -837,81 +836,4 @@
 {%endif%}
 <!-- Modified code from: https://codepen.io/monbrielle/pen/dyYRgPm -->
 
-=======
-{% extends 'isit950/layout.html' %}
-
-{% block body %}
-<div>
-    <div class="task-content">
-        <div>
-            Edit Task
-        </div>
-        
-        <form action="{% url 'edit_task' task.task_title_to_url %}" method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="taskName" class="form-label">Task Title</label>
-                <input type="text" class="form-control" id="taskName" name="taskName" value="{{ task.task_title }}"
-                    placeholder="Give this task a title...">
-            </div>
-            <div class="mb-3">
-                <label for="taskType">Select job type</label>
-                <select class="form-select form-control" id="taskCategory" name="taskCategory"
-                    aria-label="Default select example">
-                    <option value="">Select job</option>
-                    {% for category in categories %}
-                        <option value="{{ category.id }}" {% if category.id  == task.category %} selected {% endif %}>{{ category.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <input type="text" id="taskPrice" name="taskPrice" value="{{ task.price}}">
-            <input type="text" id="taskBookingPrice" name="taskBookingPrice" value="{{ task.booking_price }}">
-            <input type="text" id="taskTotalPrice" name="taskTotalPrice" value="{{ task.total_price }}">
-
-            <div class="mb-3">
-                <label for="taskDate">Task Date</label>
-                <input type="date" id="date-input" name="taskDate" class="form-control" value="{{ task.completed_on }}"/>
-                <input type="time" id="time-input" name="taskTime" class="form-control" />
-            </div>
-
-            <div class="mb-3">
-                <label for="taskLocation">Task Location</label>
-                <input type="text" name="taskLocation" id="location" class="form-control" placeholder="Enter your location" value="{{ task.location }}">
-            </div>
-
-            <div class="mb-3">
-                <label for="taskDesc">Task Detail</label>
-                <textarea class="form-control" name="taskDesc" cols="30" rows="5" placeholder="Write some details here">{{ task.description }}</textarea>
-            </div>
-            <button type="submit" class="button btnprimary btnnavtop">Submit</button>
-        </form>
-    </div>
-</div>
-
-<script>
-    $(document).ready(function() {
-        $("#taskCategory").change(function() {
-            const selectedOptionValue = $(this).val();
-            fetch(`/api/get_price/${selectedOptionValue}`)
-            .then(response => response.json())
-            .then(result => {
-                $bookingPrice = (result.price * 15) / 100
-                $totalPrice = parseInt(result.price) + $bookingPrice
-                document.getElementById('taskPrice').value = result.price
-                document.getElementById('taskBookingPrice').value = $bookingPrice
-                document.getElementById('taskTotalPrice').value = $totalPrice
-                document.getElementById('taskFee').innerText = result.price
-                document.getElementById('taskBookingFee').innerText = $bookingPrice
-                document.getElementById('taskPaymentTotal').innerText = $totalPrice
-
-                console.log(result.price)
-                console.log($bookingPrice)
-                console.log($totalPrice)
-            })
-        })
-    })
-</script>
-
->>>>>>> 202b53df5cc0aab769fb16d3064981b946785e74
 {% endblock %}

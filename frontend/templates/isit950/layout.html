@@ -34,6 +34,7 @@
         <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
         <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
         <script id="search-js-1" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.16/web.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlDYVPr7C2RhX0Kn03rPUQZ8GKz9qqjh4&libraries=places" defer></script>
     </head>
     <!-- https://www.airtasker.com/tasks/
     ?task_states=posted%2Cassigned%2Ccompleted%2Coverdue%2Cclosed
@@ -89,6 +90,18 @@
                     autofill.accessToken = accessTokenAddr1;
                 }
             };
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                var autocomplete;
+                var id = 'location';
+
+                autocomplete = new google.maps.places.Autocomplete((document.getElementById(id)), {
+                    types: ['(cities)'],
+                    componentRestrictions: {country: 'au'}
+                })
+            })
         </script>
 
         <script>

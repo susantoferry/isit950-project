@@ -3,18 +3,6 @@
 {% block body %}
 
 <style>
-    * {
-        margin: 0;
-        padding: 0
-    }
-
-    html {
-        height: 100%
-    }
-
-    p {
-        color: grey;
-    }
 
     #heading {
         text-transform: uppercase;
@@ -311,20 +299,6 @@
 
     }
 
-    /* code for dropdown */
-    * {
-        box-sizing: border-box;
-    }
-
-    a {
-        text-decoration: none;
-        color: black;
-    }
-
-    body {
-        margin: 40px;
-    }
-
     .dropdown {
         position: relative;
         font-size: 14px;
@@ -439,15 +413,11 @@
         color: black;
     }
 
-.paymentSummary {
-    text-align: center;
-    font-weight: 600;
-    margin-bottom: 10px;
-    padding-top: 25px;
-    font-size: 32px;
-}
-
-
+    .paymentSummary {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
 </style>
 
 <div class="container-fluid">
@@ -456,7 +426,7 @@
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2 id="heading">Submit your Task Request</h2>
                 <p>Fill all form field to go to next step</p>
-                <form id="msform" action="{% url 'test_page2' %}" method="POST">
+                <form id="msform" action="{% url 'create_task' %}" method="POST">
                     {% csrf_token %}
                     <!-- progressbar -->
                     <ul id="progressbar">

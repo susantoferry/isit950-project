@@ -1523,3 +1523,79 @@ button.close {
 .form-group {
     margin-bottom: 1rem;
 }
+
+.img-profile {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.img-profile-dash {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.img-bg-profile {
+    width: 250px;
+    height: 100px;
+    border-radius: 20px; 
+    object-fit: cover;
+}
+
+.uploadfile {
+    bottom: -6px;
+    left: 0;
+    top: 3px;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+}
+
+.img-none {
+    background: #cecece;
+}
+
+input[type=file], /* FF, IE7+, chrome (except button) */
+input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
+    cursor: pointer; 
+}
+
+.upload-btn-bg-overlay {
+    left: -20px; 
+    position: absolute; 
+    top: 30px;
+}
+
+.upload-btn-profile-overlay {
+    left: 60px; 
+    position: absolute; 
+    top: 30px;
+}
+
+.upload-btn {
+    width: 35px;
+    height: 35px;
+    background-color: #cad2f7;
+    border-radius: 100%;
+    -webkit-box-align: center;
+    cursor: pointer;
+}
+
+.icon-pos-abs {
+    position: absolute;
+    top: 4px; 
+    left: 11px;
+}
+
+
+.profile-bg-img {
+    background-color: #cfd0d6;
+    background-size: cover;
+    border-radius: 24px;
+    height: 200px;
+    position: relative;
+}

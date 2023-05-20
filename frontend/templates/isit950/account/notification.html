@@ -13,7 +13,7 @@
                 {% if notifications %}
                     {% for notif in notifications %}
                         <div>
-                            <a href="{% url 'task' %}" class="notif-block">
+                            <a href="{% url 'read_notification' notif.task notif.tasks.task_title notif.id %}" class="notif-block">
                                 <div style="display: flex; padding: 10px;">
                                     <div>
                                         <img width="55" src="/static/images/profiles/Hansel.png" alt="">
@@ -21,7 +21,7 @@
                                     <div style="display: flex; justify-content: space-between; position:relative; 
                                     margin-left: 20px; width: 100%; align-items: center;">
                                         <div style="width: 100%;">
-                                            <span>Ferry S. leave a comments on your posted task “{{ notif.task }}”</span>
+                                            <span>Ferry S. leave a comments on your posted task <span>{{ notif.tasks.task_title }}</span></span>
                                             <div style="font-size: 13px; color: #920092; font-weight: 500;">
                                                 18 mins ago
                                             </div>

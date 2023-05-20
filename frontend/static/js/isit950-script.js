@@ -217,27 +217,27 @@ $(document).ready(function () {
                 'user': Cookies.get('usid')
             })
         })
-            .then(response => response.json())
-            .then(res => {
-                console.log(res.status)
-                if (res.status == 200) {
-                    $('#offerModal').modal('toggle');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Your offer has been saved successfully'
-                    }).then((result) => {
-                        location.reload();
-                    })
-                    // success_mail();
-                    // location.reload();
-                } else {
-                    alert("Cannot save");
-                }
-            })
-            .catch(err => {
-                alert(err)
-            })
+        .then(response => response.json())
+        .then(res => {
+            console.log(res.status)
+            if (res.status == 200) {
+                $('#offerModal').modal('toggle');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Your offer has been saved successfully'
+                }).then((result) => {
+                    location.reload();
+                })
+                // success_mail();
+                // location.reload();
+            } else {
+                alert("Cannot save");
+            }
+        })
+        .catch(err => {
+            alert(err)
+        })
     })
 
     const creditCardInput = document.getElementById('cardNo');
@@ -358,6 +358,23 @@ function checkExpiryCCMonth(expiryDate) {
     return result
 }
 
+
+function getCookieValue(cookieName) {
+    var name = cookieName + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var cookieArray = decodedCookie.split(';');
+  
+    for (var i = 0; i < cookieArray.length; i++) {
+      var cookie = cookieArray[i].trim();
+  
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length);
+      }
+    }
+  
+    return null;
+}
+
 function showDetail(taskId) {
     if ($(".task-detail-wrapper").hasClass("task-blank") && $(".task-detail-container").hasClass("no-selected")) {
         $(".task-detail-wrapper").removeClass("task-blank")
@@ -367,6 +384,7 @@ function showDetail(taskId) {
     fetch(`/api/task/${taskId}`)
         .then(response => response.json())
         .then(result => {
+            console.log(result)
             document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
             document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
             document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
@@ -374,6 +392,28 @@ function showDetail(taskId) {
             document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
             document.querySelector('#task-price').innerHTML = `${result.price}`;
             document.querySelector('#task-desc').innerHTML = `${result.description}`;
+
+            // Determine apply button or cancel button if status is 0/open
+            document.querySelector('.taskButtonEditApply').innerHTML = "";
+
+            var buttonApplyCancel = document.createElement("div")
+            console.log(result.user_client_id)
+            console.log(getCookieValue('usid'))
+            if (result.user_client_id !== getCookieValue('usid')) {
+                buttonApplyCancel.innerHTML = `<button class="button btnprimary" id="offer-btn"
+                    style="display: block;margin: 0 auto; background: #9162b42b;"
+                    data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`    
+            } else {
+                buttonApplyCancel.innerHTML = `<a href="/edit_task/${result.task_title_to_url}" class="button btnprimary" 
+                    style="display: block;margin: 0 auto; background: #f0675866;">
+                    Edit task</a>`
+            }
+
+            document.querySelector('.taskButtonEditApply').appendChild(buttonApplyCancel)
+            // buttonApplyCancel = `<button class="button btnprimary" id="offer-btn"
+            // style="display: block;margin: 0 auto; background: #9162b42b;"
+            // data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`
+
             history.pushState(null, null, `/tasks/?name=${taskId}`)
             document.title = `${taskId} - ISIT950 Group Project`;
         })

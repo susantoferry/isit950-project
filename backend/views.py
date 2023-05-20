@@ -46,7 +46,11 @@ def make_thumbnail(image, size, fldr):
     """Makes thumbnails of given size from given image"""
     if image != "":
         im = Image.open(image)
-        im = im.convert('RGB')
+        # im = im.convert('RGB')
+        # Transparent background
+        if im.mode != "RGBA":
+            im = im.convert("RGBA")
+            
         timestr = time.strftime("%y%m%d%H%M%S")
         # if fldr != "home":
         #     im.thumbnail(size) # resize image
@@ -64,6 +68,10 @@ def make_thumbnail(image, size, fldr):
         im.save(absolute_file_path, quality=75)
     # return os.path.join('images/profiles', file_name)
     return file_loc
+
+def delete_image(img_name):
+    if img_name != "":
+        os.remove("./frontend/static/" + img_name, dir_fd=None)
 
 @api_view(['GET', 'POST'])
 def category(request):
@@ -92,7 +100,7 @@ def categoryDetail(request, id):
     if request.method == 'POST':
         
         serializer = CategorySerializer(data=request.data)
-        print(request.data)
+        
         if serializer.is_valid():
             serializer.save()
         else:
@@ -116,18 +124,22 @@ def userProfile(request, user):
             return Response(status=400)
 
     if request.method == 'PUT':
+        print("aaaaaa")
         try:
             user = User.objects.get(username=user)
         except User.DoesNotExist:
             return Response(status=404)
         
+        print(user)
         saveUser = {}
         if user != "":
             for i in request.data:
                 if i == 'img_profile':
                     saveUser.update({i: make_thumbnail(request.FILES[i], "", 'profiles')})
+                    # delete_image(request.FILES[i])
                 elif i == 'img_background':
                     saveUser.update({i: make_thumbnail(request.FILES[i], "", 'profiles_bg')})
+                    # delete_image(request.FILES[i])
                 else:
                     saveUser.update({i: request.data[i]})
 
@@ -158,10 +170,10 @@ def question(request, taskId):
 
 @api_view(['GET', 'POST'])
 def offer(request):
-    # if request.method == 'GET':
-    #     offers = Offer.objects.all().order_by("status","-modify_date")
-    #     serializer = OfferSerializer(offers, many=True)
-    #     return Response(serializer.data)
+    if request.method == 'GET':
+        offers = Offer.objects.all().order_by("-modify_date")
+        serializer = OfferSerializer(offers, many=True)
+        return Response(serializer.data)
     
     if request.method == 'POST':
         request.data["task"] = request.data["task"].rsplit('-', 1)[-1]
@@ -176,38 +188,44 @@ def offer(request):
         else:
             return Response(serializer.errors,status=400)
    
-def sendTaskNotification(content, taskId, clientUser):
-    # Get client location
-    clientData = User.objects.get(pk=clientUser)
     
-    # Get all users who have membership as SP or Full Package
-    userMemberships = MembershipTransaction.objects.filter(user__city=clientData.city, membership__in= [1,3]).exclude(user=clientData.id)
-    
-    for user in userMemberships:
-        
-        notification = {
-            'content_notif': content,
-            'task': taskId,
-            'user': user.user.id
-        }
-
-        serializer = NotificationSerializer(data=notification)
-        if serializer.is_valid():
-            serializer.save()
-        else:
-            return Response(serializer.errors)
-
-    return Response("a")
-    
-@api_view(['GET', 'PUT'])
+@api_view(['GET'])
 def notification(request, user):
     if request.method == 'GET':
         notifications = Notification.objects.filter(user=user).order_by('-create_date')
         serializer = NotificationSerializer(notifications, many=True)
         return Response(serializer.data)
+    
+
+@api_view(['POST'])
+def updateNotifStatus(request, notifId, user):
+    if request.method == 'POST':
+        try:
+            getNotif = Notification.objects.get(pk=notifId, user=user)
+        except Notification.DoesNotExist:
+            getNotif = ""
+
+        if getNotif:
+            data = JSONParser().parse(request)
+            if getNotif.is_read == data['is_read']:
+                return Response("Nothing changes", status=200)
+            else:
+                serializer = ReadNotificationSerializer(getNotif, data=data)
+
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(status=200)
+                else:
+                    print(serializer.errors)
+                    return Response(status=404)
+        else:
+            print("aaa")
+            return Response("Data cannot be found",status=404)
+        
 
 @api_view(['GET'])
 def offerDetail(request, taskId):
+    taskId = taskId.rsplit('-', 1)[-1]
     offers = Offer.objects.filter(task_id = taskId)
     serializer = OfferSerializer(offers, many=True)
     return Response(serializer.data)
@@ -290,39 +308,139 @@ def task(request):
         return Response(serializer.data)
     
     if request.method == 'POST':
+        
         serializer = TaskSerializer(data=request.data)
+
         if serializer.is_valid():
             instance = serializer.save()
-            sendTaskNotification(1, instance.id, request.data["user"])
+            sendTaskNotification(instance.id, request.data["content"], request.data["location"], request.data["user"])
         else:
             return Response(serializer.errors,status=400)
         
         return Response(serializer.data)
     
 @api_view(['GET', 'PUT', 'DELETE'])
+@csrf_exempt
 def taskDetail(request, taskId):
 
     taskId = taskId.rsplit('-', 1)[-1]
-    
-    try:
-        task = Task.objects.get(id=taskId)
-    except Task.DoesNotExist:
-        return Response(status=404)
-    
+
     if request.method == 'GET':
+        try:
+            task = Task.objects.get(id=taskId)
+        except Task.DoesNotExist:
+            return Response(status=404)
+        
         serializer = TaskSerializer(task, many=False)
         return Response(serializer.data)
     
     if request.method == 'PUT':
         data = JSONParser().parse(request)
         
+        try:
+            task = Task.objects.get(id=taskId, user=data["user"])
+        except Task.DoesNotExist:
+            return Response("You are not authorise to edit this task",status=404)
+
         serializer = TaskSerializer(task, data=data)
+        
         if serializer.is_valid():
             serializer.save()
+            sendTaskNotification(taskId, data["content"], data["location"], data["user"])
             return Response(status=200)
         else:
             print(serializer.errors)
             return Response(status=404)
+        
+@api_view(['GET','POST'])
+def membershipTransaction(request):
+    if request.method == 'POST':
+
+        price = {
+            '1': 80,
+            '2': 50,
+            '3': 120
+        }
+
+        try:
+            membership = MembershipTransaction.objects.filter(user = request.data['user']).order_by("-create_date").first()
+        except MembershipTransaction.DoesNotExist:
+            membership = ""
+        
+        # Check if user has membership
+        if membership:
+            # if the current membership is same with request data then return response
+            if request.data["membership"] == membership.membership:
+                return Response("The current membership is same.", status=200)
+            
+            # Determine transaction type membership
+            if request.data['membership'] == 0:
+                request.data['trans_type'] = 'D'
+                request.data["price"] = 0
+            else:
+                request.data['trans_type'] = 'U'
+                
+                # Change price if the package is either 1 or 2 change to 3
+                if int(request.data["membership"]) == 3:
+                    request.data["price"] = price[request.data['membership']] - membership.price
+                else:
+                    print(price[request.data["membership"]])
+                    request.data["price"] = price[request.data["membership"]]
+        else:
+            request.data['trans_type'] = 'A'
+            request.data["price"] = price[request.data["membership"]]
+        
+        if request.data['membership'] == 0:
+            request.data["credit_card"] = "-"
+        else:
+            request.data["credit_card"] = str(encryptString(request.data['credit_card']))
+
+        serializer = MembershipTransactionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=200)
+        else:
+            return Response(serializer.errors, status=404)
+
+def sendTaskNotification(taskId, content, location, clientId):
+    # Get all users who have membership as SP or Full Package
+    userMemberships = MembershipTransaction.objects.filter(user__address=location, membership__in= [1,3]).exclude(user=clientId)
+
+    for member in userMemberships:
+        notification = {
+            'content_notif': content,
+            'task': taskId,
+            'user': member.user.id
+        }
+
+        serializer = NotificationSerializer(data=notification)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors)
+
+    return Response("a")
+
+@api_view(['GET'])
+def sendTaskNotification1(request, taskId, content, location, clientId):
+    # Get all users who have membership as SP or Full Package
+    userMemberships = MembershipTransaction.objects.filter(user__address=location, membership__in= [1,3]).exclude(user=clientId)
+    print(userMemberships)
+    for member in userMemberships:
+        notification = {
+            'content_notif': content,
+            'task': taskId,
+            'user': member.user.id
+        }
+
+        serializer = NotificationSerializer(data=notification)
+        print(serializer.is_valid())
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            return Response(serializer.errors)
+
+    return Response("a")
         
 @api_view(['GET'])
 def taskSearch(request):
@@ -357,7 +475,6 @@ def taskSearch(request):
         return Response(serializer.data)
     else:
         return Response(status=400)
-
     
 # @api_view(['GET', 'PUT', 'DELETE'])
 # def taskDetail(request, taskId):
@@ -407,6 +524,15 @@ def taskSearch(request):
 #         else:
 #             print(serializer.errors)
 #             return Response(status=404)
+
+@api_view(['GET'])
+def priceCategory(request, category):
+    if request.method == 'GET':
+        priceCat = Price.objects.get(category=category)
+
+        serializer = PriceSerializer(priceCat)
+        return Response(serializer.data)
+        
 
 @api_view(['GET'])
 def myWatchlist(request, user):
@@ -533,7 +659,7 @@ def skillDetail(request, id):
 
 
 @api_view(['GET', 'POST'])
-def membership(request):
+def membership1(request):
     if request.method == 'GET':
         memberships = Membership.objects.all()
         serializer = MembershipSerializer(memberships, many=True)
@@ -549,7 +675,7 @@ def membership(request):
         return Response(serializer.data)
     
 @api_view(['GET', 'PUT', 'DELETE'])
-def membershipDetail(request, id):
+def membershipDetail1(request, id):
     try:
         membership = Membership.objects.get(pk=id)
     except Membership.DoesNotExist:
@@ -587,33 +713,30 @@ def mySkillList(request,user):
             return Response(serializer.data, status=200)
 
         if request.method == 'DELETE':
-            userskill=UserSkill.objects.get(user=user.id,skill=request.data.get('skill'))
-            userskill.delete()
-            return Response(status=204)
+            try:
+                userSkill = UserSkill.objects.get(user=user.id, id=request.data['id'])
+            except UserSkill.DoesNotExist:
+                userSkill = ""
+
+            if userSkill:
+                userSkill.delete()
+                return Response({"success"}, status=200)
+            else:
+                return Response(status=400)
 
         if request.method == "POST":
-            skill = request.data.get('skill')
-            if (Skill.objects.filter(id=skill).exists()):
-            # checkUserId = User.objects.filter(pk=user.id)
-            # Check if User Id Exists
-            # if checkUserId.count() > 0:
-                # Preventing duplicating data if user id and skill id already exist in table
-                checkData = UserSkill.objects.filter(user=user.id, skill=skill)
-                if checkData.count() == 0:
-                    data = {
-                        "user": user.id,
-                        "skill": skill
-                        }
-                    serializer = UserSkillSerializer(data=data)
-                    if serializer.is_valid():
-                        serializer.save()
-                    else:
-                        return Response(serializer.errors)
-                    return Response(serializer.data)
-                else:
-                    return Response("Error. Duplicate data when adding new skill")
+            # skill = request.data.get('skill')
+            data = {
+                "user": user.id,
+                "skill": request.data['skill']
+            }
+            serializer = UserSkillSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=200)
             else:
-                return Response("skill  not exists")
+                return Response(serializer.errors, status=400)
+
     else:
         return Response("User cannot be found!")
 

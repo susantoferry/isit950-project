@@ -9,7 +9,7 @@ urlpatterns = [
     path("category", views.category, name="category"),
     path("category/<int:id>", views.categoryDetail, name="category_detail"),
     path("offer", views.offer, name="offer"),
-    path("offer/<int:taskId>", views.offerDetail, name="offer_detail"),
+    path("offer/<slug:taskId>", views.offerDetail, name="offer_detail"),
     path("question/<int:taskId>", views.question, name="question"),
     path("my-task/accept-offer/<taskId>/<userSpId>", views.acceptOffer, name="accept_offer"),
     path("task", views.task, name="task"),
@@ -21,11 +21,13 @@ urlpatterns = [
     path("watchlist", views.watchlist, name="watchlist"),
     path("skill", views.skill, name="skill"),
     path("skill/<int:id>", views.skillDetail, name="skill_detail"),
-    path("membership", views.membership, name="membership"),
-    path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
+    # path("membership", views.membership, name="membership"),
+    # path("membership/<int:id>", views.membershipDetail, name="membership_detail"),
+    path("membership_transaction", views.membershipTransaction, name="membership_transaction"),
     path("my_skilllist/<str:user>", views.mySkillList, name="show_my_skilllist"),
     path("notification/<user>", views.notification, name="notification"),
-
+    path("update_notification/<notifId>/<user>", views.updateNotifStatus, name="update_notification"),
+    path("get_price/<category>", views.priceCategory, name="get_price"),
     path("profile_api/<str:user>", views.userProfile, name="profile_api"),
     path("paymentInformation/<str:user>", views.paymentInformation, name="paymentInformation"),
 
@@ -37,6 +39,8 @@ urlpatterns = [
     path("forgot_password_api", views.ForgotPassword, name="forgot_password_api"),
     path("reset_password_api/<str:token>", views.ResetPassword, name="reset_password_api"),
     path("logout", knox_views.LogoutView.as_view()),
+
+    path('send_task_notification1/<taskId>/<content>/<location>/<clientId>', views.sendTaskNotification1, name="send_task_notification1")
 ]
 
 if settings.DEBUG:

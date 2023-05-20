@@ -73,6 +73,11 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = '__all__'
 
+class PriceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Price
+        fields = '__all__'
+
 class TaskSerializer(serializers.ModelSerializer):
     category_name = serializers.CharField(read_only=True, source='category.name')
     user_client_id = serializers.CharField(read_only=True, source='user.username')
@@ -88,9 +93,17 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class NotificationSerializer(serializers.ModelSerializer):
+    tasks = TaskSerializer(read_only=True, source='task')
+    # user = UserSerializer(read_only=True)
     class Meta:
         model = Notification
         fields = '__all__'  
+
+class ReadNotificationSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+    class Meta:
+        model = Notification
+        fields = '__all__'
 
 class OfferSerializer(serializers.ModelSerializer):
     user_provider = serializers.CharField(read_only=True, source='user.username') 

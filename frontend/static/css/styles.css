@@ -5,8 +5,6 @@
 
 }
 
-html {}
-
 body {
     overflow-x: hidden !important;
     overflow-y: scroll !important;
@@ -1646,4 +1644,23 @@ input[type=file]::-webkit-file-upload-button {
     font-size: 1.5rem;
     color: black;
     font-weight: 600;
+}
+
+.offer-price-label{
+    color: rgb(115 125 135);
+    font-weight: 600;
+}
+
+.offer-price{
+    font-size: 1.2rem;
+    color: rgb(58, 62, 66);
+    font-weight: 600;
+}
+
+.description-box {
+    background: #f3f4f5;
+    border-radius: 44px;
+    width: 100%;
+    padding: 10px 35px;
+    margin: 25px 0;
 }

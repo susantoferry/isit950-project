@@ -107,10 +107,12 @@ class ReadNotificationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OfferSerializer(serializers.ModelSerializer):
-    user_provider = serializers.CharField(read_only=True, source='user.username') 
+    user_provider = serializers.CharField(read_only=True, source='user.username')
+    user_img =  serializers.CharField(read_only=True, source='user.img_profile')
     task_details = serializers.CharField(read_only=True, source='task')
     task_title = serializers.CharField(read_only=True, source='task.task_title')
     task_title_to_url = serializers.CharField(read_only=True)
+    full_name = serializers.CharField(read_only=True)
     class Meta:
         model = Offer
         fields = '__all__'

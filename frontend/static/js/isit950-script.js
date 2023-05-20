@@ -507,38 +507,95 @@ function showmyTaskDetail(taskId) {
                 const offerContainer = document.querySelector('#offer-display');
                 offerContainer.innerHTML = ''; // Clear previous content if any
                 
+                const offerTitle = document.createElement('div');
+                offerTitle.classList.add('task-detail-heading');
+                offerTitle.style.letterSpacing = '1px';
+                offerTitle.textContent = "Offer from Service Provider";
+                offerContainer.appendChild(offerTitle);
+
                 for (let res of offerResult) {
-                    console.log(res)
                     const offerDiv = document.createElement('div');
-                    offerDiv.classList.add('card', 'mb-3', 'offer-card');
+                    offerDiv.classList.add('card', 'mb-3', 'offer-card','col-md-12');
                     
                     const cardBody = document.createElement('div');
                     cardBody.classList.add('card-body');
+
+                    const titleSpace = document.createElement('div');
+                    titleSpace.classList.add('title-space', 'flexcc', 'col-md-12');
                     
+                    const imgSpace = document.createElement('div');
+                    imgSpace.classList.add('tasker-profile-left');
+                    
+                    const userImg = document.createElement('img');
+                    userImg.classList.add('tasker-profile');
+                    userImg.width="45";
+                    if (res.img_profile == null){
+                        userImg.src = "/static/images/anonymous_user.png";
+                    } else {
+                        userImg.src = '/static/' + res.img_profile;
+                    }
+                    imgSpace.appendChild(userImg);
+                    titleSpace.appendChild(imgSpace);
+
                     const offerTitle = document.createElement('div');
-                    offerTitle.classList.add('offer-title');
-                    offerTitle.textContent = res.user_provider;
-                    cardBody.appendChild(offerTitle);
-                    
-                    const offerPrice = document.createElement('div');
+                    offerTitle.classList.add('offer-title', 'col-md-4');
+                    offerTitle.textContent = res.full_name;
+                    titleSpace.appendChild(offerTitle);
+
+                    const priceSpace = document.createElement('div');
+                    priceSpace.classList.add('price-space', 'col-md-5');
+
+                    const offerPriceLabel = document.createElement('span');
+                    offerPriceLabel.classList.add('offer-price-label');
+                    offerPriceLabel.textContent = "Price offered: ";
+                    priceSpace.appendChild(offerPriceLabel);
+
+                    const offerPrice = document.createElement('span');
                     offerPrice.classList.add('offer-price');
-                    offerPrice.textContent = res.price;
-                    cardBody.appendChild(offerPrice);
+                    offerPrice.textContent = '$' + res.price;
+                    priceSpace.appendChild(offerPrice);
+
+                    titleSpace.appendChild(priceSpace);
+                    cardBody.appendChild(titleSpace);
+
+                    const button = document.createElement('a');
+                    const link = '/select_tasker/' + res.task_title_to_url + '/' + res.user;
+                    button.href = link;
+                    button.classList.add("btn", "btn-primary", 'col-md-2');
+                    button.innerHTML = "Accept";
+                    titleSpace.appendChild(button);
+
+                    const dateSpace = document.createElement('div');
+                    dateSpace.classList.add('description-space');
+
+                    const dateLabel = document.createElement('span');
+                    dateLabel.classList.add('offer-price-label');
+                    dateLabel.textContent = 'Date Offered :  ';
+                    dateSpace.appendChild(dateLabel);
+
+                    const offerDate= document.createElement('span');
+                    var dateObj = new Date(res.create_date);
+                    var date = dateObj.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
+                    offerDate.textContent = date;
+                    dateSpace.appendChild(offerDate);
+
+                    cardBody.appendChild(dateSpace);
+
+                    const descriptionSpace = document.createElement('div');
+                    descriptionSpace.classList.add('description-box');
+                    descriptionSpace.style.borderRadius = '20px';
                     
+                    const offerDescriptionLabel = document.createElement('div');
+                    offerDescriptionLabel.classList.add('task-detail-heading');
+                    offerDescriptionLabel.textContent = 'Description';
+                    descriptionSpace.appendChild(offerDescriptionLabel);
+
                     const offerDescription = document.createElement('div');
                     offerDescription.textContent = res.description;
-                    cardBody.appendChild(offerDescription);
+                    descriptionSpace.appendChild(offerDescription);
 
-                    const offerDate= document.createElement('div');
-                    offerDate.textContent = res.create_date;
-                    cardBody.appendChild(offerDate);
+                    cardBody.appendChild(descriptionSpace);
                     
-                    const button = document.createElement('a');
-                    button.href = "{% url 'select_tasker' ${res.task_title_to_url} ${res.user} %}";
-                    button.classList.add("btn", "btn-primary");
-                    button.innerHTML = "Accept";
-                    cardBody.appendChild(button);
-
                     offerDiv.appendChild(cardBody);
                     offerContainer.appendChild(offerDiv);
                 }

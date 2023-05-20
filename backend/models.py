@@ -48,6 +48,10 @@ class Offer(models.Model):
     def task_title_to_url(self):
         task_title = self.task.task_title + " " + str(self.task.id)
         return task_title.replace(' ', '-')
+    
+    def full_name(self):
+        fullName = self.user.first_name + ' ' + self.user.last_name
+        return fullName
 
     def __str__(self):
         return f"Id: {self.id}, Task ID: {self.task}, User Provider: {self.user}, price: {self.price}"

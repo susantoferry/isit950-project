@@ -169,7 +169,7 @@ def question(request, taskId):
 @api_view(['GET', 'POST'])
 def offer(request):
     if request.method == 'GET':
-        offers = Offer.objects.all().order_by("-modify_date")
+        offers = Offer.objects.all().order_by("create_date")
         serializer = OfferSerializer(offers, many=True)
         return Response(serializer.data)
     

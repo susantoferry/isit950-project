@@ -496,7 +496,55 @@ function showmyTaskDetail(taskId) {
         document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
         document.querySelector('#task-price').innerHTML = `${result.price}`;
         document.querySelector('#task-desc').innerHTML = `${result.description}`;
-            // Determine task status button
+                    
+        // Determine apply button or cancel button if status is 0/open
+            document.querySelector('.taskButtonEditApply').innerHTML = "";
+
+            var versatileBtn = document.createElement("div")
+                if (result.status == 0) {
+                    if (result.user_client_id !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `<button class="button btnprimary btnapply" id="offer-btn"
+                            data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`    
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <a href="/edit_task/${result.task_title_to_url}" class="button btnprimary btnapply">Edit task</a>`
+                    }
+                }
+
+                if (result.status == 1) {
+                    if (result.user_provider_name !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `<a href="#" class="button btn-capsule btn-progress">Task in progress</a>`
+                    } else {
+                        console.log(result)
+                        versatileBtn.innerHTML = `
+                            <a href="/update_completion/${result.task_title_to_url}/${result.user}" class="button btn-capsule btn-notify-completion">
+                                Notify Completion
+                            </a>`
+                    }
+                }
+
+                if (result.status == 2 && result.is_paid == false) {
+                    if (result.user_client_id !== getCookieValue('usid')) {
+                        if (result.user_provider_name !== getCookieValue('usid')) {
+                            versatileBtn.innerHTML = `
+                                <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                        } else {
+                            versatileBtn.innerHTML = `
+                            <div id="task-active-lg" class="task-active-lg completed">Waiting payment</div>`
+                        }
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <a href="#" class="button btn-capsule btnsave-primary">Complete Payment</a>`
+                    }
+                }
+                if (result.status == 2 && result.is_paid == true ) {
+                    versatileBtn.innerHTML = `
+                    <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                }
+            // }
+            document.querySelector('.taskButtonEditApply').appendChild(versatileBtn)    
+        
+        // Determine task status button
             document.querySelector('.task-stat').innerHTML = "";
 
             var taskStatusCapsule = document.createElement("div")

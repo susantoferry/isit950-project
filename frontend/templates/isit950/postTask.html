@@ -494,18 +494,18 @@
 
                             <select class="form-select" aria-label="Default select example" name="category">
                                 <option selected>Select job</option>
-                                <option value="1">Carpenter</option>
-                                <option value="2">Electrician</option>
-                                <option value="3">Fence Installation</option>
-                                <option value="3">Fly Screen Repairs</option>
-                                <option value="3">Gardening</option>
-                                <option value="3">House Cleaning</option>
-                                <option value="3">Oven Repairs</option>
-                                <option value="3">Painter</option>
-                                <option value="3">Pest Control</option>
-                                <option value="3">Plumber</option>
-                                <option value="3">Roof Cleaning</option>
-                                <option value="3">Tree Removal</option>
+                                <option value="1">Locksmith</option>
+                                <option value="2">Bicycle Repair</option>
+                                <option value="3">Bricklayer</option>
+                                <option value="4">Carpenter</option>
+                                <option value="5">Commercial Cleaning</option>
+                                <option value="6">Pest Control</option>
+                                <option value="7">Removalist</option>
+                                <option value="8">Furniture Assembly</option>
+                                <option value="9">Lawn Mowing</option>
+                                <option value="10">Professional Woodcutting</option>
+                                <option value="11">Roof Cleaning</option>
+                                <option value="12">Tree Removal</option>
                             </select>
 
 
@@ -654,17 +654,17 @@
 
                         <div class="rectangleinnertextarea">
                             <div>Task fee</div>
-                            <div>30.00AUD</div>
+                            <div>{{ task.price}}</div>
                         </div>
 
                         <div class="rectangleinnertextarea">
                             <div>Booking fee</div>
-                            <div>2.00AUD</div>
+                            <div>{{ task.booking_price}}</div>
                         </div>
 
                         <div class="rectangleinnertextarea">
                             <div class="paymentSummary__text">Total</div>
-                            <div class="paymentSummary__text">32.00AUD</div>
+                            <div class="paymentSummary__text">{{ task.total_price}}</div>
                         </div>
 
 

@@ -82,6 +82,7 @@ class Task(models.Model):
     is_paid = models.BooleanField(default=False)
     create_date = models.DateTimeField(null=True, blank=True)
     modify_date = models.DateTimeField(null=True, blank=True)
+    offer = models.BooleanField(null=True, blank=True, default=False)
 
     def save(self, *args, **kwargs):
         g = geocoder.mapbox(self.location, key=mapbox_token)

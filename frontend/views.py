@@ -350,14 +350,10 @@ def myTask(request, condition='all'):
         return render(request, "isit950/404.html")
 
     else:
-        firstTaskDetail = myTaskList[0]["id"]
-        taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-        taskDetail = taskDetailResp.json()
 
         return render(request, "isit950/my_task.html", {
             "myTaskList": myTaskList,
-            "firstTaskDetail": firstTaskDetail,
-            "taskDetail": taskDetail,
+            # "taskDetail": taskDetail,
             "type": "myTask"
         })
 
@@ -376,6 +372,7 @@ def taskOffer(request, taskId):
         "offers": offers,
         # "questions": questionCount
     })
+
 
 def selectTasker(request, taskId, user_sp):
     taskData = {

@@ -1636,3 +1636,14 @@ input[type=file]::-webkit-file-upload-button {
     object-fit: contain;
     border-radius: 50%;
 }
+
+
+.offer-card{
+    background-color: rgb(234, 226, 240);
+}
+
+.offer-title{
+    font-size: 1.5rem;
+    color: black;
+    font-weight: 600;
+}

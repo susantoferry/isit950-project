@@ -174,11 +174,16 @@ def offer(request):
         return Response(serializer.data)
     
     if request.method == 'POST':
-        request.data["task"] = request.data["task"].rsplit('-', 1)[-1]
+        taskId = request.data["task"].rsplit('-', 1)[-1]
+        request.data["task"] = taskId
 
         request.data['user'] = User.objects.values_list('id', flat=True).get(username=request.data['user'])
         
         serializer = OfferSerializer(data=request.data)
+
+        taskStatus = Task.objects.get(pk=taskId)
+        taskStatus.offer = True
+        taskStatus.save()
 
         if serializer.is_valid():
             serializer.save()
@@ -190,6 +195,7 @@ def offer(request):
 @api_view(['GET'])
 def offerDetail(request, taskId):
     taskId = taskId.rsplit('-', 1)[-1]
+    print(taskId)
     offers = Offer.objects.filter(task_id = taskId)
     serializer = OfferSerializer(offers, many=True)
     return Response(serializer.data)
@@ -261,8 +267,8 @@ def getMyTask(request, userId, condition):
             return Response(serializer.data)
 
         elif condition == 'pending':
-            #pending
-            myOffers = Offer.objects.filter(user_id=userId, task__status=0).order_by("-create_date")
+            taskStatus = 0
+            myTasks = Task.objects.filter(user_id=userId, offer=True, status=taskStatus).order_by("status","-create_date")
 
         elif condition == 'assigned':
             #assigned
@@ -272,7 +278,7 @@ def getMyTask(request, userId, condition):
         elif condition == 'completed':
             #assigned
             taskStatus = 2
-            myTasks = Task.objects.filter(user_id=userId, status=taskStatus).order_by("status","-create_date")
+            myTasks = Task.objects.filter(user_provider_id=userId, status=taskStatus).order_by("status","-create_date")
 
         else:
             myTasks = Task.objects.filter(user_id=userId).order_by("status","-create_date")

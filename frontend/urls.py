@@ -23,7 +23,6 @@ urlpatterns = [
     path("create-task", views.createTask, name="create_task"),
     path("edit_task/<taskId>", views.editTask, name="edit_task"),
     path("membership", views.membership, name="membership"),
-    path("my-task", views.myTask, name="my_task"),
     path("my-task/", views.myTask, name="my_task"),
     path("my-task/<condition>", views.myTask, name="my_task"),
     path("my-task/?name=<slug>", views.myTaskDetail, name="my_tasks"),

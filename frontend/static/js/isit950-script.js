@@ -1,14 +1,14 @@
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'bottom-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-})
+// const Toast = Swal.mixin({
+//     toast: true,
+//     position: 'bottom-end',
+//     showConfirmButton: false,
+//     timer: 3000,
+//     timerProgressBar: true,
+//     didOpen: (toast) => {
+//         toast.addEventListener('mouseenter', Swal.stopTimer)
+//         toast.addEventListener('mouseleave', Swal.resumeTimer)
+//     }
+// })
 
 let arrow = document.querySelectorAll(".arrow");
 
@@ -187,7 +187,7 @@ $(document).ready(function () {
         const adminFee = -Math.abs(Number(document.querySelector('#admin-fee').innerText));
         const totalEarn = document.querySelector('#total-earn').innerText;
         const urlParams = new URLSearchParams(window.location.search);
-        const task = urlParams.get('name')
+        const task = urlParams.get('name');
 
         fetch(`/api/offer`, {
             method: "POST",
@@ -214,8 +214,6 @@ $(document).ready(function () {
                     icon: 'success',
                     title: 'Success',
                     text: 'Your offer has been saved successfully'
-                }).then((result) => {
-                    location.reload();
                 })
                 // success_mail();
                 // location.reload();
@@ -486,10 +484,11 @@ function showmyTaskDetail(taskId) {
     if ($(".task-detail-container").hasClass("no-selected")) {
         $(".task-detail-container").removeClass("no-selected")
     }
-
+    
     fetch(`/api/task/${taskId}`)
     .then(response => response.json())
     .then(result => {
+        
         document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
         document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
         document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
@@ -497,13 +496,69 @@ function showmyTaskDetail(taskId) {
         document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
         document.querySelector('#task-price').innerHTML = `${result.price}`;
         document.querySelector('#task-desc').innerHTML = `${result.description}`;
-        document.querySelector('#offer-display').innerHTML = `${result.offerDesc} ${offerPrice}`;
-        history.pushState(null, null, `/my-task/?name=${taskId}`)
-        document.title = `${taskId} - ISIT950 Group Project`;
+        // document.querySelector('#offer-display').innerHTML = `${result.offerDesc} ${result.offerPrice}`;
+        // history.pushState(null, null, `/my-task/?name=${taskId}`)
+        // document.title = `${taskId} - ISIT950 Group Project`;
+        console.log("aaa");
+        fetch(`/api/offer/${taskId}`)
+        .then(response => response.json())
+        .then(offerResult => {
+            if (offerResult.length > 0) {
+                const offerContainer = document.querySelector('#offer-display');
+                offerContainer.innerHTML = ''; // Clear previous content if any
+                
+                for (let res of offerResult) {
+                    console.log(res)
+                    const offerDiv = document.createElement('div');
+                    offerDiv.classList.add('card', 'mb-3', 'offer-card');
+                    
+                    const cardBody = document.createElement('div');
+                    cardBody.classList.add('card-body');
+                    
+                    const offerTitle = document.createElement('div');
+                    offerTitle.classList.add('offer-title');
+                    offerTitle.textContent = res.user_provider;
+                    cardBody.appendChild(offerTitle);
+                    
+                    const offerPrice = document.createElement('div');
+                    offerPrice.classList.add('offer-price');
+                    offerPrice.textContent = res.price;
+                    cardBody.appendChild(offerPrice);
+                    
+                    const offerDescription = document.createElement('div');
+                    offerDescription.textContent = res.description;
+                    cardBody.appendChild(offerDescription);
+
+                    const offerDate= document.createElement('div');
+                    offerDate.textContent = res.create_date;
+                    cardBody.appendChild(offerDate);
+                    
+                    const button = document.createElement('a');
+                    button.href = "{% url 'select_tasker' ${res.task_title_to_url} ${res.user} %}";
+                    button.classList.add("btn", "btn-primary");
+                    button.innerHTML = "Accept";
+                    cardBody.appendChild(button);
+
+                    offerDiv.appendChild(cardBody);
+                    offerContainer.appendChild(offerDiv);
+                }
+            } else {
+                const offerDiv = document.createElement('div');
+                offerDiv.classList.add('card', 'mb-3', 'no-offer-card');
+                
+                const cardBody = document.createElement('div');
+                cardBody.classList.add('card-body');
+
+                const text = document.createElement('span');
+                text.textContent = "You have no offer yet";
+                cardBody.appendChild(text);
+
+                offerDiv.appendChild(cardBody);
+                offerContainer.appendChild(offerDiv);
+            }
+        })
     })
 
-    fetch(`/api/offer/${taskId}`)
-    .then(response)
 }
 
 function accept_offer() {
@@ -630,3 +685,73 @@ function redirectToURL(location) {
     }
 
 }
+
+function returnNearSuburb(location){
+    // Geocode the selected suburb
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
+    var geocodingClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+    geocodingClient.geocoding.forwardGeocode({
+        query: location,
+        limit: 1
+    })
+    .send()
+    .then(response => {
+        if (response && response.body && response.body.features && response.body.features.length > 0) {
+            const selectedSuburb = response.body.features[0];
+            const selectedSuburbCoordinates = selectedSuburb.center;
+
+            // Query for nearby suburbs
+            geocodingClient.geocoding.reverseGeocode({
+                query: selectedSuburbCoordinates,
+                types: ['postcode', 'locality'],
+                limit: 50, // Adjust the limit as needed
+                radius: 50000 // Specify the radius in meters (50 km in this case)
+            })
+            .send()
+            .then(response => {
+                if (response && response.body && response.body.features) {
+                    const nearbySuburbs = response.body.features.map(suburb => suburb.text);
+                    console.log(nearbySuburbs);
+                    // Further processing or presentation of the nearby suburbs
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+}
+
+function suburbSearch() {
+    const geocoder = new MapboxGeocoder({
+      accessToken: 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
+    });
+    var selectedSuburb = 'Hurstville';
+  
+    geocoder.query(selectedSuburb, (error, response) => {
+      if (response && response.features.length > 0) {
+        const coordinates = response.features[0].center;
+  
+        const geocodingClient = mapboxSdk({ accessToken: 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg' });
+        geocodingClient.reverseGeocode({
+          query: [coordinates[0], coordinates[1]],
+          types: ['place'],
+          limit: 10
+        })
+          .send()
+          .then(response => {
+            const suburbs = response.body.features.map(feature => feature.place_name);
+            console.log(suburbs); // Perform further actions with the suburb names
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      } else {
+        console.error(error);
+      }
+    });
+  }

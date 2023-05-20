@@ -1,6 +1,7 @@
 {% include 'isit950/layout.html' %}
 
 {% block body %}
+{% load parse_date %}
 
 <div class="container">
     <h3>Task Detail</h3>
@@ -25,11 +26,12 @@
                     <h7>Questions ({{questions}})</h7>
                 </div>
                 <div>
+                    <div id=""></div>
                     {% if offers %}
                         {% for offer in offers %}
-                        <div class="card mb-3">
+                        <div class="card mb-3 offer-card">
                             <div class="card-body">
-                                <h5 class="card-title">{{offer.user_provider}}</h5>
+                                <div class="offer-title">{{offer.user_provider}}</div>
                                 
                                 <span>{{offer.price}}</span>
                                 <span>{{offer.description}}</span>

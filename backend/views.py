@@ -265,10 +265,16 @@ def getMyTask(request, userId, condition):
             watchlist = Watchlist.objects.all().filter(user=userId)
             serializer = WatchlistSerializer(watchlist, many=True)
             return Response(serializer.data)
+        
+        elif condition == 'posted':
+            taskStatus = 0
+            myTasks = Task.objects.filter(user_id=userId, status=taskStatus).order_by("status","-create_date")
 
         elif condition == 'pending':
             taskStatus = 0
-            myTasks = Task.objects.filter(user_id=userId, offer=True, status=taskStatus).order_by("status","-create_date")
+            myTasks1 = Task.objects.filter(offer=True, status=taskStatus).order_by("status","-create_date")
+            offer_task_ids = Offer.objects.filter(user_id=userId).values_list('task_id', flat=True)
+            myTasks = myTasks1.filter(id__in=offer_task_ids)
 
         elif condition == 'assigned':
             #assigned
@@ -281,8 +287,9 @@ def getMyTask(request, userId, condition):
             myTasks = Task.objects.filter(user_provider_id=userId, status=taskStatus).order_by("status","-create_date")
 
         else:
-            myTasks = Task.objects.filter(user_id=userId).order_by("status","-create_date")
-
+            myTasks1 = Task.objects.filter(user_id=userId).order_by("status","-create_date")
+            myTasks2 = Task.objects.filter(user_provider_id=userId).order_by("status","-create_date")
+            myTasks = myTasks1.union(myTasks2)
 
         serializer = TaskSerializer(myTasks, many=True)
         return Response(serializer.data)

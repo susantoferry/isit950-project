@@ -222,7 +222,9 @@
                             </div>
                         </button>
                         {% else %}
-                        <a href="{% url 'my_task' 'all' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/all' %} active {%endif%}" id="posted-task">
+                        <a href="{% url 'my_task' 'all' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/all' %} active {%endif%}" id="all-task">
+                            All Tasks</a>
+                        <a href="{% url 'my_task' 'posted' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/posted' %} active {%endif%}" id="posted-task">
                             Posted Tasks</a>
                         <a href="{% url 'my_task' 'pending' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/pending' %} active {%endif%}" id="pending-offer">
                             Pending offers</a>

@@ -496,124 +496,179 @@ function showmyTaskDetail(taskId) {
         document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
         document.querySelector('#task-price').innerHTML = `${result.price}`;
         document.querySelector('#task-desc').innerHTML = `${result.description}`;
-        // document.querySelector('#offer-display').innerHTML = `${result.offerDesc} ${result.offerPrice}`;
-        // history.pushState(null, null, `/my-task/?name=${taskId}`)
-        // document.title = `${taskId} - ISIT950 Group Project`;
-        console.log("aaa");
-        fetch(`/api/offer/${taskId}`)
-        .then(response => response.json())
-        .then(offerResult => {
-            if (offerResult.length > 0) {
-                const offerContainer = document.querySelector('#offer-display');
-                offerContainer.innerHTML = ''; // Clear previous content if any
-                
-                const offerTitle = document.createElement('div');
-                offerTitle.classList.add('task-detail-heading');
-                offerTitle.style.letterSpacing = '1px';
-                offerTitle.textContent = "Offer from Service Provider";
-                offerContainer.appendChild(offerTitle);
+            // Determine task status button
+            document.querySelector('.task-stat').innerHTML = "";
 
-                for (let res of offerResult) {
+            var taskStatusCapsule = document.createElement("div")
+            taskStatusCapsule.id = "task-active-lg"
+            
+            if (result.status == 0) {
+                taskStatusCapsule.className = "task-active-lg open"
+                taskStatusCapsule.innerHTML = 'Open'
+            } else if (result.status == 1) {
+                taskStatusCapsule.className = "task-active-lg assigned"
+                taskStatusCapsule.innerHTML = 'Assigned'
+            } else {
+                taskStatusCapsule.className = "task-active-lg completed"
+                taskStatusCapsule.innerHTML = 'completed'
+            }
+
+            document.querySelector('.task-stat').appendChild(taskStatusCapsule)
+
+            if (result.status == 2 && result.is_paid == true) {
+                if (result.user_client_id === getCookieValue('usid')) {
+                    document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                    var leaveRevBtn = document.createElement("div")
+                    leaveRevBtn.innerHTML = ` <a href="" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review</a>`
+                    
+                    var myForm = document.getElementById("formLeaveReview");
+                    myForm.action = `/leave_review/${result.id}`;
+                    
+                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+                    
+                    document.querySelector('.userProvider').value = result.user_provider
+                }
+
+                if (result.user_provider_name === getCookieValue('usid')) {
+                    document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                    var leaveRevBtn = document.createElement("div")
+                    leaveRevBtn.innerHTML = ` <a href="#" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review to client</a>`
+                    
+                    var myForm = document.getElementById("formLeaveReview");
+                    myForm.action = `/leave_review/${result.id}`;
+
+                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+
+                    document.querySelector('.userClient').value = result.user
+                }
+                
+            }
+
+        history.pushState(null, null, `/my-task/?name=${taskId}`)
+        document.title = `${taskId} - ISIT950 Group Project`;
+        
+        if (result.status == 0) {
+            fetch(`/api/offer/${taskId}`)
+            .then(response => response.json())
+            .then(offerResult => {
+                if (offerResult.length > 0) {
+                    const offerContainer = document.querySelector('#offer-display');
+                    offerContainer.innerHTML = ''; // Clear previous content if any
+                    
+                    const offerTitle = document.createElement('div');
+                    offerTitle.classList.add('task-detail-heading');
+                    offerTitle.style.letterSpacing = '1px';
+                    offerTitle.textContent = "Offer from Service Provider";
+                    offerContainer.appendChild(offerTitle);
+    
+                    for (let res of offerResult) {
+                        const offerDiv = document.createElement('div');
+                        offerDiv.classList.add('card', 'mb-3', 'offer-card','col-md-12');
+                        
+                        const cardBody = document.createElement('div');
+                        cardBody.classList.add('card-body');
+    
+                        const titleSpace = document.createElement('div');
+                        titleSpace.classList.add('title-space', 'flexcc', 'col-md-12');
+                        
+                        const imgSpace = document.createElement('div');
+                        imgSpace.classList.add('tasker-profile-left');
+                        
+                        const userImg = document.createElement('img');
+                        userImg.classList.add('tasker-profile');
+                        userImg.width="45";
+                        if (res.img_profile == null){
+                            userImg.src = "/static/images/anonymous_user.png";
+                        } else {
+                            userImg.src = '/static/' + res.img_profile;
+                        }
+                        imgSpace.appendChild(userImg);
+                        titleSpace.appendChild(imgSpace);
+    
+                        const offerTitle = document.createElement('div');
+                        offerTitle.classList.add('offer-title', 'col-md-4');
+                        offerTitle.textContent = res.full_name;
+                        titleSpace.appendChild(offerTitle);
+    
+                        const priceSpace = document.createElement('div');
+                        priceSpace.classList.add('price-space', 'col-md-5');
+    
+                        const offerPriceLabel = document.createElement('span');
+                        offerPriceLabel.classList.add('offer-price-label');
+                        offerPriceLabel.textContent = "Price offered: ";
+                        priceSpace.appendChild(offerPriceLabel);
+    
+                        const offerPrice = document.createElement('span');
+                        offerPrice.classList.add('offer-price');
+                        offerPrice.textContent = '$' + res.price;
+                        priceSpace.appendChild(offerPrice);
+    
+                        titleSpace.appendChild(priceSpace);
+                        cardBody.appendChild(titleSpace);
+    
+                        const button = document.createElement('a');
+                        const link = '/select_tasker/' + res.task_title_to_url + '/' + res.user;
+                        button.href = link;
+                        button.classList.add("btn", "btn-primary", 'col-md-2');
+                        button.innerHTML = "Accept";
+                        titleSpace.appendChild(button);
+    
+                        const dateSpace = document.createElement('div');
+                        dateSpace.classList.add('description-space');
+    
+                        const dateLabel = document.createElement('span');
+                        dateLabel.classList.add('offer-price-label');
+                        dateLabel.textContent = 'Date Offered :  ';
+                        dateSpace.appendChild(dateLabel);
+    
+                        const offerDate= document.createElement('span');
+                        var dateObj = new Date(res.create_date);
+                        var date = dateObj.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
+                        offerDate.textContent = date;
+                        dateSpace.appendChild(offerDate);
+    
+                        cardBody.appendChild(dateSpace);
+    
+                        const descriptionSpace = document.createElement('div');
+                        descriptionSpace.classList.add('description-box');
+                        descriptionSpace.style.borderRadius = '20px';
+                        
+                        const offerDescriptionLabel = document.createElement('div');
+                        offerDescriptionLabel.classList.add('task-detail-heading');
+                        offerDescriptionLabel.textContent = 'Description';
+                        descriptionSpace.appendChild(offerDescriptionLabel);
+    
+                        const offerDescription = document.createElement('div');
+                        offerDescription.textContent = res.description;
+                        descriptionSpace.appendChild(offerDescription);
+    
+                        cardBody.appendChild(descriptionSpace);
+                        
+                        offerDiv.appendChild(cardBody);
+                        offerContainer.appendChild(offerDiv);
+                    }
+                } else {
                     const offerDiv = document.createElement('div');
-                    offerDiv.classList.add('card', 'mb-3', 'offer-card','col-md-12');
+                    offerDiv.classList.add('card', 'mb-3', 'no-offer-card');
                     
                     const cardBody = document.createElement('div');
                     cardBody.classList.add('card-body');
-
-                    const titleSpace = document.createElement('div');
-                    titleSpace.classList.add('title-space', 'flexcc', 'col-md-12');
-                    
-                    const imgSpace = document.createElement('div');
-                    imgSpace.classList.add('tasker-profile-left');
-                    
-                    const userImg = document.createElement('img');
-                    userImg.classList.add('tasker-profile');
-                    userImg.width="45";
-                    if (res.img_profile == null){
-                        userImg.src = "/static/images/anonymous_user.png";
-                    } else {
-                        userImg.src = '/static/' + res.img_profile;
-                    }
-                    imgSpace.appendChild(userImg);
-                    titleSpace.appendChild(imgSpace);
-
-                    const offerTitle = document.createElement('div');
-                    offerTitle.classList.add('offer-title', 'col-md-4');
-                    offerTitle.textContent = res.full_name;
-                    titleSpace.appendChild(offerTitle);
-
-                    const priceSpace = document.createElement('div');
-                    priceSpace.classList.add('price-space', 'col-md-5');
-
-                    const offerPriceLabel = document.createElement('span');
-                    offerPriceLabel.classList.add('offer-price-label');
-                    offerPriceLabel.textContent = "Price offered: ";
-                    priceSpace.appendChild(offerPriceLabel);
-
-                    const offerPrice = document.createElement('span');
-                    offerPrice.classList.add('offer-price');
-                    offerPrice.textContent = '$' + res.price;
-                    priceSpace.appendChild(offerPrice);
-
-                    titleSpace.appendChild(priceSpace);
-                    cardBody.appendChild(titleSpace);
-
-                    const button = document.createElement('a');
-                    const link = '/select_tasker/' + res.task_title_to_url + '/' + res.user;
-                    button.href = link;
-                    button.classList.add("btn", "btn-primary", 'col-md-2');
-                    button.innerHTML = "Accept";
-                    titleSpace.appendChild(button);
-
-                    const dateSpace = document.createElement('div');
-                    dateSpace.classList.add('description-space');
-
-                    const dateLabel = document.createElement('span');
-                    dateLabel.classList.add('offer-price-label');
-                    dateLabel.textContent = 'Date Offered :  ';
-                    dateSpace.appendChild(dateLabel);
-
-                    const offerDate= document.createElement('span');
-                    var dateObj = new Date(res.create_date);
-                    var date = dateObj.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
-                    offerDate.textContent = date;
-                    dateSpace.appendChild(offerDate);
-
-                    cardBody.appendChild(dateSpace);
-
-                    const descriptionSpace = document.createElement('div');
-                    descriptionSpace.classList.add('description-box');
-                    descriptionSpace.style.borderRadius = '20px';
-                    
-                    const offerDescriptionLabel = document.createElement('div');
-                    offerDescriptionLabel.classList.add('task-detail-heading');
-                    offerDescriptionLabel.textContent = 'Description';
-                    descriptionSpace.appendChild(offerDescriptionLabel);
-
-                    const offerDescription = document.createElement('div');
-                    offerDescription.textContent = res.description;
-                    descriptionSpace.appendChild(offerDescription);
-
-                    cardBody.appendChild(descriptionSpace);
-                    
+    
+                    const text = document.createElement('span');
+                    text.textContent = "You have no offer yet";
+                    cardBody.appendChild(text);
+    
                     offerDiv.appendChild(cardBody);
                     offerContainer.appendChild(offerDiv);
                 }
-            } else {
-                const offerDiv = document.createElement('div');
-                offerDiv.classList.add('card', 'mb-3', 'no-offer-card');
-                
-                const cardBody = document.createElement('div');
-                cardBody.classList.add('card-body');
+            })
+        } else {
+            const offerContainer = document.querySelector('#offer-display');
+            offerContainer.innerHTML = ''; // Clear previous content if any
+        }
 
-                const text = document.createElement('span');
-                text.textContent = "You have no offer yet";
-                cardBody.appendChild(text);
-
-                offerDiv.appendChild(cardBody);
-                offerContainer.appendChild(offerDiv);
-            }
-        })
     })
 
 }

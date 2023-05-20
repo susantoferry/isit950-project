@@ -114,9 +114,21 @@ DATABASES = {
         'PORT': '3306',
         'OPTIONS': {
             'sql_mode': 'traditional',
-        }
+        },
+    },
+    'test': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'test_isit950',
+        'USER': 'admin',
+        'PASSWORD': 'password',
+        'HOST': 'awsdbisit950.cmoar4du3hp3.ap-southeast-2.rds.amazonaws.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        },
+    },
     }
-}
+
 
 AUTH_USER_MODEL = "backend.User"
 

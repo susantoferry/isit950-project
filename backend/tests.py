@@ -49,13 +49,10 @@ from .models import *
 from random import randint
 import json
 
-<<<<<<< HEAD
 from random import randint
 
 # Create your tests here.
 
-=======
->>>>>>> 11fe67a (Tests commit)
 class FunctionsTestCase(TestCase):
     def setUp(self):
         category = Category.objects.create(name="category1", slug="category1")
@@ -209,7 +206,6 @@ class FunctionsTestCase(TestCase):
 #         c = Client()
 #         response = c.post('/api/user_login', data=data)
         
-<<<<<<< HEAD
         # Check that the response status code is 200
         self.assertEqual(response.status_code, 404)
         print(response.content)
@@ -228,13 +224,11 @@ class FunctionsTestCase(TestCase):
         print(response.content)
     #CREATE_TASK-----------------------------------------------------------
     def test_create_task(self):
-=======
 #         # Check that the response status code is 200
 #         self.assertEqual(response.status_code, 404)
 #         print(response.content)
 #     #CREATE_TASK-----------------------------------------------------------
 #     def test_create_task(self):
->>>>>>> 11fe67a (Tests commit)
         
 #         data = {"task_title": "Kids bike service1",
 #         "description": "I have 3 kids bike I want serviced to make sure they’re good to ride (Trek 12 inch, Cannondale 16 inch and Liv Adore 16 inch)",

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*-----Buttons-----*/
 .button {
     position: relative;
@@ -176,4 +177,156 @@
 
 .p-1 {
     padding: 0.25rem!important;
+=======
+/*-----Buttons-----*/
+.button {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    font-size: 12px;
+    padding: 1rem 2.5rem;
+    line-height: 1;
+    text-align: center;
+    font-weight: 600;
+    z-index: 1;
+    border: 1px solid transparent;
+    -webkit-border-radius: 30px;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.btnprimary{
+    background: #6e27a333;
+    width: 130px;
+    padding: 10px 0;
+    display: block;
+}
+
+.btnsave-primary {
+    background: #0a65fc;
+    width: 150px;
+    padding: 15px 0;
+    display: block;
+    color: #fff;
+    margin: 0 20px;
+}
+
+.btn-membership {
+    width: 230px;
+    font-size: .9rem;
+    letter-spacing: .5px;
+}
+
+.btncancel-outline {
+    border: 1px solid #ff3825eb;
+    width: 150px;
+    padding: 15px 0;
+    display: block;
+    color: #ff3825eb;
+    margin: 0 20px;
+    background: transparent;
+}
+
+.menu-bar-task {
+    display: inline-block;
+    background: transparent;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 24px;
+    box-shadow: none;
+}
+
+.menu-bar-task:hover {
+    color: #861286;   
+}
+
+.menu-bar-task.active {
+    background: #6e27a321;
+    border: none;
+    color: #861286;
+    border-radius: 50px;
+}
+
+.btnsecondary {
+    background: #E9E7E7;
+    width: 115px;
+    padding: 10px 0;
+    display: block;
+}
+
+.btnprimary-outline {
+    border: 1px solid #6e27a3bf;
+    width: 130px;
+    padding: 10px 0;
+    display: block;
+}
+
+.btnprimary.disabled, .btnprimary:disabled {
+    color: #fff;
+    background-color: #6e27a333;
+    border-color: #6e27a333;
+    cursor: not-allowed;
+}
+
+.btnprimary:hover, .btnprimary:focus{
+    background: #6e27a357;
+    border: 1px solid #6e27a357;
+}
+
+.btnsave-primary:hover {
+    background: #4084f4;
+}
+
+.btncancel-outline:hover {
+    background: #f44040;
+    color: #fff;
+}
+
+.btnsecondary.disabled, .btnsecondary:disabled {
+    color: #fff;
+    background-color: #E9E7E7;
+    border-color: #E9E7E7;
+    cursor: not-allowed;
+}
+
+.btnsecondary:hover, .btnsecondary:focus{
+    background: #d1d1d1;
+    border: 1px solid #d1d1d1;
+}
+
+.btn-nav-sort {
+    width: 145px;
+}
+
+.btn-icon-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.bg-primary-subtle {
+    background-color: #031633!important;
+}
+
+.text-primary-emphasis {
+    color: #6ea8fe!important;
+}
+
+.border-primary-subtle {
+    border-color: #084298!important;
+}
+
+.bi {
+    vertical-align: -0.125em;
+    fill: currentColor;
+}
+
+.pe-2 {
+    padding-right: 0.5rem!important;
+}
+
+.p-1 {
+    padding: 0.25rem!important;
+>>>>>>> 202b53df5cc0aab769fb16d3064981b946785e74
 }

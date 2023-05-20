@@ -20,25 +20,34 @@
 
         <div>
             {% if myTaskDetail.status == 0 %}
-                <div style="display: flex;">
+                <div style="display: flex;" class="mb-3">
                     <h7>Offer ({{ offers | length }})</h7>
                     <h7>Questions ({{questions}})</h7>
                 </div>
                 <div>
-                    {% for offer in offers %}
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            {{offer}}
-                            <h5 class="card-title">{{offer.user_provider}}</h5>
-                            <span>{{offer.price}}</span>
-                            <span>{{offer.description}}</span>
-                            <span>{{offer.create_date | date:'m-d-Y H:i A'}}</span>
-                            <img class="tasker-profile pos-abs" src="https://eu7cmie.cloudimg.io/v7/https://assets-airtasker-com.s3.amazonaws.com/uploads/user/avatar/3411484/image-ab53f784dc250dc55658f54b97629dad.jpg?width=80&amp;height=80">
-                            <p class="card-text">tes</p>
-                            <a href="{% url 'select_sp' offer.task %}" class="btn btn-primary">Accept</a>
+                    {% if offers %}
+                        {% for offer in offers %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{offer.user_provider}}</h5>
+                                
+                                <span>{{offer.price}}</span>
+                                <span>{{offer.description}}</span>
+                                <span>{{offer.create_date | date:'m-d-Y H:i A'}}</span>
+                                <img class="tasker-profile pos-abs" src="">
+                                <p class="card-text">tes</p>
+                                {{ offer.user.img_profile }}
+                                <a href="{% url 'select_tasker' offer.task_title_to_url offer.user %}" class="btn btn-primary">Accept</a>
+                            </div>
                         </div>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <span>You have no offer from Service Provider</span>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             {% else %}
                 <div>

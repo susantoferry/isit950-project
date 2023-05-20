@@ -13,6 +13,7 @@
     -webkit-border-radius: 30px;
     border-radius: 30px;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .btnprimary{
@@ -22,14 +23,45 @@
     display: block;
 }
 
-.btnsave-primary {
+.btnapply {
+    display: block;
+    margin: 0 auto; 
+    background: #9162b42b;
+}
+
+.btnPayment {
     background: #0a65fc;
+    width: 130px;
+    padding: 10px 0;
+    display: block;
+}
+
+.btn-capsule {
     width: 150px;
-    padding: 15px 0;
+    padding: 10px 0;
     display: block;
     color: #fff;
     margin: 0 20px;
+    margin: 0 auto;
 }
+
+.btnsave-primary {
+    background: #0a65fc;
+
+}
+
+.btn-progress {
+    background: #ddc63b;
+}
+
+.btn-notify-completion {
+    background: #0a65fc;
+}
+
+.btn-notify-completion:hover {
+    background: #3c80f2;
+    color: #fff;
+  }
 
 .btn-membership {
     width: 230px;
@@ -39,11 +71,7 @@
 
 .btncancel-outline {
     border: 1px solid #ff3825eb;
-    width: 150px;
-    padding: 15px 0;
-    display: block;
     color: #ff3825eb;
-    margin: 0 20px;
     background: transparent;
 }
 

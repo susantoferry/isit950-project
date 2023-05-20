@@ -1,14 +1,14 @@
-const Toast = Swal.mixin({
-    toast: true,
-    position: 'bottom-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-    }
-})
+// const Toast = Swal.mixin({
+//     toast: true,
+//     position: 'bottom-end',
+//     showConfirmButton: false,
+//     timer: 3000,
+//     timerProgressBar: true,
+//     didOpen: (toast) => {
+//         toast.addEventListener('mouseenter', Swal.stopTimer)
+//         toast.addEventListener('mouseleave', Swal.resumeTimer)
+//     }
+// })
 
 let arrow = document.querySelectorAll(".arrow");
 
@@ -18,15 +18,6 @@ for (var i = 0; i < arrow.length; i++) {
         arrowParent.classList.toggle("showMenu");
     });
 }
-
-// document.getElementById("comment-text").addEventListener("focus", function () {
-//     $(".comment-form").addClass("comment-onfocus");
-// });
-
-// document.getElementById("comment-text").addEventListener("focusout", function () {
-//     $(".comment-form").removeClass("comment-onfocus");
-// });
-
 
 function checkPostValue() {
     postValue = document.getElementById('comment-text').value;
@@ -148,10 +139,15 @@ $(document).ready(function () {
     })
 
     $('.task-bookmark123').click(function (event) {
-
-
         var taskId = $(this).attr('data-task-id');
         showDetail(taskId)
+        
+    })
+
+    $('.task-bookmark-mytask').click(function (event) {
+
+        var taskId = $(this).attr('data-task-id');
+        showmyTaskDetail(taskId)
 
     })
 
@@ -164,7 +160,7 @@ $(document).ready(function () {
         document.title = 'ISIT950 Group Project';
     })
 
-    $('#offer-btn').click(function ($e) {
+    $(document).on('click', '#offer-btn', function(event) {
         taskPrice = parseFloat(document.getElementById("task-price").innerHTML).toFixed(0)
 
         offerPrice = taskPrice;
@@ -191,7 +187,7 @@ $(document).ready(function () {
         const adminFee = -Math.abs(Number(document.querySelector('#admin-fee').innerText));
         const totalEarn = document.querySelector('#total-earn').innerText;
         const urlParams = new URLSearchParams(window.location.search);
-        const task = urlParams.get('name')
+        const task = urlParams.get('name');
 
         fetch(`/api/offer`, {
             method: "POST",
@@ -218,8 +214,6 @@ $(document).ready(function () {
                     icon: 'success',
                     title: 'Success',
                     text: 'Your offer has been saved successfully'
-                }).then((result) => {
-                    location.reload();
                 })
                 // success_mail();
                 // location.reload();
@@ -304,7 +298,24 @@ $(document).ready(function () {
         } else {
             console.log(false)
         }
-    })    
+
+        
+    })
+
+    // $('#pending-offer').click(function() {
+    //     var condition = $(this).data('2');
+    //     $.ajax({
+    //       url: '/my-task/',
+    //       data: {
+    //         condition: condition
+    //       },
+    //       dataType: 'json',
+    //       success: function(data) {
+    //         // Code to update the HTML with the filtered data
+    //       }
+    //     });
+    //   });
+
 });
 
 function checkExpiryCCMonth(expiryDate) {
@@ -359,9 +370,8 @@ function showDetail(taskId) {
     fetch(`/api/task/${taskId}`)
         .then(response => response.json())
         .then(result => {
-            console.log(result)
             document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
-            document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
+            // document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
             document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
             document.querySelector('#task-location').innerHTML = `${result.location}`;
             document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
@@ -371,29 +381,345 @@ function showDetail(taskId) {
             // Determine apply button or cancel button if status is 0/open
             document.querySelector('.taskButtonEditApply').innerHTML = "";
 
-            var buttonApplyCancel = document.createElement("div")
-            console.log(result.user_client_id)
-            console.log(getCookieValue('usid'))
-            if (result.user_client_id !== getCookieValue('usid')) {
-                buttonApplyCancel.innerHTML = `<button class="button btnprimary" id="offer-btn"
-                    style="display: block;margin: 0 auto; background: #9162b42b;"
-                    data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`    
+            var versatileBtn = document.createElement("div")
+                if (result.status == 0) {
+                    if (result.user_client_id !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `<button class="button btnprimary btnapply" id="offer-btn"
+                            data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`    
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <a href="/edit_task/${result.task_title_to_url}" class="button btnprimary btnapply">Edit task</a>`
+                    }
+                }
+
+                if (result.status == 1) {
+                    if (result.user_provider_name !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `<a href="#" class="button btn-capsule btn-progress">Task in progress</a>`
+                    } else {
+                        console.log(result)
+                        versatileBtn.innerHTML = `
+                            <a href="/update_completion/${result.task_title_to_url}/${result.user}" class="button btn-capsule btn-notify-completion">
+                                Notify Completion
+                            </a>`
+                    }
+                }
+
+                if (result.status == 2 && result.is_paid == false) {
+                    if (result.user_client_id !== getCookieValue('usid')) {
+                        if (result.user_provider_name !== getCookieValue('usid')) {
+                            versatileBtn.innerHTML = `
+                                <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                        } else {
+                            versatileBtn.innerHTML = `
+                            <div id="task-active-lg" class="task-active-lg completed">Waiting payment</div>`
+                        }
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <a href="#" class="button btn-capsule btnsave-primary">Complete Payment</a>`
+                    }
+                }
+                if (result.status == 2 && result.is_paid == true ) {
+                    versatileBtn.innerHTML = `
+                    <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                }
+            // }
+            document.querySelector('.taskButtonEditApply').appendChild(versatileBtn)
+            
+            // Determine task status button
+            document.querySelector('.task-stat').innerHTML = "";
+
+            var taskStatusCapsule = document.createElement("div")
+            taskStatusCapsule.id = "task-active-lg"
+            
+            if (result.status == 0) {
+                taskStatusCapsule.className = "task-active-lg open"
+                taskStatusCapsule.innerHTML = 'Open'
+            } else if (result.status == 1) {
+                taskStatusCapsule.className = "task-active-lg assigned"
+                taskStatusCapsule.innerHTML = 'Assigned'
             } else {
-                buttonApplyCancel.innerHTML = `<a href="/edit_task/${result.task_title_to_url}" class="button btnprimary" 
-                    style="display: block;margin: 0 auto; background: #f0675866;">
-                    Edit task</a>`
+                taskStatusCapsule.className = "task-active-lg completed"
+                taskStatusCapsule.innerHTML = 'completed'
             }
 
-            document.querySelector('.taskButtonEditApply').appendChild(buttonApplyCancel)
-            // buttonApplyCancel = `<button class="button btnprimary" id="offer-btn"
-            // style="display: block;margin: 0 auto; background: #9162b42b;"
-            // data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`
+            document.querySelector('.task-stat').appendChild(taskStatusCapsule)
 
+            if (result.status == 2 && result.is_paid == true) {
+                if (result.user_client_id === getCookieValue('usid')) {
+                    document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                    var leaveRevBtn = document.createElement("div")
+                    leaveRevBtn.innerHTML = ` <a href="" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review</a>`
+                    
+                    var myForm = document.getElementById("formLeaveReview");
+                    myForm.action = `/leave_review/${result.id}`;
+                    
+                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+                    
+                    document.querySelector('.userProvider').value = result.user_provider
+                }
+
+                if (result.user_provider_name === getCookieValue('usid')) {
+                    document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                    var leaveRevBtn = document.createElement("div")
+                    leaveRevBtn.innerHTML = ` <a href="#" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review to client</a>`
+                    
+                    var myForm = document.getElementById("formLeaveReview");
+                    myForm.action = `/leave_review/${result.id}`;
+
+                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+
+                    document.querySelector('.userClient').value = result.user
+                }
+                
+            }
+            
             history.pushState(null, null, `/tasks/?name=${taskId}`)
             document.title = `${taskId} - ISIT950 Group Project`;
         })
 }
 
+function showmyTaskDetail(taskId) {
+    if ($(".task-detail-container").hasClass("no-selected")) {
+        $(".task-detail-container").removeClass("no-selected")
+    }
+    
+    fetch(`/api/task/${taskId}`)
+    .then(response => response.json())
+    .then(result => {
+        
+        document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
+        document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
+        document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
+        document.querySelector('#task-location').innerHTML = `${result.location}`;
+        document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
+        document.querySelector('#task-price').innerHTML = `${result.price}`;
+        document.querySelector('#task-desc').innerHTML = `${result.description}`;
+                    
+        // Determine apply button or cancel button if status is 0/open
+            document.querySelector('.taskButtonEditApply').innerHTML = "";
+
+            var versatileBtn = document.createElement("div")
+                if (result.status == 0) {
+                    if (result.user_client_id !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `<button class="button btnprimary btnapply" id="offer-btn"
+                            data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`    
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <a href="/edit_task/${result.task_title_to_url}" class="button btnprimary btnapply">Edit task</a>`
+                    }
+                }
+
+                if (result.status == 1) {
+                    if (result.user_provider_name !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `<a href="#" class="button btn-capsule btn-progress">Task in progress</a>`
+                    } else {
+                        console.log(result)
+                        versatileBtn.innerHTML = `
+                            <a href="/update_completion/${result.task_title_to_url}/${result.user}" class="button btn-capsule btn-notify-completion">
+                                Notify Completion
+                            </a>`
+                    }
+                }
+
+                if (result.status == 2 && result.is_paid == false) {
+                    if (result.user_client_id !== getCookieValue('usid')) {
+                        if (result.user_provider_name !== getCookieValue('usid')) {
+                            versatileBtn.innerHTML = `
+                                <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                        } else {
+                            versatileBtn.innerHTML = `
+                            <div id="task-active-lg" class="task-active-lg completed">Waiting payment</div>`
+                        }
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <a href="#" class="button btn-capsule btnsave-primary">Complete Payment</a>`
+                    }
+                }
+                if (result.status == 2 && result.is_paid == true ) {
+                    versatileBtn.innerHTML = `
+                    <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                }
+            // }
+            document.querySelector('.taskButtonEditApply').appendChild(versatileBtn)    
+        
+        // Determine task status button
+            document.querySelector('.task-stat').innerHTML = "";
+
+            var taskStatusCapsule = document.createElement("div")
+            taskStatusCapsule.id = "task-active-lg"
+            
+            if (result.status == 0) {
+                taskStatusCapsule.className = "task-active-lg open"
+                taskStatusCapsule.innerHTML = 'Open'
+            } else if (result.status == 1) {
+                taskStatusCapsule.className = "task-active-lg assigned"
+                taskStatusCapsule.innerHTML = 'Assigned'
+            } else {
+                taskStatusCapsule.className = "task-active-lg completed"
+                taskStatusCapsule.innerHTML = 'completed'
+            }
+
+            document.querySelector('.task-stat').appendChild(taskStatusCapsule)
+
+            if (result.status == 2 && result.is_paid == true) {
+                if (result.user_client_id === getCookieValue('usid')) {
+                    document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                    var leaveRevBtn = document.createElement("div")
+                    leaveRevBtn.innerHTML = ` <a href="" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review</a>`
+                    
+                    var myForm = document.getElementById("formLeaveReview");
+                    myForm.action = `/leave_review/${result.id}`;
+                    
+                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+                    
+                    document.querySelector('.userProvider').value = result.user_provider
+                }
+
+                if (result.user_provider_name === getCookieValue('usid')) {
+                    document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                    var leaveRevBtn = document.createElement("div")
+                    leaveRevBtn.innerHTML = ` <a href="#" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review to client</a>`
+                    
+                    var myForm = document.getElementById("formLeaveReview");
+                    myForm.action = `/leave_review/${result.id}`;
+
+                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+
+                    document.querySelector('.userClient').value = result.user
+                }
+                
+            }
+
+        history.pushState(null, null, `/my-task/?name=${taskId}`)
+        document.title = `${taskId} - ISIT950 Group Project`;
+        
+        if (result.status == 0) {
+            fetch(`/api/offer/${taskId}`)
+            .then(response => response.json())
+            .then(offerResult => {
+                if (offerResult.length > 0) {
+                    const offerContainer = document.querySelector('#offer-display');
+                    offerContainer.innerHTML = ''; // Clear previous content if any
+                    
+                    const offerTitle = document.createElement('div');
+                    offerTitle.classList.add('task-detail-heading');
+                    offerTitle.style.letterSpacing = '1px';
+                    offerTitle.textContent = "Offer from Service Provider";
+                    offerContainer.appendChild(offerTitle);
+    
+                    for (let res of offerResult) {
+                        const offerDiv = document.createElement('div');
+                        offerDiv.classList.add('card', 'mb-3', 'offer-card','col-md-12');
+                        
+                        const cardBody = document.createElement('div');
+                        cardBody.classList.add('card-body');
+    
+                        const titleSpace = document.createElement('div');
+                        titleSpace.classList.add('title-space', 'flexcc', 'col-md-12');
+                        
+                        const imgSpace = document.createElement('div');
+                        imgSpace.classList.add('tasker-profile-left');
+                        
+                        const userImg = document.createElement('img');
+                        userImg.classList.add('tasker-profile');
+                        userImg.width="45";
+                        if (res.img_profile == null){
+                            userImg.src = "/static/images/anonymous_user.png";
+                        } else {
+                            userImg.src = '/static/' + res.img_profile;
+                        }
+                        imgSpace.appendChild(userImg);
+                        titleSpace.appendChild(imgSpace);
+    
+                        const offerTitle = document.createElement('div');
+                        offerTitle.classList.add('offer-title', 'col-md-4');
+                        offerTitle.textContent = res.full_name;
+                        titleSpace.appendChild(offerTitle);
+    
+                        const priceSpace = document.createElement('div');
+                        priceSpace.classList.add('price-space', 'col-md-5');
+    
+                        const offerPriceLabel = document.createElement('span');
+                        offerPriceLabel.classList.add('offer-price-label');
+                        offerPriceLabel.textContent = "Price offered: ";
+                        priceSpace.appendChild(offerPriceLabel);
+    
+                        const offerPrice = document.createElement('span');
+                        offerPrice.classList.add('offer-price');
+                        offerPrice.textContent = '$' + res.price;
+                        priceSpace.appendChild(offerPrice);
+    
+                        titleSpace.appendChild(priceSpace);
+                        cardBody.appendChild(titleSpace);
+    
+                        const button = document.createElement('a');
+                        const link = '/select_tasker/' + res.task_title_to_url + '/' + res.user;
+                        button.href = link;
+                        button.classList.add("btn", "btn-primary", 'col-md-2');
+                        button.innerHTML = "Accept";
+                        titleSpace.appendChild(button);
+    
+                        const dateSpace = document.createElement('div');
+                        dateSpace.classList.add('description-space');
+    
+                        const dateLabel = document.createElement('span');
+                        dateLabel.classList.add('offer-price-label');
+                        dateLabel.textContent = 'Date Offered :  ';
+                        dateSpace.appendChild(dateLabel);
+    
+                        const offerDate= document.createElement('span');
+                        var dateObj = new Date(res.create_date);
+                        var date = dateObj.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric'});
+                        offerDate.textContent = date;
+                        dateSpace.appendChild(offerDate);
+    
+                        cardBody.appendChild(dateSpace);
+    
+                        const descriptionSpace = document.createElement('div');
+                        descriptionSpace.classList.add('description-box');
+                        descriptionSpace.style.borderRadius = '20px';
+                        
+                        const offerDescriptionLabel = document.createElement('div');
+                        offerDescriptionLabel.classList.add('task-detail-heading');
+                        offerDescriptionLabel.textContent = 'Description';
+                        descriptionSpace.appendChild(offerDescriptionLabel);
+    
+                        const offerDescription = document.createElement('div');
+                        offerDescription.textContent = res.description;
+                        descriptionSpace.appendChild(offerDescription);
+    
+                        cardBody.appendChild(descriptionSpace);
+                        
+                        offerDiv.appendChild(cardBody);
+                        offerContainer.appendChild(offerDiv);
+                    }
+                } else {
+                    const offerDiv = document.createElement('div');
+                    offerDiv.classList.add('card', 'mb-3', 'no-offer-card');
+                    
+                    const cardBody = document.createElement('div');
+                    cardBody.classList.add('card-body');
+    
+                    const text = document.createElement('span');
+                    text.textContent = "You have no offer yet";
+                    cardBody.appendChild(text);
+    
+                    offerDiv.appendChild(cardBody);
+                    offerContainer.appendChild(offerDiv);
+                }
+            })
+        } else {
+            const offerContainer = document.querySelector('#offer-display');
+            offerContainer.innerHTML = ''; // Clear previous content if any
+        }
+
+    })
+
+}
 
 function accept_offer() {
     const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
@@ -490,3 +816,102 @@ function bookmark(getButton, taskId) {
     //     }
     // })
 }
+
+// function getTaskDetail() {
+
+//     fetch(`/api/task/${id}`, {
+//         method: 'GET',
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+
+//         })
+
+// }
+
+function redirectToURL(location) {
+
+    if (location == 'Home'){
+        location.href = "{% url 'task' %}";
+    }
+    if (location == 'MyTask'){
+        location.href = "{% url 'myTask' 'all' %}";
+    }
+    if (location == 'Membership'){
+        location.href = "{% url 'edit_profile' %}"
+    }
+    else{
+        location.href = "{% url '404' %}"
+    }
+
+}
+
+function returnNearSuburb(location){
+    // Geocode the selected suburb
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
+    var geocodingClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
+    geocodingClient.geocoding.forwardGeocode({
+        query: location,
+        limit: 1
+    })
+    .send()
+    .then(response => {
+        if (response && response.body && response.body.features && response.body.features.length > 0) {
+            const selectedSuburb = response.body.features[0];
+            const selectedSuburbCoordinates = selectedSuburb.center;
+
+            // Query for nearby suburbs
+            geocodingClient.geocoding.reverseGeocode({
+                query: selectedSuburbCoordinates,
+                types: ['postcode', 'locality'],
+                limit: 50, // Adjust the limit as needed
+                radius: 50000 // Specify the radius in meters (50 km in this case)
+            })
+            .send()
+            .then(response => {
+                if (response && response.body && response.body.features) {
+                    const nearbySuburbs = response.body.features.map(suburb => suburb.text);
+                    console.log(nearbySuburbs);
+                    // Further processing or presentation of the nearby suburbs
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+}
+
+function suburbSearch() {
+    const geocoder = new MapboxGeocoder({
+      accessToken: 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
+    });
+    var selectedSuburb = 'Hurstville';
+  
+    geocoder.query(selectedSuburb, (error, response) => {
+      if (response && response.features.length > 0) {
+        const coordinates = response.features[0].center;
+  
+        const geocodingClient = mapboxSdk({ accessToken: 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg' });
+        geocodingClient.reverseGeocode({
+          query: [coordinates[0], coordinates[1]],
+          types: ['place'],
+          limit: 10
+        })
+          .send()
+          .then(response => {
+            const suburbs = response.body.features.map(feature => feature.place_name);
+            console.log(suburbs); // Perform further actions with the suburb names
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      } else {
+        console.error(error);
+      }
+    });
+  }

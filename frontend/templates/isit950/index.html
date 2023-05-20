@@ -5,8 +5,8 @@
 <div style="background: #f0f0f0;">
     <div class="task-content">
         <div class="task-content-overlay">
-            {% include "isit950/task.html" %}
 
+            {% include "isit950/task.html" %}
 
             <div class="task-detail-wrapper task-blank">
                 <div id='map'></div>
@@ -15,7 +15,7 @@
                         mapboxgl.accessToken = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
                         const map = new mapboxgl.Map({
                             container: 'map', // container ID
-                            style: 'mapbox://styles/mapbox/streets-v12', // style URL
+                            style: 'mapbox://styles/mapbox/outdoors-v12?optimize=true', // style URL
                             center: [150.893, -34.424], // starting position [lng, lat]
                             zoom: 12, // starting zoom
                         });
@@ -56,12 +56,7 @@
                 });
                 </script>
                 {% include "isit950/task_detail.html" %}
-            </div>
-            
-            
-            
-            
-            
+            </div> 
 
         </div>
     </div>

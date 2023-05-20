@@ -1,5 +1,5 @@
 {% extends 'isit950/layout.html' %}
-
+{% csrf_token %}
 {% block body %}
 
 <style>
@@ -435,15 +435,28 @@
         justify-content: space-evenly;
         margin-bottom: 20px;
     }
-</style>
 
+    .paymentSummary__text {
+        color:black;
+}
+
+    .paymentSummary {
+        text-align: center;
+        font-weight: 600;
+        margin-bottom: 10px;
+        padding-top: 25px;
+        font-size: 32px;
+}
+</style>
+{% if request.user.is_authenticated %}
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2 id="heading">Submit your Task Request</h2>
                 <p>Fill all form field to go to next step</p>
-                <form id="msform">
+                <form id="msform" method="post" action="{% url 'create_task' %}" novalidate>
+                    {% csrf_token %}
                     <!-- progressbar -->
                     <ul id="progressbar">
                         <li class="fm-active" id="account"><strong>Task & Time & Location</strong></li>
@@ -472,26 +485,27 @@
                             </div>
                             <div class="textarea">
                                 <div class="innertextarea">
-                                    <textarea class="task-desc" name="task-desc" placeholder="Give this task a title..."
-                                        rows="1"></textarea>
+                                    <input type="text" name="task_title" placeholder="Give this task a title..." />
+<!--                                     <textarea class="task-desc" name="task_title" placeholder="Give this task a title..."
+                                        rows="1"></textarea> -->
                                 </div>
                             </div>
                             <div class="taskQuestion">Select job type</div>
 
-                            <select class="form-select" aria-label="Default select example">
+                            <select class="form-select" aria-label="Default select example" name="category">
                                 <option selected>Select job</option>
-                                <option value="1">Carpenter</option>
-                                <option value="2">Electrician</option>
-                                <option value="3">Fence Installation</option>
-                                <option value="3">Fly Screen Repairs</option>
-                                <option value="3">Gardening</option>
-                                <option value="3">House Cleaning</option>
-                                <option value="3">Oven Repairs</option>
-                                <option value="3">Painter</option>
-                                <option value="3">Pest Control</option>
-                                <option value="3">Plumber</option>
-                                <option value="3">Roof Cleaning</option>
-                                <option value="3">Tree Removal</option>
+                                <option value="1">Locksmith</option>
+                                <option value="2">Bicycle Repair</option>
+                                <option value="3">Bricklayer</option>
+                                <option value="4">Carpenter</option>
+                                <option value="5">Commercial Cleaning</option>
+                                <option value="6">Pest Control</option>
+                                <option value="7">Removalist</option>
+                                <option value="8">Furniture Assembly</option>
+                                <option value="9">Lawn Mowing</option>
+                                <option value="10">Professional Woodcutting</option>
+                                <option value="11">Roof Cleaning</option>
+                                <option value="12">Tree Removal</option>
                             </select>
 
 
@@ -503,21 +517,18 @@
                             <div class="date-input">
                                 <input type="date" id="date-input" name="date" class="form-control" />
                             </div>
-                            <div class="time-input">
-                                <input type="time" id="time-input" name="time" class="form-control" />
-                            </div>
 
                             <div class="j-input">
                                 <div>
-                                    <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off"
+                                    <input type="radio" class="btn-check" name="dateType" id="deadline" autocomplete="off"
                                         checked>
-                                    <label class="btn btn-secondary" for="option1">Set this date as deadline</label>
+                                    <label class="btn btn-secondary" for="deadline">Set this date as deadline</label>
                                 </div>
 
                                 <div style="margin-left: 10px;">
-                                    <input type="radio" class="btn-check" name="options" id="option2"
+                                    <input type="radio" class="btn-check" name="dateType" id="specificDate"
                                         autocomplete="off">
-                                    <label class="btn btn-secondary" for="option2">Job done at specific date</label>
+                                    <label class="btn btn-secondary" for="specificDate">Job done at specific date</label>
                                 </div>
 
                             </div>
@@ -554,7 +565,7 @@
                                     <h2 class="steps">Step 2 - 4</h2>
                                 </div>
                             </div> <label class="fieldlabels taskQuestion">Anything you want to let the professionals know?</label>
-                            <input type="text" name="fname" placeholder="Write some details here" />
+                            <input type="text" name="task_description" placeholder="Write some details here" />
                         </div> <input type="button" name="next" class="next action-button" value="Next" /> <input
                             type="button" name="previous" class="previous action-button-previous" value="Previous" />
                     </fieldset>
@@ -595,9 +606,9 @@
                             </div>
 
                         </div>
-                        <input type="button" name="next" class="next action-button" value="Pay" /> 
+                        <input type="button" name="next" class="next action-button" value="Submit" /> 
                         <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                        <input type="button" name="GetMembership" class="next action-button" value="Get Membership" />
+                        <!-- <input type="button" name="GetMembership" class="next action-button" value="Get Membership" /> -->
                     </fieldset>
 
                     <fieldset>
@@ -620,10 +631,47 @@
                                         may see your service request</h5>
                                 </div>
                             </div>
-                            <input type="button" name="BackToHomePage" class="next action-button"
-                                value="Back To Home Page" />
-                            <input type="button" name="GoToMyTask" class="next action-button" value="Go To My Task" />
+
+                            <div class="paymentSummary">Payment Summary</div>
+                            <div>
+                                <div class="rectangletextarea">    
+
+                        <div class="rectangleinnertextarea">
+                        
+                            <div class="paymentSummary__text">Task number</div>
+                            <div class="paymentSummary__text">#00000000</div>
                         </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div class="paymentSummary__text">Task type</div>
+                            <div class="paymentSummary__text">Oven repair</div>
+                        </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div class="paymentSummary__text">Issue date</div>
+                            <div class="paymentSummary__text">19/04/2023</div>
+                        </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div>Task fee</div>
+                            <div>{{ task.price}}</div>
+                        </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div>Booking fee</div>
+                            <div>{{ task.booking_price}}</div>
+                        </div>
+
+                        <div class="rectangleinnertextarea">
+                            <div class="paymentSummary__text">Total</div>
+                            <div class="paymentSummary__text">{{ task.total_price}}</div>
+                        </div>
+
+
+                        </div>
+                        <a href="{% url 'index' %}" class="btn action-button">Back To Home</a>
+                        <a href="{% url 'my_task' 'all' %}" class="btn action-button">See My Task</a>
+                        
                     </fieldset>
 
 
@@ -709,6 +757,8 @@
         $(".submit").click(function () {
             return false;
         })
+
+        $(".redirect").click(redirectToURL())
 
     });
 
@@ -828,7 +878,7 @@
 
 
 </script>
-
+{%endif%}
 <!-- Modified code from: https://codepen.io/monbrielle/pen/dyYRgPm -->
 
 {% endblock %}

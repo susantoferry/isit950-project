@@ -15,11 +15,15 @@ import requests
 import re
 from urllib.parse import urlparse
 import hashlib
+import time
 
 # Create your views here.
 
 def index(request):
     return redirect("tasks")
+
+def errorPage(request):
+    return render(request, "404.html")
 
 def profile(request):
 
@@ -43,7 +47,7 @@ def editProfile(request):
         if profileResp.status_code == 200 and skillsResp.status_code == 200:
             profile = profileResp.json()
             skills = skillsResp.json()
-            
+
             return render(request, "isit950/account/profile/edit_profile.html", {
                 "profile": profile,
                 "skills": skills
@@ -65,10 +69,12 @@ def editProfile(request):
 
             if imgProfile != "":
                 profile.img_profile = make_thumbnail(request.FILES["imgProfile"], (100,100), "profiles")
-                delete_image(oldImgProfile)
+                if oldImgProfile:
+                    delete_image(oldImgProfile)
             if imgBg != "":
                 profile.img_background = make_thumbnail(request.FILES["imgBg"], (1020,200), "profiles_bg")
-                delete_image(oldImgBg)
+                if oldImgBg:
+                    delete_image(oldImgBg)
 
             profile.description = request.POST["description"]
             profile.address = request.POST["location"]
@@ -90,17 +96,17 @@ def editProfile(request):
 def tasks(request):
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
-    
+
     # firstTaskDetail = tasks[0]["id"]
     # taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
     # taskDetail = taskDetailResp.json()
 
     # commentResp = requests.get(f"{restServer}question/{firstTaskDetail}")
     # comments = commentResp.json()
-    
+
     # parentQuestion = Question.objects.filter(task_id=firstTaskDetail, parent_id=None).order_by("-create_date")
     # childQuestion = Question.objects.filter(task_id=firstTaskDetail).exclude(parent_id=None)
-    
+
     response =  render(request, "isit950/index.html", {
         "tasks": tasks,
         # "taskDetail": taskDetail,
@@ -109,19 +115,18 @@ def tasks(request):
         # "parentQuestion": parentQuestion,
         # "childQuestion": childQuestion
     })
-    
+
     if request.user.is_authenticated and not request.COOKIES.get('usid'):
         response.set_cookie(key='usid', value=request.user.username, max_age=settings.SESSION_COOKIE_AGE)
-        
+
     return response
 
 def taskDetail(request, slug):
-    
+
     taskId = slug.rsplit('-', 1)[-1]
-    
     taskResp = requests.get(restServer + "task")
     tasks = taskResp.json()
-    
+
     taskDetailResp = requests.get(restServer + 'task/' + str(taskId))
     taskDetail = taskDetailResp.json()
 
@@ -142,24 +147,24 @@ def taskDetail(request, slug):
 def searchTask(request):
     params = {
                 'search_keyword': request.GET.get('search_keyword', None),
-                'category': request.GET.getlist('category', None), 
+                'category': request.GET.getlist('category', None),
                 'min_price': request.GET.get('min_price', 0),
                 'max_price': request.GET.get('max_price', 9999),
                 'location': request.GET.get('location', None),
-                'sort_type': request.GET.get('sort_type', None)      
+                'sort_type': request.GET.get('sort_type', None)
             }
-    
+
     searchTaskResp = requests.get(restServer + "search_task", params=params)
     searchTask = searchTaskResp.json()
 
     return render(request, "isit950/index.html", {
-        "tasks": searchTask    
+        "tasks": searchTask
     })
 
 def createTask(request):
     if request.method == 'GET':
         # print(decryptString(request.COOKIES.get('usid')))
-        
+
         catResp = requests.get(restServer + "category")
         categories = catResp.json()
 
@@ -231,7 +236,6 @@ def editTask(request, taskId):
             'content': 2
         }
         
-        # return HttpResponseRedirect(reverse('edit_task', args=[taskId]))
         taskRequest = requests.put(f"{restServer}task/{taskId}", json=taskData)
 
         if taskRequest.status_code == 200:
@@ -244,6 +248,12 @@ def editTask(request, taskId):
 def notification(request):
     notificationResp = requests.get(restServer + "notification/" + str(request.user.id))
     notifications = notificationResp.json()
+    
+    if notifications:
+        print("a")
+    else:
+        # Query notfication table by user_sp
+        print("empty")
 
     return render(request, "isit950/account/notification.html", {
         "notifications": notifications
@@ -268,24 +278,24 @@ def paymentMethod(request):
         userPaymentMethod["expiry_date"] = decryptString(userPaymentMethod["expiry_date"])
     else:
         userPaymentMethod = ""
-    
+
     return render(request, "isit950/account/payment_method.html", {
         "userPaymentMethod": userPaymentMethod
     })
 
 def paymentHistory(request):
     return render(request, "isit950/account/payment_history.html")
-    
+
 def testRead(request):
     if request.method == 'POST':
         regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-        
+
         name = request.POST['text-content']
         for i in name.split():
             i = i.lstrip()
             if(re.fullmatch(regex, i)) or (re.fullmatch('[6-9][0-9]{9}',i)):
                 print("contain number")
-        
+
             else:
                 print("no number")
 
@@ -329,35 +339,117 @@ def membership(request):
         else:
             return HttpResponseRedirect(reverse("membership"))
 
-def myTask(request):
+def myTask(request, condition='all'):
     userId = str(request.user.id)
-    myTaskListResp = requests.get(restServer + "get_my_task/" + userId)
-    myTaskList = myTaskListResp.json()
-    
-    firstTaskDetail = myTaskList[0]["id"]
-    taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-    taskDetail = taskDetailResp.json()
-    
-    return render(request, "isit950/my_task.html", {
-        "myTaskList": myTaskList,
-        "taskDetail": taskDetail,
-        "type": "myTask"
-    })
+
+    try:
+        myTaskListResp = requests.get(f"{restServer}get_my_task/{userId}/{condition}")
+        myTaskList = myTaskListResp.json()
+
+    except:
+        return render(request, "isit950/404.html")
+
+    else:
+
+        return render(request, "isit950/my_task.html", {
+            "myTaskList": myTaskList,
+            # "taskDetail": taskDetail,
+            "type": "myTask"
+        })
 
 def taskOffer(request, taskId):
 
     myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
     myTaskDetail = myTaskDetailResp.json()
 
-    offerResp = requests.get(restServer + "offer/" + str(taskId))
+    offerResp = requests.get(restServer + "offer/" + taskId)
     offers = offerResp.json()
 
-    # questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
+    questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
 
     return render(request, "isit950/task_offer.html", {
         "myTaskDetail": myTaskDetail,
         "offers": offers,
         # "questions": questionCount
+    })
+
+
+def selectTasker(request, taskId, user_sp):
+    taskData = {
+            'status': 1,
+            'user': request.user.id,
+            'user_provider': user_sp,
+            'content': 5
+        }
+    
+    taskRequest = requests.put(f"{restServer}update_task_status/{taskId}", json=taskData)
+
+    if taskRequest.status_code == 200:
+        messages.success(request, "You have selected the service provider to do your task")
+        return HttpResponseRedirect(reverse('task_offer', args=[taskId]))
+    else:
+        messages.error(request, "Error when selecting the service provider")
+        return HttpResponseRedirect(reverse('task_offer', args=[taskId]))
+    
+def updateCompletion(request, taskId, clientId):
+    taskStatus = {
+            'status': 2,
+            'user': clientId,
+            'user_provider': request.user.id,
+            'content': 7
+        }
+
+    statusRequest = requests.put(f"{restServer}update_task_status/{taskId}", json=taskStatus)
+
+    if statusRequest.status_code == 200:
+        messages.success(request, "You have completed task. The payment will be proceeeded soon.")
+        return HttpResponseRedirect('/tasks/?name='+taskId)
+    else:
+        messages.error(request, "Error when completing task")
+        return HttpResponseRedirect('/tasks/?name='+taskId)
+
+def leaveReview(request, taskId):
+
+    if request.POST["userProvider"] == "":
+        review = {
+            'task': taskId,
+            'comment_sp': request.POST["reviewDesc"],
+            'rating_sp': request.POST["rate"],
+            'user_sp': request.POST["userClient"]
+        }
+
+    if request.POST["userClient"] == "":
+        review = {
+            'task': taskId,
+            'comment_client': request.POST["reviewDesc"],
+            'rating_client': request.POST["rate"],
+            'user_client': request.POST["userProvider"]
+        }
+    
+    postReview = requests.post(f"{restServer}review", data=review)
+
+    if postReview.status_code == 200:
+        messages.success(request, "Your review has been saved")
+        return HttpResponseRedirect('/tasks/?name='+taskId)
+    else:
+        messages.error(request, "Error when leave a review")
+        return HttpResponseRedirect('/tasks/?name='+taskId)
+
+def myTaskDetail(request, taskId):
+    myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
+    myTaskDetail = myTaskDetailResp.json()
+
+    offerResp = requests.get(restServer + "offer/" + str(taskId))
+    offers = offerResp.json()
+
+    print(offers)
+
+    questionCount = Question.objects.filter(task=taskId, parent_id__isnull=True).count()
+
+    return render(request, "isit950/my_task_detail.html", {
+        "myTaskDetail": myTaskDetail,
+        "offers": offers,
+        "questions": questionCount
     })
 
 def resendEmail(request, email):
@@ -367,7 +459,7 @@ def resendEmail(request, email):
     return HttpResponseRedirect(reverse("verify_email", args=[email]))
 
 def verifyEmail(request, email):
-    
+
     return render(request, "isit950/auth/verify_account.html", {
         "email": decryptString(email),
         "code": email
@@ -412,7 +504,6 @@ def test2HTML(request):
             'content': 1
         }
         
-        print(taskData)
         taskRequest = requests.post(restServer + "task" , json=taskData)
         
         if taskRequest.status_code == 200:
@@ -428,25 +519,23 @@ def loginView1(request):
     return render(request, "isit950/auth/login1.html")
 
 def loginView(request):
-    
+
     if request.method == 'GET':
-        
+
         return render(request, "isit950/auth/login.html")
-    
+
     if request.method == 'POST':
         userData = {
             'email': request.POST["email"],
             'password': request.POST["password"]
         }
-        
+
         userRequest = requests.post(restServer + "user_login" , json=userData)
-        
+
         if userRequest.status_code == 200:
             username = userRequest.json()['user']
-            print(username)
-            print(request.POST["password"])
             user = authenticate(request, username=username, password=request.POST["password"])
-            
+
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
@@ -454,7 +543,7 @@ def loginView(request):
                 "message": "Invalid username and/or password.",
                 "status": "danger"
             })
-        
+
 def registerView(request):
     if request.method == 'GET':
         return render(request, "isit950/auth/register.html")
@@ -507,7 +596,7 @@ def resetPass(request, token):
             'password': request.POST["password"],
             'password2': request.POST["confPassword"]
         }
-        
+
         resetPassRequest = requests.post(f"{restServer}reset_password_api/{token}", json=data)
         if resetPassRequest.status_code == 200:
             return HttpResponseRedirect(reverse("index"))
@@ -544,11 +633,6 @@ def logout_view(request):
     response = HttpResponseRedirect(reverse("index"))
     response.delete_cookie('usid')
     return response
-
-# def selectTasker(request, taskId, userId):
-#     Task.objects.filter(pk=taskId).update(status=1, user_provider=userId)
-
-#     return redirect('my_task', taskId)
 
 # def login_view(request):
 #     if request.method == "POST":

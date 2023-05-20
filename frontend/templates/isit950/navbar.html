@@ -15,10 +15,10 @@
                             </div>
                             {% if request.user.is_authenticated %}
                             <div>
-                                <a href="{% url 'my_task' %}" class="button btnprimary btnnavtop">My Task</a>
+                                <a href="{% url 'my_task' 'all' %}" class="button btnprimary btnnavtop">My Task</a>
                             </div>
                             <div>
-                                <a href="{% url 'create_task' %}" class="button btnprimary btnnavtop">Post Task</a>
+                                <a href="{% url 'postTask' %}" class="button btnprimary btnnavtop">Post Task</a>
                             </div>
                             {% endif %}
                         </div>
@@ -122,10 +122,10 @@
                                         </div>
                                     </div>
                                     <a href="{% url 'profile' %}" class="dropdown-item">Personal Profile</a>
-                                    <a href="{% url 'profile' %}" class="dropdown-item">My Tasks</a>
+                                    <a href="{% url 'my_task' 'all'%}" class="dropdown-item">My Tasks</a>
                                     <a href="{% url 'membership' %}" class="dropdown-item">Membership</a>
                                     <a href="{% url 'notification' %}" class="dropdown-item">Notifications</a>
-                                    <a href="{% url 'profile' %}" class="dropdown-item">Payment History</a>
+                                    <a href="{% url 'payment_history' %}" class="dropdown-item">Payment History</a>
                                     <a href="{% url 'create_task' %}" class="dropdown-item">
                                         <span>Settings</span>
                                         <i class='bx bxs-chevron-down arrow'
@@ -194,7 +194,7 @@
                 
                 <div style="display: block; margin: 0 auto">
                     <div class="navbar-section">
-                        {% if type != 'myTask' %}
+                        {% if request.path|slice:'9' != '/my-task/' %}
                         <button type="button" class="button btnprimary ml30 btn-nav-sort">
                             <span>Category</span>
                             <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
@@ -222,29 +222,18 @@
                             </div>
                         </button>
                         {% else %}
-                        <button type="button" class="menu-bar-task active">
-                            <span>Posted tasks</span>
-                        </button>
-                        <button type="button" class="menu-bar-task">
-                            <div class="btn-icon-overlay">
-                                <span class="ml10">Pending offers</span>
-                            </div>
-                        </button>
-                        <button type="button" class="menu-bar-task">
-                            <div class="btn-icon-overlay">
-                                <span class="ml10">Tasks assigned</span>
-                            </div>
-                        </button>
-                        <button type="button" class="menu-bar-task">
-                            <div class="btn-icon-overlay">
-                                <span class="ml10">Task completed</span>
-                            </div>
-                        </button>
-                        <button type="button" class="menu-bar-task">
-                            <div class="btn-icon-overlay">
-                                <span class="ml10">Watchlist</span>
-                            </div>
-                        </button>
+                        <a href="{% url 'my_task' 'all' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/all' %} active {%endif%}" id="all-task">
+                            All Tasks</a>
+                        <a href="{% url 'my_task' 'posted' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/posted' %} active {%endif%}" id="posted-task">
+                            Posted Tasks</a>
+                        <a href="{% url 'my_task' 'pending' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/pending' %} active {%endif%}" id="pending-offer">
+                            Pending offers</a>
+                        <a href="{% url 'my_task' 'assigned' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/assigned' %} active {%endif%}" id="pending-offer">
+                            Tasks assigned</a>
+                        <a href="{% url 'my_task' 'completed' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/completed' %} active {%endif%}" id="pending-offer">
+                            Tasks completed</a>
+                        <a href="{% url 'my_task' 'watchlist' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/watchlist' %} active {%endif%}" id="pending-offer">
+                            Watchlist</a>
                         {% endif %}
                     </div>
                 </div>

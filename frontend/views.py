@@ -342,8 +342,6 @@ def membership(request):
 def myTask(request, condition='all'):
     userId = str(request.user.id)
 
-    
-
     try:
         myTaskListResp = requests.get(f"{restServer}get_my_task/{userId}/{condition}")
         myTaskList = myTaskListResp.json()
@@ -352,13 +350,13 @@ def myTask(request, condition='all'):
         return render(request, "isit950/404.html")
 
     else:
-        # firstTaskDetail = myTaskList[0]["id"]
-        # taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
-        # taskDetail = taskDetailResp.json()
+        firstTaskDetail = myTaskList[0]["id"]
+        taskDetailResp = requests.get(restServer + 'task/' + str(firstTaskDetail))
+        taskDetail = taskDetailResp.json()
 
         return render(request, "isit950/my_task.html", {
             "myTaskList": myTaskList,
-            # "firstTaskDetail": firstTaskDetail,
+            "firstTaskDetail": firstTaskDetail,
             "taskDetail": taskDetail,
             "type": "myTask"
         })

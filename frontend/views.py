@@ -332,7 +332,7 @@ def membership(request):
         else:
             return HttpResponseRedirect(reverse("membership"))
 
-def myTask(request, condition):
+def myTask(request, condition='all'):
     userId = str(request.user.id)
 
     

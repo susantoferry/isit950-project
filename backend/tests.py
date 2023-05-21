@@ -79,8 +79,8 @@ class TasksViewTest(TestCase):
 
         # Mock the response from the external API
         mock_response = [
-            { "id": 1, "category_name": "Bicycle Repair", "user_client_id": "tina", "img_profile": "null", "rating": 0.0, "first_name": "Xinyu", "last_name": "Chen", "task_title_to_url": "Kids-bike-service1-1", "my_bookmark": [ 1, 3, 2 ], "task_title": "Kids bike service1", "description": "I have 3 kids bike I want serviced to make sure they’re good to ride (Trek 12 inch, Cannondale 16 inch and Liv Adore 16 inch)", "price": "150.00", "booking_price": "0.00", "total_price": "0.00", "location": "Wollongong NSW, Australia", "location_link": "https://goo.gl/maps/CV7LYozNvraBYJBQ8", "lat": -34.424394, "long": 150.89385, "completed_on": "2023-04-29", "status": 1, "is_paid": "false", "create_date": "2023-05-08T14:05:19", "modify_date": "2023-05-21T14:05:45", "offer": "false", "category": 2, "user": 6, "user_provider": "null" },
-            { "id": 2, "category_name": "Locksmith", "user_client_id": "anne", "user_provider_name": "ferry", "img_profile": "null", "rating": 0.0, "first_name": "Min Anne", "last_name": "Tan", "task_title_to_url": "Door-lock-fixed-2", "my_bookmark": [ 3, 1 ], "task_title": "Door lock fixed", "description": "Door handle is hard to open from the outside and inside will need someone who can fix or change it.", "price": "40.00", "booking_price": "6.00", "total_price": "46.00", "location": "Wollongong NSW, Australia", "location_link": "https://goo.gl/maps/CV7LYozNvraBYJBQ8", "lat": -34.424394, "long": 150.89385, "completed_on": "2023-05-22", "status": 1, "is_paid": 'false', "create_date": "2023-05-08T14:05:26", "modify_date": "2023-05-21T14:05:46", "offer": "false", "category": 1, "user": 3, "user_provider": 1 }
+            { "id": 1, "category_name": "Bicycle Repair", "user_client_id": "tina", "img_profile": "null", "rating": 0.0, "first_name": "Xinyu", "last_name": "Chen", "task_title_to_url": "Kids-bike-service1-1", "my_bookmark": [ 1, 3, 2 ], "task_title": "Kids bike service1", "description": "I have 3 kids bike I want serviced to make sure they’re good to ride (Trek 12 inch, Cannondale 16 inch and Liv Adore 16 inch)", "price": "150.00", "booking_price": "0.00", "total_price": "0.00", "location": "Wollongong NSW, Australia", "location_link": "https://goo.gl/maps/CV7LYozNvraBYJBQ8", "lat": -34.424394, "longitude": 150.89385, "completed_on": "2023-04-29", "status": 1, "is_paid": "false", "create_date": "2023-05-08T14:05:19", "modify_date": "2023-05-21T14:05:45", "offer": "false", "category": 2, "user": 6, "user_provider": "null" },
+            { "id": 2, "category_name": "Locksmith", "user_client_id": "anne", "user_provider_name": "ferry", "img_profile": "null", "rating": 0.0, "first_name": "Min Anne", "last_name": "Tan", "task_title_to_url": "Door-lock-fixed-2", "my_bookmark": [ 3, 1 ], "task_title": "Door lock fixed", "description": "Door handle is hard to open from the outside and inside will need someone who can fix or change it.", "price": "40.00", "booking_price": "6.00", "total_price": "46.00", "location": "Wollongong NSW, Australia", "location_link": "https://goo.gl/maps/CV7LYozNvraBYJBQ8", "lat": -34.424394, "longitude": 150.89385, "completed_on": "2023-05-22", "status": 1, "is_paid": 'false', "create_date": "2023-05-08T14:05:26", "modify_date": "2023-05-21T14:05:46", "offer": "false", "category": 1, "user": 3, "user_provider": 1 }
             ]
         requests.get = lambda url: MockResponse(json_data=mock_response)
 
@@ -119,7 +119,7 @@ class FunctionsTestCase(TestCase):
         price = 150.00,
         location = "Wollongong NSW, Australia",
         location_link = "https://goo.gl/maps/CV7LYozNvraBYJBQ8",
-        lat = -34.424394,long = 150.89385,
+        lat = -34.424394,longitude = 150.89385,
         completed_on = "2023-04-29",status = 0,user=user)
 
         offer=Offer.objects.create(price= 150.00,

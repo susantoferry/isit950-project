@@ -480,16 +480,21 @@
 
                             <div class="mb-3">
                                 <label for="taskDate">When do you need this done?</label>
-                                <input type="date" id="date-input" name="taskDate" class="form-control" />
-                                <input type="time" id="time-input" name="taskTime" class="form-control" />
+                                <div class="col-md-4">
+                                    <div class="position-relative form-group">
+                                        <input type="date" id="date-input" name="taskDate" class="form-control" />
+                                    </div>
+                                </div>
                             </div>
                             
+                            <div class="mb-3">
+                                <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
+                                <label class="btn btn-secondary" for="option1">Set this date as deadline</label>
 
-                            <!-- <input type="radio" class="btn-check" name="options" id="option1" autocomplete="off" checked>
-                            <label class="btn btn-secondary" for="option1">Set this date as deadline</label>
+                                <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+                                <label class="btn btn-secondary" for="option2">Job done at specific date</label>
+                            </div>
 
-                            <input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-                            <label class="btn btn-secondary" for="option2">Job done at specific date</label> -->
                             <div class="mb-3">
                                 <label for="taskLocation">Where is your location?</label>
                                 <input type="text" name="taskLocation"id="location" class="form-control" placeholder="Enter your location">

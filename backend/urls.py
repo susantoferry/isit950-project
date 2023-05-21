@@ -11,6 +11,7 @@ urlpatterns = [
     path("offer", views.offer, name="offer"),
     path("offer/<slug:taskId>", views.offerDetail, name="offer_detail"),
     path("question/<int:taskId>", views.question, name="question"),
+    path("get_all_question/<int:taskId>/<parent>", views.getAllQuestion, name="get_all_question"),
     path("my-task/accept-offer/<taskId>/<userSpId>", views.acceptOffer, name="accept_offer"),
     path("task", views.task, name="task"),
     path("task/<slug:taskId>", views.taskDetail, name="task_detail"),

@@ -3,6 +3,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth import authenticate, login, logout
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from django.db.models import Q
 from datetime import datetime, timedelta
 
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -149,15 +150,25 @@ def userProfile(request, user):
                 return Response(serializer.errors)
         else:
             return Response("not found")
+        
+@api_view(['GET'])
+def getAllQuestion(request, taskId, parent='no'):
+    print(parent)
+    print(taskId)
+    if parent == "yes":
+        questions = Question.objects.filter(task_id=taskId).exclude(parent_id=None)
+    else:
+        questions = Question.objects.filter(task_id=taskId, parent_id=None).order_by("-create_date")
+    print(questions)
+    serializer = QuestionSerializer(questions, many=True)
+
+    return Response(serializer.data)
+
     
-@api_view(['GET', 'POST'])
+@api_view(['POST'])
 def question(request, taskId):
-    if request.method == 'GET':
-        questions = Question.objects.filter(task_id=taskId).order_by("-modify_date")
-        serializer = QuestionSerializer(questions, many=True)
-        return Response(serializer.data)
-    
     if request.method == 'POST':
+        request.data['user'] = User.objects.values_list('id', flat=True).get(username=request.data['user'])
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -176,15 +187,16 @@ def offer(request):
     if request.method == 'POST':
         taskId = request.data["task"].rsplit('-', 1)[-1]
         request.data["task"] = taskId
-
-        request.data['user'] = User.objects.values_list('id', flat=True).get(username=request.data['user'])
         
+        request.data['user'] = User.objects.values_list('id', flat=True).get(username=request.data['user'])
+        print(request.data)
+
         serializer = OfferSerializer(data=request.data)
 
         taskStatus = Task.objects.get(pk=taskId)
         taskStatus.offer = True
         taskStatus.save()
-
+        
         if serializer.is_valid():
             serializer.save()
             return Response({"status": 200, "message": "Saved successfully"})
@@ -329,7 +341,7 @@ def task(request):
 
         if serializer.is_valid():
             instance = serializer.save()
-            sendTaskNotification(instance.id, request.data["content"], request.data["location"], request.data["user"])
+            sendTaskNotification(instance.id, request.data["content"], request.data["location"], request.data["user"], "")
         else:
             return Response(serializer.errors,status=400)
         
@@ -675,11 +687,24 @@ def reviewType(request, type, user):
 @api_view(['POST'])
 def review(request):
     if request.method == "POST":
-        
+        taskId = request.data['task']
         try:
-            review = Review.objects.get(task=request.data['task'])
+            review = Review.objects.get(task=taskId)
         except Review.DoesNotExist:
             review = ""
+
+        try:
+            task = Task.objects.get(Q(pk=taskId) & (Q(provider_review=False) | Q(user_review=False)))
+        except Task.DoesNotExist:
+            task = ""
+
+        if task:
+            if 'user_client' in request.data:
+                task.user_review = True
+            else:
+                task.provider_review = True
+
+            task.save()
 
         if review == "":
             serializer = ReviewSerializer(data=request.data)

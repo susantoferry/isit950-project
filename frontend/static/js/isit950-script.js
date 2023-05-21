@@ -22,18 +22,20 @@ for (var i = 0; i < arrow.length; i++) {
 function checkPostValue() {
     postValue = document.getElementById('comment-text').value;
     if (postValue == "") {
-        document.getElementById("postBtn").disabled = true;
+        document.getElementById("postCommBtn").disabled = true;
     } else {
-        document.getElementById("postBtn").disabled = false;
+        document.getElementById("postCommBtn").disabled = false;
     }
 }
 
-$('#postBtn123').click(function () {
+// $('#postCommBtn').click(function () {
+$(document).on('click', '#postCommBtn', function(event) {
+    console.log('aaa')
     var urlArr = document.URL.split('/');
     var taskId = window.location.href.split("-").pop()
 
     const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-
+    console.log(taskId)
     fetch(`/api/question/${taskId}`, {
         method: 'POST',
         credentials: 'same-origin',
@@ -42,22 +44,41 @@ $('#postBtn123').click(function () {
             "Content-Type": 'application/json'
         },
         body: JSON.stringify({
-            user: 1,
+            user: Cookies.get('usid'),
             task: taskId,
             question: document.querySelector('#comment-text').value
         })
     })
-        .then(response => response.json())
-        .then(result => {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Your comment has been posted',
-            }).then((result) => {
-                location.reload();
-            })
+    .then(response => response.json())
+    .then(result => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Your comment has been posted',
+        }).then((result) => {
+            // location.reload();
         })
+    })
 });
+
+function loadCommentTemplate(taskId) {
+    // parentQuestion = Question.objects.filter(task_id=taskId, parent_id=None).order_by("-create_date")
+    // childQuestion = Question.objects.filter(task_id=taskId).exclude(parent_id=None)
+    fetch(`/api/get_all_question/${taskId}/''`)
+    .then(response => response.json())
+    .then(result => {
+        document.querySelector('.comment-total').innerHTML = `Comment (${result.length})`
+        
+        var commentSectionOverlay = document.querySelector('#comment-section-overlay')
+
+        for (let res of result) {
+            var commentSection = document.createElement('div')
+            commentSection.className = 'comment-section'
+
+            
+        }
+    })
+}
 
 window.onload = function () {
     window.onpopstate = function (event) {
@@ -180,7 +201,7 @@ $(document).ready(function () {
         }
     });
 
-    $('.comm-btn').click(function ($event) {
+    $('.submit-offer-btn').click(function ($event) {
         const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         const price = document.querySelector('#offer-price').value;
         const offerDesc = document.querySelector('#offer-desc').value;
@@ -443,9 +464,9 @@ function showDetail(taskId) {
             }
 
             document.querySelector('.task-stat').appendChild(taskStatusCapsule)
-
+            
             if (result.status == 2 && result.is_paid == true) {
-                if (result.user_client_id === getCookieValue('usid')) {
+                if (result.user_client_id === getCookieValue('usid') && result.user_review === false) {
                     document.querySelector('.leaveRevBtn').innerHTML = "";
 
                     var leaveRevBtn = document.createElement("div")
@@ -456,10 +477,10 @@ function showDetail(taskId) {
                     
                     document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
                     
-                    document.querySelector('.userProvider').value = result.user_provider
+                    document.querySelector('.userClient').value = result.user
                 }
 
-                if (result.user_provider_name === getCookieValue('usid')) {
+                if (result.user_provider_name === getCookieValue('usid') && result.provider_review === false) {
                     document.querySelector('.leaveRevBtn').innerHTML = "";
 
                     var leaveRevBtn = document.createElement("div")
@@ -470,10 +491,10 @@ function showDetail(taskId) {
 
                     document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
 
-                    document.querySelector('.userClient').value = result.user
+                    document.querySelector('.userProvider').value = result.user_provider
                 }
-                
             }
+            // loadCommentTemplate(result.id)
             
             history.pushState(null, null, `/tasks/?name=${taskId}`)
             document.title = `${taskId} - ISIT950 Group Project`;

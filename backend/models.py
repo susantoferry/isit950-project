@@ -84,6 +84,8 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_client", related_query_name="profile", null=True)
     user_provider = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_provider", null=True, blank=True)
     is_paid = models.BooleanField(default=False)
+    provider_review = models.BooleanField(default=False, null=True, blank=True)
+    user_review = models.BooleanField(default=False, null=True, blank=True)
     create_date = models.DateTimeField(null=True, blank=True)
     modify_date = models.DateTimeField(null=True, blank=True)
     offer = models.BooleanField(null=True, blank=True, default=False)

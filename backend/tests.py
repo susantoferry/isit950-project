@@ -1,4 +1,5 @@
 from django.test import Client, TestCase
+from django.urls import reverse
 import random
 from .models import *
 from random import randint
@@ -58,7 +59,13 @@ class FunctionsTestCase(TestCase):
             data_to_compare = {"name": "category3"}
             self.assertEqual(data_to_check, data_to_compare)
         else:
-            self.assertRaises()
+            response = c.get(f"/api/category/{a1}")
+            self.assertEqual(response.status_code, 404)
+
+    # def test_get_category3(self):
+    #     c = Client()
+    #     response = c.get(reverse("category", args=[123]))
+    #     self.assertEqual(response.status_code, 404)
 
 # #----PostCategory----------------------------    
 #     def test_post_category(self):

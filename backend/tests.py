@@ -100,55 +100,6 @@ class MockResponse:
     def json(self):
         return self.json_data
     
-
-# from requests.models import PreparedRequest
-# from frontend.views import updateCompletion
-
-# class UpdateCompletionViewTest(TestCase):
-#     def setUp(self):
-#         self.factory = RequestFactory()
-#         self.user = User.objects.create_user(username='testuser', password='testpassword')
-
-#     def test_update_completion_view_success(self):
-#         url = reverse('update_completion', args=['task_id', 'client_id'])  # Replace 'update_completion' with the actual URL name for your updateCompletion view
-#         request = self.factory.get(url)
-#         request.user = self.user
-
-#         # Mock the request's put method
-#         def mock_put(request: PreparedRequest, **kwargs):
-#             return MockResponse(status_code=200)
-
-#         with requests.Session() as session:
-#             session.put = mock_put
-#             response = updateCompletion(request, 'task_id', 'client_id')
-
-#         self.assertRedirects(response, reverse('tasks') + '?name=task_id')
-#         self.assertContains(response, "You have completed task.")
-#         self.assertEqual(len(response.context['messages']), 1)
-#         self.assertEqual(response.context['messages'][0].level, 25)  # 25 corresponds to the 'success' level
-
-#     def test_update_completion_view_error(self):
-#         url = reverse('update_completion', args=['task_id', 'client_id'])  # Replace 'update_completion' with the actual URL name for your updateCompletion view
-#         request = self.factory.get(url)
-#         request.user = self.user
-
-#         # Mock the request's put method
-#         def mock_put(request: PreparedRequest, **kwargs):
-#             return MockResponse(status_code=500)
-
-#         with requests.Session() as session:
-#             session.put = mock_put
-#             response = updateCompletion(request, 'task_id', 'client_id')
-
-#         self.assertRedirects(response, reverse('tasks') + '?name=task_id')
-#         self.assertContains(response, "Error when completing task.")
-#         self.assertEqual(len(response.context['messages']), 1)
-#         self.assertEqual(response.context['messages'][0].level, 40)  # 40 corresponds to the 'error' level
-
-# class MockResponse:
-#     def __init__(self, status_code):
-#         self.status_code = status_code
-
 #endregion
 
 

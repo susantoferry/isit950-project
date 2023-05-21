@@ -256,7 +256,6 @@ class FunctionsTestCase(TestCase):
 #         # Check that the response status code is 200
         self.assertEqual(response.status_code, 200)
 #         #getToken
-        print(response.content)
 #FORGOTPASSOWRD--------200 #Email is incorrect!"-----------------------     
     def test_forgotPassword2(self):
         
@@ -267,7 +266,6 @@ class FunctionsTestCase(TestCase):
 #         # Check that the response status code is 200
         self.assertEqual(response.status_code, 200)
 #         #Email is incorrect!"
-        print(response.content)
 
  #CHANGEPASSOWRD-------------------------------
 #change password successfully-----------------------------

@@ -5,8 +5,16 @@ register = Library()
 
 @register.filter(expects_localtime=True)
 def parse_date(value):
-    return datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
+    try:
+        date = datetime.datetime.strptime(value, '%Y-%m-%dT%H:%M:%S')
+        return date
+    except ValueError:
+        return None
 
 @register.filter(expects_localtime=True)
 def parse_short_date(value):
-    return datetime.datetime.strptime(value, '%Y-%m-%d')
+    try:
+        date = datetime.datetime.strptime(value, '%Y-%m-%d')
+        return date
+    except ValueError:
+        return None

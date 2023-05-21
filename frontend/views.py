@@ -173,7 +173,7 @@ def createTask(request):
         taskData = {
             'task_title': request.POST["taskName"],
             'category': request.POST["taskCategory"],
-            'completed_on': '2023-05-20',
+            'completed_on': request.POST["taskDate"],
             'description': request.POST["taskDesc"],
             'location': request.POST["taskLocation"],
             'price': request.POST["taskPrice"],
@@ -182,7 +182,7 @@ def createTask(request):
             'user': request.user.id,
             'content': 1
         }
-
+         
         taskRequest = requests.post(restServer + "task" , json=taskData)
         
         if taskRequest.status_code == 200:
@@ -402,21 +402,20 @@ def updateCompletion(request, taskId, clientId):
         return HttpResponseRedirect('/tasks/?name='+taskId)
 
 def leaveReview(request, taskId):
-
-    if request.POST["userProvider"] == "":
+    if request.POST["userProvider"] != "":
         review = {
             'task': taskId,
             'comment_sp': request.POST["reviewDesc"],
             'rating_sp': request.POST["rate"],
-            'user_sp': request.POST["userClient"]
+            'user_sp': request.POST["userProvider"]
         }
 
-    if request.POST["userClient"] == "":
+    if request.POST["userClient"] != "":
         review = {
             'task': taskId,
             'comment_client': request.POST["reviewDesc"],
             'rating_client': request.POST["rate"],
-            'user_client': request.POST["userProvider"]
+            'user_client': request.POST["userClient"]
         }
     
     postReview = requests.post(f"{restServer}review", data=review)

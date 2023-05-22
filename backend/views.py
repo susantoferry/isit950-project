@@ -338,7 +338,7 @@ def getMyTask(request, userId, condition):
         elif condition == 'completed':
             #assigned
             taskStatus = 2
-            myTasks = Task.objects.filter(user_provider_id=userId, user_id=userId, status=taskStatus).order_by("status","-create_date")
+            myTasks = Task.objects.filter((Q(user_provider_id=userId) | Q(user_id=userId)) & Q(status=taskStatus)).order_by("status","-create_date")
 
         else:
             myTasks1 = Task.objects.filter(user_id=userId).order_by("status","-create_date")

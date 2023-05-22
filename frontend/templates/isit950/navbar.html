@@ -220,8 +220,8 @@
                                 <span class="ml10">Sort</span>
                                 <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
                             </div>
-                        </button> -->
-                        {% else %}
+                        </button>
+                        {% else %} -->
                         <a href="{% url 'my_task' 'all' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/all' %} active {%endif%}" id="all-task">
                             All Tasks</a>
                         <a href="{% url 'my_task' 'posted' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/posted' %} active {%endif%}" id="posted-task">
@@ -234,7 +234,7 @@
                             Tasks completed</a>
                         <a href="{% url 'my_task' 'watchlist' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/watchlist' %} active {%endif%}" id="pending-offer">
                             Watchlist</a>
-                        {% endif %}
+                        <!-- {% endif %} -->
                     </div>
                 </div>
             </div>

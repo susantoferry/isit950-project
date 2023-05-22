@@ -332,8 +332,10 @@ def membership(request):
         membershipRequest = requests.post(restServer + "membership_transaction", json=membershipData) 
         
         if membershipRequest.status_code == 200:
+            messages.success(request, "Your membership plan has been upgraded successfully")
             return HttpResponseRedirect(reverse("membership"))
         else:
+            messages.error(request, "Something wrong when upgrading membership plan")
             return HttpResponseRedirect(reverse("membership"))
 
 def myTask(request):

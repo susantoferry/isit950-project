@@ -7,77 +7,226 @@
         <div>
             <div>Get membership today</div>
         </div>
-        <form action="{% url 'membership' %}" method="post">
+        <!-- <form action="{% url 'membership' %}" method="post"> -->
+
+        <div style="display: flex">
+            <div>
+                <div>Select your plan</div>
+                <div>
+                    <div>
+                        <div class="form-check">
+                            <input class="form-check-input" class="member_package" type="radio" value="1"
+                                name="member_package" checked>
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                Package 1
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" class="member_package" type="radio" value="2"
+                                name="member_package">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Package 2
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" class="member_package" type="radio" value="3"
+                                name="member_package">
+                            <label class="form-check-label" for="flexRadioDefault2">
+                                Package 3
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>Payment Information</div>
+                    <div>
+                        <div class="mb-4">
+                            <label for="cardNo" class="form-label handy-f-14">Card Number</label>
+                            <input type="text" class="form-control handy-f-14" id="cardNo" name="credit_card"
+                                placeholder="1234 1234 1234 1234" style="padding: 10px 10px;" maxlength="19">
+                        </div>
+                        <div class="form-row mb-3">
+                            <div class="col-md-6" style="padding-left: 0">
+                                <div class="position-relative form-group">
+                                    <label for="expiryDate" class="handy-f-14">Expiry Date</label>
+                                    <input id="expiryDate" name="expiryDate" placeholder="MM/YY" type="text"
+                                        class="form-control handy-f-14" maxlength="5">
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding: 0">
+                                <div class="position-relative form-group">
+                                    <label for="cvc" class="handy-f-14">CVC</label>
+                                    <input id="cvc" name="cvc" placeholder="CVC" type="text"
+                                        class="form-control handy-f-14" maxlength="3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <div>
+                        What's included in membership:
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div style="display: flex; justify-content: center; padding: 3rem 0;">
             {% csrf_token %}
-            <div style="display: flex">
-                <div>
-                    <div>Select your plan</div>
-                    <div>
-                        <div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" value="1" name="member_package" checked>
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                    Package 1
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" value="2" name="member_package">
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Package 2
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" value="3" name="member_package">
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Package 3
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div>Payment Information</div>
-                        <div>
-                            <div class="mb-4">
-                                <label for="cardNo" class="form-label handy-f-14">Card Number</label>
-                                <input type="text" class="form-control handy-f-14" id="cardNo" name="credit_card"
-                                    placeholder="1234 1234 1234 1234" style="padding: 10px 10px;" maxlength="19">
-                            </div>
-                            <div class="form-row mb-3">
-                                <div class="col-md-6" style="padding-left: 0">
-                                    <div class="position-relative form-group">
-                                        <label for="expiryDate" class="handy-f-14">Expiry Date</label>
-                                        <input id="expiryDate" name="expiryDate" placeholder="MM/YY" type="text"
-                                            class="form-control handy-f-14" maxlength="5">
-                                    </div>
-                                </div>
-                                <div class="col-md-6" style="padding: 0">
-                                    <div class="position-relative form-group">
-                                        <label for="cvc" class="handy-f-14">CVC</label>
-                                        <input id="cvc" name="cvc" placeholder="CVC" type="text"
-                                            class="form-control handy-f-14" maxlength="3">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div>
-                        <div>
-                            What's included in membership:
-                        </div>
-                        <div>
+            <button type="button" data-id="1" class="button btn-capsule btnsave-primary btn-membership"
+                data-bs-toggle="modal" data-bs-target="#membershipModal">Get your membership</button>
+            <button type="button" data-id="2" class="button btn-capsule btnsave-primary btn-membership"
+                data-bs-toggle="modal" data-bs-target="#membershipModal">Get your membership</button>
+            <button type="button" data-id="3" class="button btn-capsule btnsave-primary btn-membership"
+                data-bs-toggle="modal" data-bs-target="#membershipModal">Get your membership</button>
+        </div>
+        <!-- <div id="paypal-button-container"></div> -->
 
-                        </div>
-                    </div>
-                </div>
 
-            </div>
-            <div style="display: flex; justify-content: center; padding: 3rem 0;">
-                <button class="button btn-capsule btnsave-primary btn-membership">Get your membership</button>
-            </div>
-        </form>
     </div>
 </div>
+
+
+<div class="modal fade" id="membershipModal" tabindex="-1" role="dialog" aria-labelledby="membershipModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close d-flex align-items-center justify-content-center"
+                    data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                <div class="text-center mb-2" style="font-size: 1.25rem; font-weight: 500;">Payment Method</div>
+                <div id="paypal-button-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var price;
+    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $(document).on('click', '.btn-membership', function (event) {
+        memberType = document.querySelector('input[name="member_package"]:checked').value;
+        if (memberType == 1) {
+            price = 80;
+        } else if (memberType == 2) {
+            price = 50;
+        } else {
+            price = 120;
+        }
+    })
+
+    paypal.Buttons({
+
+        style: {
+            color: 'blue',
+            shape: 'pill',
+            label: 'pay',
+            height: 40
+        },
+
+        createOrder: function (data, actions) {
+            // This function sets up the details of the transaction, including the amount and line item details.
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: price,
+                        currency: 'AUD'
+                    }
+                }]
+            });
+        },
+        onApprove: function (data, actions) {
+            // This function captures the funds from the transaction.
+            return actions.order.capture().then(function (details) {
+                // This function shows a transaction success message to your buyer.
+                fetch(`/api/membership_transaction`, {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRFToken': token,
+                    },
+                    body: JSON.stringify({
+                        'membership': document.querySelector('input[name="member_package"]:checked').value,
+                        'user': `{{request.user.id}}`,
+                    })
+                })
+                .then(response => response.json())
+                .then(res => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Your payment has been saved'
+                    })
+                })
+                .catch(err => {
+                    alert(err)
+                })
+            });
+        }
+    }).render('#paypal-button-container');
+
+    // paypal.Buttons({
+
+    //   style: {
+    //     color:  'blue',
+    //     shape:  'pill',
+    //     label:  'pay',
+    //     height: 40
+    //   },
+
+    //   createOrder: function(data, actions) {
+    //     // This function sets up the details of the transaction, including the amount and line item details.
+    //     return actions.order.create({
+    //       purchase_units: [{
+    //         amount: {
+    //           value: price,
+    //           currency: 'AUD'
+    //         }
+    //       }]
+    //     });
+    //   },
+    // //   createOrder: function(data, actions) {
+    // //             return fetch('/demo/checkout/api/paypal/order/create/', {
+    // //                 method: 'post'
+    // //             }).then(function(res) {
+    // //                 return res.json();
+    // //             }).then(function(orderData) {
+    // //                 return orderData.id;
+    // //             });
+    // //         },
+    //   onApprove: function(data, actions) {
+    //     return fetch('/api/membership_transaction', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'content-type': 'application/json',
+    //                 'X-CSRFToken': csrftoken,
+    //             },
+    //             body: JSON.stringify({
+    //                 'membership': document.querySelector('input[name="member_package"]:checked').value,
+    //                 'user': request.user.id,
+    //             })
+    //         }).then(function (res) {
+    //             return res.json();
+    //         }).then(function (details) {
+    //             if (details.status) {
+    //                 alert("success");
+    //             }
+    //             else {
+    //                 alert("failed");
+    //             }
+    //         })
+    //   }
+    // }).render('#paypal-button-container');
+    //This function displays Smart Payment Buttons on your web page.
+</script>
 
 {% endblock %}

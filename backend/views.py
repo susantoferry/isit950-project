@@ -565,10 +565,10 @@ def membershipTransaction(request):
             request.data['trans_type'] = 'A'
             request.data["price"] = price[request.data["membership"]]
         
-        if request.data['membership'] == 0:
-            request.data["credit_card"] = "-"
-        else:
-            request.data["credit_card"] = str(encryptString(request.data['credit_card']))
+        # if request.data['membership'] == 0:
+        #     request.data["credit_card"] = "-"
+        # else:
+        #     request.data["credit_card"] = str(encryptString(request.data['credit_card']))
 
         serializer = MembershipTransactionSerializer(data=request.data)
         if serializer.is_valid():

@@ -194,7 +194,7 @@
                 
                 <div style="display: block; margin: 0 auto">
                     <div class="navbar-section">
-                        {% if request.path|slice:'9' != '/my-task/' %}
+                        <!-- {% if request.path|slice:'9' != '/my-task/' %}
                         <button type="button" class="button btnprimary ml30 btn-nav-sort">
                             <span>Category</span>
                             <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
@@ -220,7 +220,7 @@
                                 <span class="ml10">Sort</span>
                                 <i class="fa-solid fa-sort-down ml-2 opacity-8 arrow-down"></i>
                             </div>
-                        </button>
+                        </button> -->
                         {% else %}
                         <a href="{% url 'my_task' 'all' %}" type="button" class="menu-bar-task btn-icon-overlay ml10 {% if request.path == '/my-task/all' %} active {%endif%}" id="all-task">
                             All Tasks</a>

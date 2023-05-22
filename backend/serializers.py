@@ -108,8 +108,9 @@ class ReadNotificationSerializer(serializers.ModelSerializer):
 
 class OfferSerializer(serializers.ModelSerializer):
     user_provider = serializers.CharField(read_only=True, source='user.username')
-    task_title = serializers.CharField(read_only=True, source='task')
-    task_title_to_url = serializers.CharField(read_only=True)
+    tasks = TaskSerializer(read_only=True, source="task")
+    # task_title = serializers.CharField(read_only=True, source='task')
+    # task_title_to_url = serializers.CharField(read_only=True)
     class Meta:
         model = Offer
         fields = '__all__'
@@ -118,7 +119,7 @@ class UpdateTaskStatusSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Task
-        fields = ('status', 'location', 'user', 'user_provider')
+        fields = ('is_paid', 'status', 'location', 'user', 'user_provider')
 
 class WatchlistSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(read_only=True, source="task")
@@ -149,9 +150,18 @@ class PaymentInformationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ReviewSerializer(serializers.ModelSerializer):
-
+    tasks = TaskSerializer(read_only=True, source="task")
     class Meta:
         model = Review
+        fields = '__all__'
+
+class TransactionSerializer(serializers.ModelSerializer):
+    # task_trans = serializers.CharField(read_only=True, source='task')
+    # user_trans = serializers.CharField(read_only=True, source='user')
+    tasks = TaskSerializer(read_only=True, source="task")
+
+    class Meta:
+        model = Transaction
         fields = '__all__'
 
 class UserSkillSerializer(serializers.ModelSerializer):

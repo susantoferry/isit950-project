@@ -384,16 +384,25 @@ def selectTasker(request, taskId, user_sp):
         messages.error(request, "Error when selecting the service provider")
         return HttpResponseRedirect(reverse('task_offer', args=[taskId]))
     
-def updateCompletion(request, taskId, clientId):
-    taskStatus = {
-            'status': 2,
-            'user': clientId,
-            'user_provider': request.user.id,
-            'content': 7
-        }
-
+def updateCompletion(request, taskId, userId, type):
+    if type == 'task-complete':
+        taskStatus = {
+                'status': 2,
+                'user': userId,
+                'user_provider': request.user.id,
+                'content': 7
+            }
+    
+    if type == 'payment':
+        taskStatus = {
+                'is_paid': 1,
+                'user': request.user.id,
+                'user_provider': userId,
+                'content': 8
+            }
+    
     statusRequest = requests.put(f"{restServer}update_task_status/{taskId}", json=taskStatus)
-
+    
     if statusRequest.status_code == 200:
         messages.success(request, "You have completed task. The payment will be proceeeded soon.")
         return HttpResponseRedirect('/tasks/?name='+taskId)

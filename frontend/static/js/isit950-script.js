@@ -366,114 +366,128 @@ function showDetail(taskId) {
     }
 
     fetch(`/api/task/${taskId}`)
-        .then(response => response.json())
-        .then(result => {
-            document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
-            // document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
-            document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
-            document.querySelector('#task-location').innerHTML = `${result.location}`;
-            document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
-            document.querySelector('#task-price').innerHTML = `${result.price}`;
-            document.querySelector('#task-desc').innerHTML = `${result.description}`;
+    .then(response => response.json())
+    .then(result => {
+        document.querySelector('#task-detail-header').innerHTML = `${result.task_title}`;
+        // document.querySelector('#task-active-lg').innerHTML = `${result.status}`;
+        document.querySelector('#tasker-client').innerHTML = `${result.first_name} ${result.last_name}`;
+        document.querySelector('#task-location').innerHTML = `${result.location}`;
+        document.querySelector('#task-completed-on').innerHTML = `${result.completed_on}`;
+        document.querySelector('#task-price').innerHTML = `${result.price}`;
+        document.querySelector('#task-desc').innerHTML = `${result.description}`;
 
-            // Determine apply button or cancel button if status is 0/open
-            document.querySelector('.taskButtonEditApply').innerHTML = "";
+        // Determine apply button or cancel button if status is 0/open
+        document.querySelector('.taskButtonEditApply').innerHTML = "";
 
-            var versatileBtn = document.createElement("div")
-                if (result.status == 0) {
-                    if (result.user_client_id !== getCookieValue('usid')) {
-                        versatileBtn.innerHTML = `<button class="button btnprimary btnapply" id="offer-btn"
-                            data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`    
-                    } else {
-                        versatileBtn.innerHTML = `
-                        <a href="/edit_task/${result.task_title_to_url}" class="button btnprimary btnapply">Edit task</a>`
-                    }
-                }
-
-                if (result.status == 1) {
-                    if (result.user_provider_name !== getCookieValue('usid')) {
-                        versatileBtn.innerHTML = `<a href="#" class="button btn-capsule btn-progress">Task in progress</a>`
-                    } else {
-                        console.log(result)
-                        versatileBtn.innerHTML = `
-                            <a href="/update_completion/${result.task_title_to_url}/${result.user}" class="button btn-capsule btn-notify-completion">
-                                Notify Completion
-                            </a>`
-                    }
-                }
-
-                if (result.status == 2 && result.is_paid == false) {
-                    if (result.user_client_id !== getCookieValue('usid')) {
-                        if (result.user_provider_name !== getCookieValue('usid')) {
-                            versatileBtn.innerHTML = `
-                                <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
-                        } else {
-                            versatileBtn.innerHTML = `
-                            <div id="task-active-lg" class="task-active-lg completed">Waiting payment</div>`
-                        }
-                    } else {
-                        versatileBtn.innerHTML = `
-                        <a href="#" class="button btn-capsule btnsave-primary">Complete Payment</a>`
-                    }
-                }
-                if (result.status == 2 && result.is_paid == true ) {
-                    versatileBtn.innerHTML = `
-                    <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
-                }
-            // }
-            document.querySelector('.taskButtonEditApply').appendChild(versatileBtn)
-            
-            // Determine task status button
-            document.querySelector('.task-stat').innerHTML = "";
-
-            var taskStatusCapsule = document.createElement("div")
-            taskStatusCapsule.id = "task-active-lg"
-            
+        var versatileBtn = document.createElement("div")
             if (result.status == 0) {
-                taskStatusCapsule.className = "task-active-lg open"
-                taskStatusCapsule.innerHTML = 'Open'
-            } else if (result.status == 1) {
-                taskStatusCapsule.className = "task-active-lg assigned"
-                taskStatusCapsule.innerHTML = 'Assigned'
-            } else {
-                taskStatusCapsule.className = "task-active-lg completed"
-                taskStatusCapsule.innerHTML = 'completed'
-            }
-
-            document.querySelector('.task-stat').appendChild(taskStatusCapsule)
-            
-            if (result.status == 2 && result.is_paid == true) {
-                if (result.user_client_id === getCookieValue('usid') && result.user_review === false) {
-                    document.querySelector('.leaveRevBtn').innerHTML = "";
-
-                    var leaveRevBtn = document.createElement("div")
-                    leaveRevBtn.innerHTML = ` <a href="" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review</a>`
-                    
-                    var myForm = document.getElementById("formLeaveReview");
-                    myForm.action = `/leave_review/${result.id}`;
-                    
-                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
-                    
-                    document.querySelector('.userClient').value = result.user
-                }
-
-                if (result.user_provider_name === getCookieValue('usid') && result.provider_review === false) {
-                    document.querySelector('.leaveRevBtn').innerHTML = "";
-
-                    var leaveRevBtn = document.createElement("div")
-                    leaveRevBtn.innerHTML = ` <a href="#" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review to client</a>`
-                    
-                    var myForm = document.getElementById("formLeaveReview");
-                    myForm.action = `/leave_review/${result.id}`;
-
-                    document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
-
-                    document.querySelector('.userProvider').value = result.user_provider
+                
+                if (result.user_client_id !== getCookieValue('usid')) {
+                    fetch(`/api/check_offer_user/${result.task_title_to_url}/${getCookieValue('usid')}`)
+                    .then(response => response.json())
+                    .then(result1 => {
+                        if (result1.length > 0) {
+                            versatileBtn.innerHTML = `
+                            <span style="color: #b91515;font-weight: 500;">
+                                You have put offer for this task
+                            </span>`
+                        } else {
+                            console.log("bbb")
+                            versatileBtn.innerHTML = `
+                            <button class="button btnprimary btnapply" id="offer-btn"
+                            data-bs-toggle="modal" data-bs-target="#offerModal">Apply</button>`
+                        }
+                    })
+                } else {
+                    versatileBtn.innerHTML = `
+                    <a href="/edit_task/${result.task_title_to_url}" class="button btnprimary btnapply">Edit task</a>`
                 }
             }
-            // loadCommentTemplate(result.id)
             
-            history.pushState(null, null, `/tasks/?name=${taskId}`)
-            document.title = `${taskId} - ISIT950 Group Project`;
-        })
+            if (result.status == 1) {
+                if (result.user_provider_name !== getCookieValue('usid')) {
+                    versatileBtn.innerHTML = `<a href="#" class="button btn-capsule btn-progress">Task in progress</a>`
+                } else {
+                    
+                    versatileBtn.innerHTML = `
+                        <a href="/update_completion/${result.task_title_to_url}/${result.user}/task-complete" class="button btn-capsule btn-notify-completion">
+                            Notify Completion
+                        </a>`
+                }
+            }
+
+            if (result.status == 2 && result.is_paid == false) {
+                if (result.user_client_id !== getCookieValue('usid')) {
+                    if (result.user_provider_name !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `
+                            <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+                    } else {
+                        versatileBtn.innerHTML = `
+                        <div id="task-active-lg" class="task-active-lg completed">Waiting payment</div>`
+                    }
+                } else {
+                    versatileBtn.innerHTML = `
+                    <a href="/update_completion/${result.task_title_to_url}/${result.user_provider}/payment" class="button btn-capsule btnsave-primary">Complete Payment</a>`
+                }
+            }
+            if (result.status == 2 && result.is_paid == true ) {
+                versatileBtn.innerHTML = `
+                <div id="task-active-lg" class="task-active-lg completed">Completed</div>`
+            }
+        // }
+        document.querySelector('.taskButtonEditApply').appendChild(versatileBtn)
+        
+        // Determine task status button
+        document.querySelector('.task-stat').innerHTML = "";
+
+        var taskStatusCapsule = document.createElement("div")
+        taskStatusCapsule.id = "task-active-lg"
+        
+        if (result.status == 0) {
+            taskStatusCapsule.className = "task-active-lg open"
+            taskStatusCapsule.innerHTML = 'Open'
+        } else if (result.status == 1) {
+            taskStatusCapsule.className = "task-active-lg assigned"
+            taskStatusCapsule.innerHTML = 'Assigned'
+        } else {
+            taskStatusCapsule.className = "task-active-lg completed"
+            taskStatusCapsule.innerHTML = 'completed'
+        }
+
+        document.querySelector('.task-stat').appendChild(taskStatusCapsule)
+        
+        if (result.status == 2 && result.is_paid == true) {
+            if (result.user_client_id === getCookieValue('usid') && result.user_review === false) {
+                document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                var leaveRevBtn = document.createElement("div")
+                leaveRevBtn.innerHTML = ` <a href="" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review</a>`
+                
+                var myForm = document.getElementById("formLeaveReview");
+                myForm.action = `/leave_review/${result.id}`;
+                
+                document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+                
+                document.querySelector('.userClient').value = result.user
+            }
+
+            if (result.user_provider_name === getCookieValue('usid') && result.provider_review === false) {
+                document.querySelector('.leaveRevBtn').innerHTML = "";
+
+                var leaveRevBtn = document.createElement("div")
+                leaveRevBtn.innerHTML = ` <a href="#" class="leaveReview" data-bs-toggle="modal" data-bs-target="#reviewModal">Leave a review to client</a>`
+                
+                var myForm = document.getElementById("formLeaveReview");
+                myForm.action = `/leave_review/${result.id}`;
+
+                document.querySelector('.leaveRevBtn').appendChild(leaveRevBtn)
+
+                document.querySelector('.userProvider').value = result.user_provider
+            }
+        }
+        // loadCommentTemplate(result.id)
+        
+        history.pushState(null, null, `/tasks/?name=${taskId}`)
+        document.title = `${taskId} - ISIT950 Group Project`;
+    })
 }

@@ -10,6 +10,8 @@ urlpatterns = [
     path("category/<int:id>", views.categoryDetail, name="category_detail"),
     path("offer", views.offer, name="offer"),
     path("offer/<slug:taskId>", views.offerDetail, name="offer_detail"),
+    path("check_offer_user/<slug:taskId>/<user>", views.checkOfferUser, name="check_offer_user"),
+    path("offer_detail_receipt/<slug:taskId>/<userId>", views.offerDetailReceipt, name="offer_detail_receipt"),
     path("question/<int:taskId>", views.question, name="question"),
     path("get_all_question/<int:taskId>/<parent>", views.getAllQuestion, name="get_all_question"),
     path("my-task/accept-offer/<taskId>/<userSpId>", views.acceptOffer, name="accept_offer"),
@@ -33,6 +35,8 @@ urlpatterns = [
     path("paymentInformation/<str:user>", views.paymentInformation, name="paymentInformation"),
     path("review", views.review, name="review"),
     path("review_type/<type>/<user>", views.reviewType, name="review_type"),
+    path("get_transactions/<isPayee>/<user>", views.getTransactions, name="get_transactions"),
+    
 
     path("user_login", views.userLogin, name="user_login"),
     path('register_api', views.userRegister, name="register_api"),

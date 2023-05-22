@@ -1572,3 +1572,10 @@ input[type=file]::-webkit-file-upload-button {
     object-fit: contain;
     border-radius: 50%;
 }
+
+.transaction-list-card {
+    background: #ca82ff5e;
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin: 10px 0;
+}

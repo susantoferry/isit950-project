@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth import authenticate, login, logout
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-from django.db.models import Q
+from django.db.models import Q, F
 from datetime import datetime, timedelta
 
 from rest_framework.authtoken.serializers import AuthTokenSerializer
@@ -187,7 +187,6 @@ def offer(request):
         request.data["task"] = request.data["task"].rsplit('-', 1)[-1]
         
         request.data['user'] = User.objects.values_list('id', flat=True).get(username=request.data['user'])
-        print(request.data)
 
         serializer = OfferSerializer(data=request.data)
         
@@ -204,6 +203,49 @@ def offerDetail(request, taskId):
     offers = Offer.objects.filter(task_id = taskId)
     serializer = OfferSerializer(offers, many=True)
     return Response(serializer.data)
+
+@api_view(['GET'])
+def checkOfferUser(request, taskId, user):
+    taskId = taskId.rsplit('-', 1)[-1]
+    try:
+        user = User.objects.get(username=user)
+    except User.DoesNotExist:
+        user = ""
+
+    if user:
+        offer = Offer.objects.filter(task_id = taskId, user=user.id)
+        serializer = OfferSerializer(offer, many=True)
+        return Response(serializer.data, status=200)
+        # try:
+        #     offer = Offer.objects.get(task_id = taskId, user=user.id)
+        # except Offer.DoesNotExist:
+        #     offer = ""
+        
+        # if offer:
+        #     serializer = OfferSerializer(offer, many=False)
+        #     return Response(serializer.data, status=200)
+        # else:
+        #     return Response(serializer.errors, status=400)
+    else:
+        return Response(serializer.errors, status=400)
+
+@api_view(['GET'])
+def offerDetailReceipt(request, taskId, userId):
+    taskId = taskId.rsplit('-', 1)[-1]
+    print(userId)
+    print(taskId)
+    try:
+        # offerDetail = Offer.objects.get(Q(task = taskId) & (Q(user=userId) | Q(task__user = userId)))
+        offerDetail = Offer.objects.get(task=taskId, user=F('task__user_provider'))
+    except Offer.DoesNotExist:
+        offerDetail = ""
+
+    if offerDetail:
+        serializer = OfferSerializer(offerDetail, many=False)
+        return Response(serializer.data, status=200)
+    else:
+
+        return Response(serializer.errors, status=400)
         
 @api_view(['GET', 'PUT', 'DELETE'])
 def offerDetail1(request, taskId):
@@ -357,11 +399,15 @@ def updateTaskStatus(request, taskId):
             return Response("You are not authorise to edit this task", status=404)
         
         serializer = UpdateTaskStatusSerializer(task, data=data)
+
         
         if serializer.is_valid():
             serializer.save()
             if "user_provider" in data:
-                is_provider = data["user_provider"]    
+                is_provider = data["user_provider"] 
+
+            if "is_paid" in data:
+                saveTransaction(taskId, data["user"], data["user_provider"])
             
             sendTaskNotification(taskId, data["content"], task.location, data["user"], is_provider)
             
@@ -369,6 +415,46 @@ def updateTaskStatus(request, taskId):
         else:
             print(serializer.errors)
             return Response(status=404)
+        
+def saveTransaction(taskId, clientId, spId):
+    # Get client task price
+    totalPaymentClient = Task.objects.get(id=taskId, status=2, is_paid=True)
+
+    totalPayment = {
+        'price': totalPaymentClient.price,
+        'admin_fee': totalPaymentClient.booking_price,
+        'total_price': totalPaymentClient.total_price,
+        'task': taskId,
+        'user': clientId
+    }
+    
+    serializerClient = TransactionSerializer(data=totalPayment)
+
+    if serializerClient.is_valid():
+        serializerClient.save()
+    else:
+        return Response(serializerClient.errors)
+        
+    # Get total amount that user sp will be received
+    totalPaymentSP = Offer.objects.get(task=taskId, user=spId)
+    totalPayment = {
+        'price': totalPaymentSP.price,
+        'admin_fee': totalPaymentSP.admin_fee,
+        'total_price':totalPaymentSP.total_price,
+        'is_payee': True,
+        'task': taskId,
+        'user': spId 
+    }
+
+    serializerSP = TransactionSerializer(data=totalPayment)
+
+    if serializerSP.is_valid():
+        serializerSP.save()
+    else:
+        return Response(serializerSP.errors)
+
+    return
+
         
 def sendTaskNotification(taskId, content, location, clientId, userProvider):
    
@@ -641,8 +727,9 @@ def reviewType(request, type, user):
 
     if type == 'sp':
         review = Review.objects.filter(user_sp = user)
-
+    
     serializer = ReviewSerializer(review, many=True)
+    
     return Response(serializer.data)
     # return Response(serializer.errors)
 
@@ -685,6 +772,15 @@ def review(request):
             else:
                 return Response(serializer.errors, status=400)
         
+@api_view(['GET'])
+def getTransactions(request, isPayee, user):
+    if int(isPayee) == 1:
+        transactionList = Transaction.objects.filter(user=user, is_payee=True, task__status=2, task__is_paid=True)
+    else:
+        print("client")
+        transactionList = Transaction.objects.filter(user=user, is_payee=False, task__status=2, task__is_paid=True)
+    serializer = TransactionSerializer(transactionList, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET', 'POST'])
 def skill(request):

@@ -33,24 +33,6 @@ class Category(models.Model):
 
     def __str__(self):
         return f"Category Id: {self.id}, Name: {self.name}"
-    
-class Offer(models.Model):
-    task = models.ForeignKey("Task", on_delete=models.CASCADE, related_name="offer_task_id")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="offer_sp_id")
-    price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
-    admin_fee = models.DecimalField(max_digits=7, decimal_places=2, null=True)
-    total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
-    description = models.TextField()
-    create_date = models.DateTimeField(null=True)
-    modify_date = models.DateTimeField(null=True)
-
-    @property
-    def task_title_to_url(self):
-        task_title = self.task.task_title + " " + str(self.task.id)
-        return task_title.replace(' ', '-')
-
-    def __str__(self):
-        return f"Id: {self.id}, Task ID: {self.task}, User Provider: {self.user}, price: {self.price}"
 
 class Skill(models.Model): 
     skill_name = models.CharField(max_length=30)
@@ -109,6 +91,24 @@ class Task(models.Model):
 
     def __str__(self):
         return f"Id: {self.id}, User: {self.user}, Category: {self.category}, Task: {self.task_title}, Paid: {self.is_paid}, User: {self.user}"
+    
+class Offer(models.Model):
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="offer_task_id")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="offer_sp_id")
+    price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+    admin_fee = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+    total_price = models.DecimalField(max_digits=7, decimal_places=2, null=True)
+    description = models.TextField()
+    create_date = models.DateTimeField(null=True)
+    modify_date = models.DateTimeField(null=True)
+
+    # @property
+    # def task_title_to_url(self):
+    #     task_title = self.task.task_title + " " + str(self.task.id)
+    #     return task_title.replace(' ', '-')
+
+    def __str__(self):
+        return f"Id: {self.id}, Task ID: {self.task}, User Provider: {self.user}, price: {self.price}"
     
 class Question(models.Model):
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="question_task_id")
@@ -194,13 +194,13 @@ class Review(models.Model):
         return f"Id: {self.id}, Task: {self.task}"
     
 class Transaction(models.Model):
-    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_trans")
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_trans")
-    price = models.DecimalField(max_digits=12, decimal_places=0, default=0, null=True)
-    admin_fee = models.DecimalField(max_digits=12, decimal_places=0, default=0, null=True)
-    total_price = models.DecimalField(max_digits=12, decimal_places=0, default=0, null=True)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name="task_trans", null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_trans", null=True)
+    price = models.DecimalField(max_digits=12, decimal_places=2, default=0, null=True)
+    admin_fee = models.DecimalField(max_digits=12, decimal_places=2, default=0, null=True)
+    total_price = models.DecimalField(max_digits=12, decimal_places=2, default=0, null=True)
     is_payee = models.BooleanField(default=0, null=True)
     create_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"Id: {self.id}, Task: {self.task}, User SP: {self.user_sp.id}, Client: {self.user_client.id}"
+        return f"Id: {self.id}, Task: {self.task}, User: {self.user.id}, Payee: {self.is_payee}"

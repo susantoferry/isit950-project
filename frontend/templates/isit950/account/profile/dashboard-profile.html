@@ -89,11 +89,11 @@
         .then(result => {
             document.querySelector(".review-star-container").innerHTML = ''
             document.querySelector(".rev-comment-overlay").innerHTML = ''
-            templateReview(result, type)
+            reviewTemplate(result, type)
         })
     }
 
-    function templateReview(result, type) {
+    function reviewTemplate(result, type) {
 
         if (result.length > 0) {
             totalReview = result.length
@@ -134,8 +134,8 @@
                     <div class="rev-row">
                         <div class="rev-col">
                             <div class="flex-col ml10" style="gap:0 40px">
-                                <a href="profile.html">
-                                    <span style="font-size: 14px;">@username</span>
+                                <a href="#">
+                                    <span style="font-size: 14px;">@${res.tasks.user_provider_name}</span>
                                 </a>
                                 <div style="font-size: 14px;">
                                     <span>Review from ${revFrom}</span>

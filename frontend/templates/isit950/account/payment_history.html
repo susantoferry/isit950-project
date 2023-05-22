@@ -17,7 +17,7 @@
                     <a href="#" id="outgoing" class="button btnprimary btnnavtop">Outgoing</a>
                 </div>
             </div>
-            <div style="margin-top: 20px;">
+            <!-- <div style="margin-top: 20px;">
                 <span style="font-size: 1.24rem; color: #9f419f; font-weight: 300;">Search by transaction date</span>
 
                 <div style="margin-top: 10px;">
@@ -30,55 +30,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div style="margin-top: 20px;">
-                <div style="background: #ca82ff5e; padding: 10px 20px; border-radius: 10px; margin: 10px 0;">
-                    <div style="display: flex; align-items: center;">
-                        <div style="max-width: 50%;width: 50%;">
-                            <span>Take away my Oven please!</span>
-                        </div>
-                        <div style="max-width: 50%;width: 50%;">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <div style="display:inherit; align-items: center;">
-                                    <div>
-                                        <span>assigned to</span>
-                                        <span style="font-weight:700">ABC</span>
-                                    </div>
-                                    <div style="margin-left: 15px;">
-                                        <img width="45" src="/static/images/profiles/Hansel.png" alt="">
-                                    </div>
-                                </div>
-                                <div>
-                                    <a href="#" style="color: #800080" data-reid="1" data-bs-toggle="modal" data-bs-target="#receiptModal"> View Receipt</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div style="background: #ca82ff5e; padding: 10px 20px; border-radius: 10px; margin: 10px 0;">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <div style="max-width: 50%;width: 50%;">
-                            <span>Need someone to clean my garden</span>
-                        </div>
-                        <div style="max-width: 50%;width: 50%;">
-                            <div style="display: flex; align-items: center; justify-content: space-between;">
-                                <div style="display:inherit; align-items: center;">
-                                    <div>
-                                        <span>assigned to</span>
-                                        <span style="font-weight:700">Mark</span>
-                                    </div>
-                                    <div style="margin-left: 15px;">
-                                        <img width="45" src="/static/images/profiles/Hansel.png" alt="">
-                                    </div>
-                                </div>
-                                <div>
-                                    <a href="#" style="color: #800080" data-reid="2" data-bs-toggle="modal" data-bs-target="#receiptModal"> View Receipt</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+            </div> -->
+            <div class="transaction-list-overlay mt-3">
             </div>
         </div>
     </div>
@@ -99,31 +52,31 @@
                 <div style="line-height: 2rem;">
                     <div style="display: flex;">
                         <div class="col-sm-4">Task Title</div>
-                        <div class="col-sm-8" style="text-align: right;">Take away my oven please</div>
+                        <div id="rec_task_title" class="col-sm-8" style="text-align: right;"></div>
                     </div>
                     <div style="display: flex;">
-                        <div class="col-sm-4">Task Type</div>
-                        <div class="col-sm-8" style="text-align: right;">Oven Repairs</div>
+                        <div class="col-sm-4">Task Category</div>
+                        <div id="rec_category" class="col-sm-8" style="text-align: right;"></div>
                     </div>
                     <div style="display: flex;">
                         <div class="col-sm-4">Issue Date</div>
-                        <div class="col-sm-8" style="text-align: right;">19/04/2023</div>
+                        <div id="rec_date" class="col-sm-8" style="text-align: right;"></div>
                     </div>
                 </div>
                 <div style="margin: 25px 0; line-height: 2rem; color: #c43232;">
                     <div style="display: flex;">
                         <div class="col-sm-4">Task Fee</div>
-                        <div class="col-sm-8" style="text-align: right;">$30.00 AUD</div>
+                        <div id="rec_task_fee" class="col-sm-8" style="text-align: right;"></div>
                     </div>
                     <div style="display: flex;">
                         <div class="col-sm-4">Booking Fee</div>
-                        <div class="col-sm-8" style="text-align: right;">$2.00 AUD</div>
+                        <div id="rec_booking_fee" class="col-sm-8" style="text-align: right;"></div>
                     </div>
                 </div>
                 <div style="font-weight: 600; font-size: 1.15rem; border-top: 1px solid #cacaca;">
                     <div class="mt-3" style="display: flex;">
                         <div class="col-sm-4">Total</div>
-                        <div class="col-sm-8" style="text-align: right;">$32.00 AUD</div>
+                        <div id="rec_total" class="col-sm-8" style="text-align: right;"></div>
                     </div>
                 </div>
                 
@@ -134,13 +87,19 @@
 </div>
 
 <script>
+
+    $(document).ready(function () {
+        getTransactions(1, `{{request.user.id}}`)
+    })
+
     $(document).on('click', '#earned', function(event) {
 
         document.getElementById('earned').classList.add("btnprimary-outline");
         document.getElementById('earned').classList.remove("btnprimary");
         document.getElementById('outgoing').classList.add("btnprimary");
         document.getElementById('outgoing').classList.remove("btnprimary-outline");
-    
+        
+        getTransactions(1, `{{request.user.id}}`)
     })
 
     $(document).on('click', '#outgoing', function(event) {
@@ -150,6 +109,93 @@
         document.getElementById('outgoing').classList.remove("btnprimary");
         document.getElementById('outgoing').classList.add("btnprimary-outline");
 
+        getTransactions(0, `{{request.user.id}}`)
+    })
+
+    function getTransactions(isPayee, user) {
+        fetch(`/api/get_transactions/${isPayee}/${user}`)
+        .then(response => response.json())
+        .then(result => {
+            document.querySelector(".transaction-list-overlay").innerHTML = ''
+            transactionTemplate(result, isPayee)
+        })
+    }
+
+    function transactionTemplate(result, isPayee) {
+        if (result.length > 0) {
+            if (isPayee == 0) {
+                var clientSPTitle = "Service Provider"
+            } else {
+                var clientSPTitle = "Client"
+            }
+
+            for (let res of result) {
+                var transListCard = document.createElement('div');
+                transListCard.className = 'transaction-list-card';
+                
+                if (isPayee == 0) {
+                    var clientSPName = res.tasks.user_provider_name
+                } else {
+                    var clientSPName = res.tasks.user_client_id
+                }
+
+                transListCard.innerHTML = `
+                    <div style="display: flex; align-items: center;">
+                        <div style="max-width: 50%;width: 50%;">
+                            <span>${res.tasks.task_title}</span>
+                        </div>
+                        <div style="max-width: 50%;width: 50%;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div style="display:inherit; align-items: center;">
+                                    <div>
+                                        <span>${clientSPTitle}</span>
+                                        <span style="font-weight:700">${clientSPName}</span>
+                                    </div>
+                                    <div style="margin-left: 15px;">
+                                        <img width="45" src="/static/images/profiles/Hansel.png" alt="">
+                                    </div>
+                                </div>
+                                <div>
+                                    <a href="#" class="view-receipt-btn" style="color: #800080" data-task-id="${res.tasks.task_title_to_url}" data-bs-toggle="modal" data-bs-target="#receiptModal"> View Receipt</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+
+                document.querySelector('.transaction-list-overlay').appendChild(transListCard)
+            }
+        } else {
+            document.querySelector('.transaction-list-overlay').innerHTML = `
+                <span style="display: block; text-align: center; color: #be0000;">
+                    You have no transaction
+                </span>`
+        }
+    }
+
+    $(document).on('click', '.view-receipt-btn', function(event) {
+        var taskId = $(this).attr('data-task-id');
+        fetch(`/api/offer_detail_receipt/${taskId}/{{request.user.id}}`)
+        .then(response => response.json())
+        .then(result => {
+            if (`{{request.user.id}}` == result.tasks.user) {
+                var task_fee = result.tasks.price
+                var admin_fee = result.tasks.booking_price
+                var total_price = result.tasks.total_price
+            } else {
+                var task_fee = result.price
+                var admin_fee = result.admin_fee
+                var total_price = result.total_price
+            }
+
+            document.getElementById('rec_task_title').innerHTML = result.tasks.task_title
+            document.getElementById('rec_category').innerHTML = result.tasks.category_name
+            document.getElementById('rec_date').innerHTML = result.tasks.completed_on
+            document.getElementById('rec_task_fee').innerHTML = `$ ${task_fee} AUD`
+            document.getElementById('rec_booking_fee').innerHTML = `$ ${admin_fee} AUD`
+            document.getElementById('rec_total').innerHTML = `$ ${total_price} AUD`
+        })
+        
+        
     })
 </script>
 

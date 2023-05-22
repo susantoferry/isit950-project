@@ -39,7 +39,7 @@
                                 <img class="tasker-profile pos-abs" src="">
                                 <p class="card-text">tes</p>
                                 {{ offer.user.img_profile }}
-                                <a href="{% url 'select_tasker' offer.task_title_to_url offer.user %}" class="btn btn-primary">Accept</a>
+                                <a href="{% url 'select_tasker' offer.tasks.task_title_to_url offer.user %}" class="btn btn-primary">Accept</a>
                             </div>
                         </div>
                         {% endfor %}

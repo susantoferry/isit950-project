@@ -34,7 +34,7 @@ urlpatterns = [
     path("tasks/", views.tasks, name="tasks"),
     path("tasks/?name=<slug>", views.taskDetail, name="tasks"),
     path("select_tasker/<taskId>/<user_sp>", views.selectTasker, name="select_tasker"),
-    path("update_completion/<taskId>/<clientId>", views.updateCompletion, name="update_completion"),
+    path("update_completion/<taskId>/<userId>/<type>", views.updateCompletion, name="update_completion"),
     path("leave_review/<taskId>", views.leaveReview, name="leave_review"),
     re_path(r'^task/task_state/$', views.searchTask, name='task_state'),
 

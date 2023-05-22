@@ -703,7 +703,9 @@ function showmyTaskDetail(taskId) {
     
                         titleSpace.appendChild(priceSpace);
                         cardBody.appendChild(titleSpace);
-    
+                        
+
+                        console.log(res);
                         const button = document.createElement('a');
                         const link = '/select_tasker/' + res.task_title_to_url + '/' + res.user;
                         button.href = link;

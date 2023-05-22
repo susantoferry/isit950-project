@@ -125,10 +125,14 @@ class Offer(models.Model):
     create_date = models.DateTimeField(null=True)
     modify_date = models.DateTimeField(null=True)
 
-    # @property
-    # def task_title_to_url(self):
-    #     task_title = self.task.task_title + " " + str(self.task.id)
-    #     return task_title.replace(' ', '-')
+    @property
+    def task_title_to_url(self):
+        task_title = self.task.task_title + " " + str(self.task.id)
+        return task_title.replace(' ', '-')
+    
+    def full_name(self):
+        full_name = self.user.first_name + self.user.last_name
+        return full_name
 
     def __str__(self):
         return f"Id: {self.id}, Task ID: {self.task}, User Provider: {self.user}, price: {self.price}"

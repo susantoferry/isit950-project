@@ -13,13 +13,13 @@
                     <span class="link_name">My Tasks</span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="#" style="display: block; width: 100%;">
                     <span class="link_name">Chat</span>
                 </a>
-            </li>
+            </li> -->
             <li>
-                <a href="{% url 'my_wishlist' %}" style="display: block; width: 100%;">
+                <a href="{% url 'my_task' 'wishlist' %}" style="display: block; width: 100%;">
                     <span class="link_name">Wishlist</span>
                 </a>
             </li>
@@ -40,8 +40,8 @@
                 <i class='bx bxs-chevron-down arrow'></i>
                 <ul class="sub-menu showMenu">
                     <li><a href="{% url 'edit_profile' %}" style="display: block; width: 100%;">Edit Profile</a></li>
-                    <li><a href="#" style="display: block; width: 100%;">Change Password</a></li>
-                    <li><a href="#" style="display: block; width: 100%;">Membership Plan</a></li>
+                    <!-- <li><a href="#" style="display: block; width: 100%;">Change Password</a></li> -->
+                    <li><a href="{% url 'membership' %}" style="display: block; width: 100%;">Membership Plan</a></li>
                     <li><a href="{% url 'payment_method' %}" style="display: block; width: 100%;">Payment Method</a></li>
                 </ul>
             </li>

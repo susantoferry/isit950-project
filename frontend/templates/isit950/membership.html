@@ -178,9 +178,8 @@
         <div class="row text-center">
             <h1 class="heading-title">Membership Choice</h1>
         </div>
-        <form id="membershipForm" action="{% url 'membership' %}" method="post">
             {%csrf_token%}
-            <input type="hidden" id="memberPackageInput" name="member_package">
+            <input type="text" id="memberPackageInput" name="member_package">
             <div class="form-check">
                 <div class="row">
                     <div class="col-md-4 col-sm-6">
@@ -199,7 +198,7 @@
                                 <li>Free from Admin Fee</li>
                                 <li>Free Service Request!!</li>
                             </ul>
-                            <a class="read">Get Membership<i class="fa fa-angle-right"></i></a>
+                            <button data-bs-toggle="modal" data-price="80" data-id="1" data-bs-target="#membershipModal" class="read btn-membership">Get Membership<i class="fa fa-angle-right"></i></button>
                         </div>
                     </div>
         
@@ -219,7 +218,7 @@
                                 <li>Free from Admin Fee</li>
                                 <li>Free Service Request!!</li>
                             </ul>
-                            <a class="read">Get Membership<i class="fa fa-angle-right"></i></a>
+                            <button data-bs-toggle="modal" data-price="50" data-id="2" data-bs-target="#membershipModal" class="read btn-membership">Get Membership<i class="fa fa-angle-right"></i></button>
                         </div>
                     </div>
         
@@ -239,33 +238,121 @@
                                 <li>Free from Admin Fee</li>
                                 <li>Free Service Request!!</li>
                             </ul>
-                            <a class="read">Get Membership<i class="fa fa-angle-right"></i></a>
+                            <button data-bs-toggle="modal" data-price="120" data-id="3" data-bs-target="#membershipModal" class="read btn-membership">Get Membership<i class="fa fa-angle-right"></i></button>
                         </div>
                     </div>
                 </div>    
             </div>
-        </form>
 
     </div>
 </div>
-
+<div class="modal fade" id="membershipModal" tabindex="-1" role="dialog" aria-labelledby="membershipModalTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close d-flex align-items-center justify-content-center"
+                    data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 30px;">
+                <div class="text-center mb-2" style="font-size: 1.25rem; font-weight: 500;">Payment Method</div>
+                <div id="paypal-button-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Credits to http://labs.bootstrapthemes.co/demo/Resource/PricingTableStyleDemo38/ for the design!!-->
 
 {%endif%}
 
 
 <script>
-    var signUpButtons = document.querySelectorAll('.pricingTable .read');
-    signUpButtons.forEach(function(button) {
-        button.addEventListener('click', function(event) {
-        event.preventDefault();
-        var package = this.parentNode.querySelector('.heading').getAttribute('id');
-        var form = document.getElementById('membershipForm');
-        var memberPackageInput = document.getElementById('memberPackageInput');
-        memberPackageInput.value = package;
-        form.submit();
-    });
-  });
+//     var signUpButtons = document.querySelectorAll('.pricingTable .read');
+//     signUpButtons.forEach(function(button) {
+//         button.addEventListener('click', function(event) {
+//         event.preventDefault();
+//         var package = this.parentNode.querySelector('.heading').getAttribute('id');
+//         var form = document.getElementById('membershipForm');
+//         var memberPackageInput = document.getElementById('memberPackageInput');
+//         memberPackageInput.value = package;
+//         form.submit();
+//     });
+//   });
+
+
+    // var price;
+    const token = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    // $(document).on('click', '.btn-membership', function (event) {
+    //     memberType = document.querySelector('input[name="member_package"]:checked').value;
+    //     if (memberType == 1) {
+    //         price = 80;
+    //     } else if (memberType == 2) {
+    //         price = 50;
+    //     } else {
+    //         price = 120;
+    //     }
+    // })
+    var price;
+    var membershipId;
+    $(document).on('click', '.btn-membership', function(event) {
+        membershipId = $(this).attr('data-id');
+        price = $(this).attr('data-price');
+        console.log(membershipId)
+        console.log(price)
+    })
+
+    paypal.Buttons({
+
+        style: {
+            color: 'blue',
+            shape: 'pill',
+            label: 'pay',
+            height: 40
+        },
+
+        createOrder: function (data, actions) {
+            // This function sets up the details of the transaction, including the amount and line item details.
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: price,
+                        currency: 'AUD'
+                    }
+                }]
+            });
+        },
+        onApprove: function (data, actions) {
+            // This function captures the funds from the transaction.
+            return actions.order.capture().then(function (details) {
+                // This function shows a transaction success message to your buyer.
+                fetch(`/api/membership_transaction`, {
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRFToken': token,
+                    },
+                    body: JSON.stringify({
+                        'membership': membershipId,
+                        'user': `{{request.user.id}}`,
+                    })
+                })
+                .then(response => response.json())
+                .then(res => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Your payment has been saved'
+                    })
+                })
+                .catch(err => {
+                    alert(err)
+                })
+            });
+        }
+    }).render('#paypal-button-container');
+
 </script>
 
 {% endblock %}

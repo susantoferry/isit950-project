@@ -1637,7 +1637,11 @@ input[type=file]::-webkit-file-upload-button {
 
 
 .offer-card{
-    background-color: rgb(234, 226, 240);
+    background-color: rgb(244, 237, 249);
+}
+
+.no-offer-card{
+    background-color: rgb(230, 213, 244);
 }
 
 .offer-title{

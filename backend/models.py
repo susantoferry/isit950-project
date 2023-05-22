@@ -131,7 +131,7 @@ class Offer(models.Model):
         return task_title.replace(' ', '-')
     
     def full_name(self):
-        full_name = self.user.first_name + self.user.last_name
+        full_name = self.user.first_name + ' ' + self.user.last_name
         return full_name
 
     def __str__(self):

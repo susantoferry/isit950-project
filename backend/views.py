@@ -296,7 +296,7 @@ def getMyTask(request, userId, condition):
         elif condition == 'completed':
             #assigned
             taskStatus = 2
-            myTasks = Task.objects.filter(user_provider_id=userId, status=taskStatus).order_by("status","-create_date")
+            myTasks = Task.objects.filter(user_provider_id=userId, user_id=userId, status=taskStatus).order_by("status","-create_date")
 
         else:
             myTasks1 = Task.objects.filter(user_id=userId).order_by("status","-create_date")
@@ -517,10 +517,10 @@ def membershipTransaction(request):
             request.data['trans_type'] = 'A'
             request.data["price"] = price[request.data["membership"]]
         
-        if request.data['membership'] == 0:
-            request.data["credit_card"] = "-"
-        else:
-            request.data["credit_card"] = str(encryptString(request.data['credit_card']))
+        # if request.data['membership'] == 0:
+        #     request.data["credit_card"] = "-"
+        # else:
+        #     request.data["credit_card"] = str(encryptString(request.data['credit_card']))
 
         serializer = MembershipTransactionSerializer(data=request.data)
         if serializer.is_valid():

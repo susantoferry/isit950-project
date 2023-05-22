@@ -328,15 +328,17 @@ def membership(request):
     if request.method == 'POST':
         membershipData = {
             'membership': request.POST['member_package'],
-            'user': request.user.id,
-            'credit_card':  request.POST['credit_card']
+            'user': request.user.id
+            # 'credit_card':  request.POST['credit_card']
         }
 
         membershipRequest = requests.post(restServer + "membership_transaction", json=membershipData) 
-        
+
         if membershipRequest.status_code == 200:
+            messages.success(request, "You have successfully selected a membership!")
             return HttpResponseRedirect(reverse("membership"))
         else:
+            messages.success(request, "An error occured when selecting a membership")
             return HttpResponseRedirect(reverse("membership"))
 
 def myTask(request, condition='all'):

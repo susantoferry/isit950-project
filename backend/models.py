@@ -78,12 +78,14 @@ class Task(models.Model):
     location = models.TextField(null=True)
     location_link = models.CharField(max_length=100, blank=True, null=True)
     lat = models.FloatField(blank=True, null=True)
-    long = models.FloatField(blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
     completed_on = models.DateField()
     status = models.IntegerField(default=0)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_client", related_query_name="profile", null=True)
     user_provider = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_provider", null=True, blank=True)
     is_paid = models.BooleanField(default=False)
+    provider_review = models.BooleanField(default=False, null=True, blank=True)
+    user_review = models.BooleanField(default=False, null=True, blank=True)
     create_date = models.DateTimeField(null=True, blank=True)
     modify_date = models.DateTimeField(null=True, blank=True)
     offer = models.BooleanField(null=True, blank=True, default=False)
@@ -92,7 +94,7 @@ class Task(models.Model):
         g = geocoder.mapbox(self.location, key=mapbox_token)
         g = g.latlng
         self.lat = g[0]
-        self.long = g[1]
+        self.longitude = g[1]
         return super(Task, self).save(*args, **kwargs)
 
     @property

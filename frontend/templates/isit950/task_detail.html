@@ -27,9 +27,11 @@
                                     <div class="flexcc">
                                         <div class="tasker-profile-left">
                                             {% if taskDetail.img_profile %}
-                                            <img width="45" class="tasker-profile" src="/static/{{ taskDetail.img_profile }}" alt="">    
+                                            <img width="45" class="tasker-profile"
+                                                src="/static/{{ taskDetail.img_profile }}" alt="">
                                             {% else %}
-                                            <img width="45" class="tasker-profile" src="/static/images/anonymous_user.png" alt="">
+                                            <img width="45" class="tasker-profile"
+                                                src="/static/images/anonymous_user.png" alt="">
                                             {% endif %}
                                         </div>
                                         <div style="width: 225px;">
@@ -41,12 +43,12 @@
                                                     <div class="taskClient-label">
                                                         <span id="tasker-client">{{ taskDetail.first_name | title }} {{ taskDetail.last_name |title }} </span>
                                                     </div>
-                                                    
+
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
-                                        
+
                                     </div>
                                     <div class="flexcc">
                                         <div class="tasker-profile-left">
@@ -69,7 +71,7 @@
                                     </div>
                                     <div style="color: #84878c; font-size: 13px; position: relative; left: 10px; font-size: 11px; margin-top: 10px;">
                                         <script>
-                                            
+
                                         </script>
                                     </div>
                                 </div>
@@ -80,7 +82,7 @@
                 <div style="display: flex; flex-direction: column;">
                     <div class="task-detail-col-price-overlay" style="padding-top: 20px;">
                         <div class="task-detail-col-price">
-                        
+
                             <div>
                                 <span style="padding-top: 15px; position: relative; display: block;">Budget</span>
                             </div>
@@ -96,8 +98,8 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
             </div>
             <div style="background: #f3f4f5; border-radius: 44px; width: 100%; padding: 10px 35px; margin: 25px 0;">
                 <div class="task-detail-heading">
@@ -117,158 +119,30 @@
                             style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
                     </div>
                     <div style="width: 100%; margin-left: 25px;">
-                        <form method='post' action="{% url 'test123' %}">
-                            {% csrf_token %}
-                            <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
-                                onkeyup="checkPostValue();" placeholder="Leave your comment"></textarea>
-                            <button type="submit" id="postBtn" class="comm-btn" disabled> Submit </button>
-                        </form>
+                        <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
+                            onkeyup="checkPostValue();" placeholder="Leave your comment"></textarea>
+                        <button type="button" id="postCommBtn" class="leave-comm-btn" disabled> Submit </button>
                     </div>
-                    
+
                 </div>
                 <div class="task-detail-heading">
-                    <span class="mt20" style="letter-spacing: 1px;">Comments ({{ parentQuestion.count }})</span>
+                    <span class="comment-total mt20" style="letter-spacing: 1px;"></span>
                 </div>
 
-                {% for pQuestion in parentQuestion %}
-                
-                <div class="rev-section">
-                    <div class="rev-overlay">
-                        <div class="rev-col">
-                            <div class="flex-rev">
-                                <div class="rev-usr-img-container">
-                                    <div class="rev-usr-img-wrap mb-2">
-                                        {% if pQuestion.user.img_profile %}
-                                        <img src="/static/{{ pQuestion.user.img_profile }}" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
-                                        {% else %}
-                                        <img src="/static/images/anonymous_user.png" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
-                                        {% endif %}
-                                    </div>
-                                    <div style="text-align:center; position: relative; margin-top: -10px;">
-                                        <a href="profile.html">
-                                            <h5 class="rev-name-header">{{ pQuestion.user.username | title }}</h5>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="ml10" style="display: flex; justify-content: space-between; width: 100%;">
-                                    <div class="task-comm-flex ml20">
-                                        <div style="display: flex; align-items: center; width: 100%;">
-                                            <span style="font-weight: 600; font-size: 1.5rem; color: #FEA500; margin-right: 15px;">{{ pQuestion.user.rating|floatformat:1 }} </span>
-                                            <i class="star-rev fas fa-star fa-lg"></i>
-                                        </div>
-                                        <div class="rev-rate-col">
-                                            <div class="rev-rate">100% complete rate</div>
-                                        </div>
-                                    </div>
-                                    <div class="rev-date-col">
-                                        <em class="rev-date ml10" style="font-size: 10px;font-weight: lighter;">5mins ago</em>
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="display: flex;justify-content: space-between;">
-                                <div style="display: flex; justify-content: space-between; width: 100%;">
-                                    <div class="task-comm-txt">
-                                        {{ pQuestion.question }}
-                                    </div>
-                                    <div style="width:65px;">
-                                        <a href="#0" class="reply-anchor">
-                                            <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                            width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
-                                            preserveAspectRatio="xMidYMid meet" class="reply-arrow">
-                                           
-                                           <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
-                                           fill="#eea47fff" stroke="none">
-                                           <path d="M35 250 l-39 -40 39 -40 c35 -36 65 -51 65 -33 0 4 -12 20 -27 36
-                                           l-28 29 97 -4 c86 -3 100 -7 123 -28 27 -26 34 -75 14 -112 -13 -25 -5 -35 15
-                                           -18 25 20 30 74 11 114 -25 53 -58 66 -166 66 l-93 0 27 28 c15 15 27 31 27
-                                           35 0 18 -30 3 -65 -33z"/>
-                                           </g>
-                                           </svg>
-                                            <span class="reply-btn">Reply</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            {% for cQuestion in childQuestion %}
-
-                        {% if cQuestion.parent_id == pQuestion.id %}
-                            <div class="rev-comment-reply-container mt20">
-                                <div class="flex-rev">
-                                    <div class="rev-usr-img-container">
-                                        <div class="rev-usr-img-wrap">
-                                            {% if cQuestion.user.img_profile %}
-                                            <img src="/static/{{ cQuestion.user.img_profile }}" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
-                                            {% else %}
-                                            <img src="/static/images/anonymous_user.png" style="display: block; margin: 0 auto; width: 48px; height: auto; object-fit: contain; border-radius: 50%;">
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="rev-row">
-                                    <div class="rev-col">
-                                        <div class="flex-col ml10" style="justify-content: space-between;">
-                                            <a href="profile.html">
-                                                <h5 class="rev-name-header">Replied by {{ cQuestion.user.username | title }}</h5>
-                                            </a>
-                                            {% if taskDetailail.user == cQuestion.user.id %}
-                                                <div class="rev-poster">
-                                                    <span>Poster</span>
-                                                </div>
-                                            {% endif %}
-                                            <div class="rev-date-col">
-                                                <em class="ml10" style="font-size: 10px;font-weight: lighter;">1min ago</em>
-                                            </div>
-                                        </div>
-                                        <div class="ml10">
-                                            <div style="font-size: 13px; margin-bottom: 10px; color: #d2691e;">
-                                                <span>Reply to Samuel</span>
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between;">
-                                                <div class="task-comm-txt">
-                                                    {{ cQuestion.question}}
-                                                </div>
-                                                <div class="reply-row">
-                                                    <a href="#0" class="reply-anchor">
-                                                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                                                            width="12px" height="12px" viewBox="0 0 32.000000 32.000000"
-                                                            preserveAspectRatio="xMidYMid meet" class="reply-arrow">
-        
-                                                            <g transform="translate(0.000000,32.000000) scale(0.100000,-0.100000)"
-                                                            fill="#eea47fff" stroke="none">
-                                                            <path d="M35 250 l-39 -40 39 -40 c35 -36 65 -51 65 -33 0 4 -12 20 -27 36
-                                                            l-28 29 97 -4 c86 -3 100 -7 123 -28 27 -26 34 -75 14 -112 -13 -25 -5 -35 15
-                                                            -18 25 20 30 74 11 114 -25 53 -58 66 -166 66 l-93 0 27 28 c15 15 27 31 27
-                                                            35 0 18 -30 3 -65 -33z"/>
-                                                            </g>
-                                                        </svg>
-                                                        <span class="reply-btn">Reply</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                        </div>
-                        
-                    </div>
-                    
-                    
-                </div>
-                {% endfor %}
+                <div id="comment-section-overlay"></div>
             </div>
         </div>
     </div>
 </div>
 
 
-<div class="modal fade" id="offerModal" tabindex="-1" role="dialog" aria-labelledby="offerModalTitle" aria-hidden="true">
+<div class="modal fade" id="offerModal" tabindex="-1" role="dialog" aria-labelledby="offerModalTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close d-flex align-items-center justify-content-center"
+                    data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -283,11 +157,12 @@
                                 <span>$</span>
                             </div>
                             <div>
-                                <input type="text" name="offer-price" id="offer-price" value="" inputmode="numeric" style="width: 150px;
+                                <input type="text" name="offer-price" id="offer-price" value="" inputmode="numeric"
+                                    style="width: 150px;
                                 padding: 10px 10px 10px 40px;
                                 text-align: center;">
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -307,28 +182,32 @@
                             <span>$</span>
                             <span id="total-earn"></span>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div style="text-align: center;">
                     <span>Please explain or describe what make you good for this task</span>
                 </div>
                 <div class="offer-form pp-border p15" style="margin-top: 20px;">
-                    <textarea class="offer-text" name="offer-desc" id="offer-desc" rows="5" placeholder="i.e. I am confident that I can provide you with the high-quality results you are looking for" style="width: 100%;"></textarea>
+                    <textarea class="offer-text" name="offer-desc" id="offer-desc" rows="5"
+                        placeholder="i.e. I am confident that I can provide you with the high-quality results you are looking for"
+                        style="width: 100%;"></textarea>
                 </div>
                 <div style="padding-top: 20px;">
-                    <button type="submit" class="comm-btn"> Submit </button>
+                    <button type="submit" class="submit-offer-btn"> Submit </button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalTitle" aria-hidden="true">
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close d-flex align-items-center justify-content-center"
+                    data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -344,13 +223,15 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-row">
                         <div class="col-md-12">
                             <div class="position-relative form-group">
                                 <label for="firstName" class="">Leave your review</label>
                                 <div class="review-form pp-border p15" style="margin-top: 10px;">
-                                    <textarea class="review-text" name="reviewDesc" id="reviewDesc" rows="5" placeholder="Leave your review regarding this task" style="width: 100%;"></textarea>
+                                    <textarea class="review-text" name="reviewDesc" id="reviewDesc" rows="5"
+                                        placeholder="Leave your review regarding this task"
+                                        style="width: 100%;"></textarea>
                                 </div>
                             </div>
                         </div>

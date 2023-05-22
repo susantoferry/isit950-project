@@ -1,6 +1,8 @@
 {% extends 'isit950/layout.html' %}
 
 {% block body %}
+{% if request.user.is_authenticated %}
+
 <div class="main-card mb-3 card">
     <div class="card-body">
         <h5 class="card-title">Create new task </h5>
@@ -85,4 +87,5 @@
         </form>
     </div>
 </div>
+{%endif%}
 {% endblock %}

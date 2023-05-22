@@ -449,6 +449,8 @@
 }
 </style>
 
+{% if request.user.is_authenticated %}
+
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
@@ -479,18 +481,21 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 input-group has-validation">
                                 <label for="taskName">What kind of help do you need?</label>
-                                <input type="text" name="taskName" class="form-control" placeholder="Give this task a title...">
-                                <div class="valid-feedback">
+                                <input required type="text" name="taskName" class="form-control" placeholder="Give this task a title..." aria-describedby="validationInput1" aria-required="true">
+                                <div id="validationInput1" class="valid-feedback">
                                     Looks good!
-                                  </div>
+                                </div>
+                                <div id="validationInput1" class="invalid-feedback">
+                                    Please enter a title for the task
+                                </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="taskType">Select job type</label>
-                                <select class="form-select form-control" id="taskCategory" name="taskCategory" aria-label="Default select example">
-                                    <option selected>Select job</option>
+                                <select class="form-select form-control" id="taskCategory" name="taskCategory" aria-label="Default select example" aria-describedby="validationInput2" aria-required="true">
+                                    <option hidden selected>Select job</option>
                                     <option value="1">Carpenter</option>
                                     <option value="2">Electrician</option>
                                     <option value="3">Fence Installation</option>
@@ -504,7 +509,7 @@
                                     <option value="3">Roof Cleaning</option>
                                     <option value="3">Tree Removal</option>
                                 </select>
-                                <div class="valid-feedback">
+                                <div id="validationInput2" class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
@@ -517,7 +522,7 @@
                                 <label for="taskDate">When do you need this done?</label>
                                 <div class="col-md-4">
                                     <div class="position-relative form-group">
-                                        <input type="date" id="date-input" name="taskDate" class="form-control" />
+                                        <input type="date" id="date-input" name="taskDate" class="form-control" aria-required="true"/>
                                     </div>
                                 </div>
                             </div>
@@ -532,7 +537,7 @@
 
                             <div class="mb-3">
                                 <label for="taskLocation">Where is your location?</label>
-                                <input type="text" name="taskLocation"id="location" class="form-control" placeholder="Enter your location">
+                                <input type="text" name="taskLocation"id="location" class="form-control" placeholder="Enter your location" aria-required="true">
                             </div>
                         </div>
                         <input type="button" name="next" class="next action-button button btnprimary btnnavtop" value="Next"/>
@@ -661,6 +666,8 @@
         </div>
     </div>
 </div>
+
+{%endif%}
 
 <script>
     $(document).ready(function() {

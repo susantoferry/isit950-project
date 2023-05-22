@@ -111,19 +111,19 @@
                             style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain; border-radius: 50%;"
                             style="width: 48px; height: 48px; margin: 0px 12px 0px 0px; object-fit: contain;">
                     </div>
-                    <div style="width: 100%; margin-left: 25px;">
+                    <!-- <div style="width: 100%; margin-left: 25px;">
                         <form method='post' action="{% url 'test123' %}">
                             {% csrf_token %}
                             <textarea class="comment-text" id="comment-text" rows="4" name="text-content"
                                 onkeyup="checkPostValue();" placeholder="Leave your comment"></textarea>
                             <button type="submit" id="postBtn" class="comm-btn" disabled> Submit </button>
                         </form>
-                    </div>
+                    </div> -->
                     
                 </div>
-                <div class="task-detail-heading">
+                <!-- <div class="task-detail-heading">
                     <span class="mt20" style="letter-spacing: 1px;">Comments ({{ parentQuestion.count }})</span>
-                </div>
+                </div> -->
 
                 {% for pQuestion in parentQuestion %}
                 

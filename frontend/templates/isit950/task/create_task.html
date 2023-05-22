@@ -3,6 +3,18 @@
 {% block body %}
 
 <style>
+    * {
+        margin: 0;
+        padding: 0
+    }
+
+    html {
+        height: 100%
+    }
+
+    p {
+        color: grey;
+    }
 
     #heading {
         text-transform: uppercase;
@@ -29,8 +41,7 @@
     }
 
     .form-card {
-        text-align: left;
-
+        text-align: left
     }
 
     #msform fieldset:not(:first-of-type) {
@@ -41,14 +52,17 @@
     #msform textarea {
         padding: 8px 15px 8px 15px;
         border: 1px solid #ccc;
+        border-radius: 0px;
         margin-bottom: 25px;
         margin-top: 2px;
         width: 100%;
         box-sizing: border-box;
         color: #2C3E50;
         background-color: #F4F1F1;
+        ;
         font-size: 16px;
         letter-spacing: 1px;
+        border-radius: 30px;
 
     }
 
@@ -66,10 +80,13 @@
         width: 171px;
         background: #6E27A333;
         font-weight: bold;
+        color: black;
+        border: 0 none;
+        border-radius: 30px;
         cursor: pointer;
         padding: 10px 5px;
         margin: 10px 10px 10px 5px;
-        float: right;
+        float: right
     }
 
     #msform .action-button:hover,
@@ -78,15 +95,16 @@
     }
 
     #msform .action-button-previous {
-        width: 170px;
+        width: 100px;
         background: #616161;
         font-weight: bold;
         color: white;
         border: 0 none;
+        border-radius: 30px;
         cursor: pointer;
         padding: 10px 5px;
         margin: 10px 5px 10px 0px;
-        float: right;
+        float: right
     }
 
     #msform .action-button-previous:hover,
@@ -205,11 +223,8 @@
     }
 
     .fit-image {
-        width: 100px;
-        object-fit: cover;
-        display: flex;
-        justify-content: center;
-
+        width: 100%;
+        object-fit: cover
     }
 
     .taskPage1 {
@@ -256,11 +271,9 @@
     .rectangle {
 
         width: 270px;
-        height: 4px;
         background: rgba(110, 39, 163, 0.2);
         border-radius: 30px;
         position: relative;
-        top: 15px;
 
     }
 
@@ -284,19 +297,22 @@
 
     .taskQuestion {
 
-        display: flex;
-        justify-content: left;
-        width: 1095px;
-        height: 81px;
-        left: 60px;
-        top: 272px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 100px;
-        color: #000000;
+        margin-bottom: 10px;
 
-        margin-top: 2%;
+    }
 
+    /* code for dropdown */
+    * {
+        box-sizing: border-box;
+    }
+
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    body {
+        margin: 40px;
     }
 
     .dropdown {
@@ -367,8 +383,8 @@
         color: #E61761;
         margin-left: 18%;
         display: flex;
-        margin-top: 64%;
-
+        margin-top: 20px;
+        text-align: right;
     }
 
 
@@ -379,11 +395,9 @@
 
     .rectangle {
         width: 100%;
-        margin-bottom: 5%;
     }
 
     .rectangletextarea {
-        margin-bottom: 5%;
         width: 100%;
         border-radius: 10px;
         background: #6E27A387;
@@ -394,6 +408,7 @@
     .rectangleinnertextarea {
         margin-bottom: 5%;
         font-weight: 400;
+        line-height: 48px;
         width: 100%;
         resize: none;
         border: none;
@@ -409,15 +424,29 @@
         color: black;
     }
 
-    .paymentSummary__text {
-        color: black;
+    .form-select {
+        border-radius: 30px;
+        background-color: #F4F1F1;
+        margin-bottom: 20px;
     }
+
+    .j-input {
+        display: flex;
+        justify-content: space-evenly;
+        margin-bottom: 20px;
+    }
+
+    .paymentSummary__text {
+        color:black;
+}
 
     .paymentSummary {
         text-align: center;
         font-weight: 600;
         margin-bottom: 10px;
-    }
+        padding-top: 25px;
+        font-size: 32px;
+}
 </style>
 
 <div class="container-fluid">
@@ -426,7 +455,7 @@
             <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
                 <h2 id="heading">Submit your Task Request</h2>
                 <p>Fill all form field to go to next step</p>
-                <form id="msform" action="{% url 'create_task' %}" method="POST">
+                <form id="msform" action="{% url 'create_task' %}" method="POST" class="needs-validation" novalidate>
                     {% csrf_token %}
                     <!-- progressbar -->
                     <ul id="progressbar">
@@ -453,6 +482,9 @@
                             <div class="mb-3">
                                 <label for="taskName">What kind of help do you need?</label>
                                 <input type="text" name="taskName" class="form-control" placeholder="Give this task a title...">
+                                <div class="valid-feedback">
+                                    Looks good!
+                                  </div>
                             </div>
 
                             <div class="mb-3">
@@ -472,6 +504,9 @@
                                     <option value="3">Roof Cleaning</option>
                                     <option value="3">Tree Removal</option>
                                 </select>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
                             </div>
 
                             <input type="hidden" id="taskPrice" name="taskPrice">

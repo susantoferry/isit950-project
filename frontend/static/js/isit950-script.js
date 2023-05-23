@@ -534,7 +534,7 @@ function showmyTaskDetail(taskId) {
         // Determine apply button or cancel button if status is 0/open
             document.querySelector('.taskButtonEditApply').innerHTML = "";
 
-        var versatileBtn = document.createElement("div")
+            var versatileBtn = document.createElement("div")
             if (result.status == 0) {
                 
                 if (result.user_client_id !== getCookieValue('usid')) {
@@ -571,24 +571,24 @@ function showmyTaskDetail(taskId) {
                 }
             }
 
-                if (result.status == 2 && result.is_paid == false) {
-                    if (result.user_client_id !== getCookieValue('usid')) {
-                        if (result.user_provider_name !== getCookieValue('usid')) {
-                            versatileBtn.innerHTML = `
-                                <a href="/account/payment-history" id="task-active-lg" class="task-active-lg completed">Completed</a>`
-                        } else {
-                            versatileBtn.innerHTML = `
-                            <div id="task-active-lg" class="task-active-lg completed">Waiting payment</div>`
-                        }
+            if (result.status == 2 && result.is_paid == false) {
+                if (result.user_client_id !== getCookieValue('usid')) {
+                    if (result.user_provider_name !== getCookieValue('usid')) {
+                        versatileBtn.innerHTML = `
+                        <a href="/account/payment-history" id="task-active-lg" class="task-active-lg completed">Completed</a>`
                     } else {
                         versatileBtn.innerHTML = `
-                        <a href="" class="button btn-capsule btnsave-primary">Complete Payment</a>`
+                        <div id="task-active-lg" class="task-active-lg completed">Waiting payment</div>`
                     }
-                }
-                if (result.status == 2 && result.is_paid == true ) {
+                } else {
                     versatileBtn.innerHTML = `
-                    <a href="/account/payment-history" id="task-active-lg" class="task-active-lg completed">Completed</a>`
+                    <a href="/update_completion/${result.task_title_to_url}/${result.user_provider}/payment" class="button btn-capsule btnsave-primary">Complete Payment</a>`
                 }
+            }
+            if (result.status == 2 && result.is_paid == true ) {
+                versatileBtn.innerHTML = `
+                <a href="/account/payment-history" id="task-active-lg" class="task-active-lg completed">Completed</a>`
+            }
             // }
             document.querySelector('.taskButtonEditApply').appendChild(versatileBtn)    
         
@@ -704,10 +704,8 @@ function showmyTaskDetail(taskId) {
                         titleSpace.appendChild(priceSpace);
                         cardBody.appendChild(titleSpace);
                         
-
-                        console.log(res);
                         const button = document.createElement('a');
-                        const link = '/select_tasker/' + res.task_title_to_url + '/' + res.user;
+                        const link = '/select_tasker/' + res.tasks.task_title_to_url + '/' + res.user;
                         button.href = link;
                         button.classList.add("btn", "btn-primary", 'col-md-2');
                         button.innerHTML = "Accept";
@@ -748,12 +746,19 @@ function showmyTaskDetail(taskId) {
                         offerContainer.appendChild(offerDiv);
                     }
                 } else {
+
                     const offerContainer = document.querySelector('#offer-display');
                     offerContainer.innerHTML = ''; // Clear previous content if any
 
                     const offerDiv = document.createElement('div');
                     offerDiv.classList.add('card', 'mb-3', 'no-offer-card');
                     
+                    const offerTitle = document.createElement('div');
+                    offerTitle.classList.add('task-detail-heading');
+                    offerTitle.style.letterSpacing = '1px';
+                    offerTitle.textContent = "Offer from Service Provider";
+                    offerContainer.appendChild(offerTitle);
+
                     const cardBody = document.createElement('div');
                     cardBody.classList.add('card-body');
     

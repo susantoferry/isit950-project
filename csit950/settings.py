@@ -107,7 +107,7 @@ DATABASES = {
         'NAME': 'isit950',
         'USER': 'admin',
         'PASSWORD': 'password',
-        'HOST': 'awsdbisit950.cmoar4du3hp3.ap-southeast-2.rds.amazonaws.com',
+        'HOST': 'isit950-bu2.cmoar4du3hp3.ap-southeast-2.rds.amazonaws.com',
         # 'USER': 'root',
         # 'PASSWORD': '',
         # 'HOST': '127.0.0.1',

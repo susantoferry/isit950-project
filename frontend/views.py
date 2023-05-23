@@ -364,6 +364,7 @@ def taskOffer(request, taskId):
     myTaskDetailResp = requests.get(restServer + "task/" + str(taskId))
     myTaskDetail = myTaskDetailResp.json()
 
+    print(taskId)
     offerResp = requests.get(restServer + "offer/" + taskId)
     offers = offerResp.json()
 
@@ -387,9 +388,13 @@ def selectTasker(request, taskId, user_sp):
     taskRequest = requests.put(f"{restServer}update_task_status/{taskId}", json=taskData)
 
     if taskRequest.status_code == 200:
+        print('test')
+        print(taskId)
         messages.success(request, "You have selected the service provider to do your task")
         return HttpResponseRedirect(reverse('task_offer', args=[taskId]))
     else:
+        print('testerror')
+        print(taskId)
         messages.error(request, "Error when selecting the service provider")
         return HttpResponseRedirect(reverse('task_offer', args=[taskId]))
     

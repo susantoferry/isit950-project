@@ -112,6 +112,7 @@ class OfferSerializer(serializers.ModelSerializer):
     task_details = serializers.CharField(read_only=True, source='task')
     task_title = serializers.CharField(read_only=True, source='task.task_title')
     task_title_to_url = serializers.CharField(read_only=True)
+    tasks = TaskSerializer(read_only=True, source='task')
     full_name = serializers.CharField(read_only=True)
     class Meta:
         model = Offer

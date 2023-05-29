@@ -3,7 +3,7 @@ import base64
 
 restServer = 'http://localhost:8000/api/'
 
-fernetKey = 'p58QlMoA_F3QEzQSBfhHA7tQzxFHElbgbxsjDPKPQ10='
+fernetKey = ''
 
 def encryptString(value):
     fernet = Fernet(fernetKey)

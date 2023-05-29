@@ -906,7 +906,7 @@ function redirectToURL(location) {
 
 function returnNearSuburb(location){
     // Geocode the selected suburb
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg';
+    mapboxgl.accessToken = '';
     var geocodingClient = mapboxSdk({ accessToken: mapboxgl.accessToken });
     geocodingClient.geocoding.forwardGeocode({
         query: location,

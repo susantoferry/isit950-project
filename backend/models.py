@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 import geocoder
 # Create your models here.
 
-mapbox_token = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
+mapbox_token = ''
 
 class Membership(models.Model):
     package_name=models.CharField(max_length=30)

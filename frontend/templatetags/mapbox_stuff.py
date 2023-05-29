@@ -1,7 +1,7 @@
 # from geopy.distance import geodesic
 # from mapbox import Geocoder
 
-# mapbox_access_token = 'pk.eyJ1IjoiZnM3OTQiLCJhIjoiY2xneW1lZmNmMGI0NTN0cDkyeHpzdzgwZyJ9.V74wwUIzF1J3tVUg3tdcXg'
+# mapbox_access_token = ''
 # geocoder = Geocoder(access_token=mapbox_access_token)
 
 # locationA = (-33.8536, 151.1542)
